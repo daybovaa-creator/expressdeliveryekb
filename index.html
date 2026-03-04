@@ -433,6 +433,39 @@
     letter-spacing: 0.05em;
   }
 
+  /* ── FLEET GALLERY ── */
+  .fleet-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4/3;
+    background: var(--card);
+    cursor: pointer;
+  }
+
+  .fleet-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+  }
+
+  .fleet-card:hover img {
+    transform: scale(1.06);
+  }
+
+  .fleet-num {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 28px 16px 12px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.75));
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    font-weight: 500;
+  }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(24px); }
@@ -614,6 +647,31 @@
       <div class="step-title">Сдача и оплата</div>
       <div class="step-desc">Сдаём на WB, OZON или Яндекс Маркет, вы наблюдаете онлайн. Платите только по факту.</div>
     </div>
+  </div>
+</section>
+
+<!-- FLEET GALLERY -->
+<section class="section" style="padding-top:0;">
+  <p class="section-eyebrow reveal">Наш автопарк</p>
+  <h2 class="section-title reveal">10 машин — готовы прямо сейчас</h2>
+  <p style="color:var(--muted);font-size:16px;margin-top:16px;margin-bottom:48px;max-width:600px;" class="reveal">
+    Весь автопарк с фирменным брендингом — от малотоннажных Лад до КАМАЗов. Перекрываем любые объёмы ежедневно.
+  </p>
+
+  <div style="
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 4px;
+  ">
+    <div class="fleet-card reveal"><img src="images/010.jpeg" alt="КАМАЗ 010" loading="lazy"><div class="fleet-num">010 · КАМАЗ</div></div>
+    <div class="fleet-card reveal"><img src="images/001_-_002.jpeg" alt="001 · 002" loading="lazy"><div class="fleet-num">001 · 002 · ГАЗель</div></div>
+    <div class="fleet-card reveal"><img src="images/003.jpeg" alt="003" loading="lazy"><div class="fleet-num">003 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/004.jpeg" alt="004" loading="lazy"><div class="fleet-num">004 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/005.jpeg" alt="005" loading="lazy"><div class="fleet-num">005 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/006.jpeg" alt="006" loading="lazy"><div class="fleet-num">006 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/007.jpeg" alt="007" loading="lazy"><div class="fleet-num">007 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/008.jpeg" alt="008" loading="lazy"><div class="fleet-num">008 · КАМАЗ</div></div>
+    <div class="fleet-card reveal"><img src="images/009.jpeg" alt="009" loading="lazy"><div class="fleet-num">009 · Лада</div></div>
   </div>
 </section>
 
