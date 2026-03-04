@@ -220,6 +220,21 @@
     100% { transform: translateX(-50%); }
   }
 
+  @keyframes scroll-reverse {
+    0%   { transform: translateX(-50%); }
+    100% { transform: translateX(0); }
+  }
+
+  .client-badge {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 4px 12px;
+    border: 1px solid;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
   /* ── STATS ── */
   .stats {
     display: grid;
@@ -620,30 +635,6 @@
   </div>
 </section>
 
-<!-- TICKER -->
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <div class="ticker-item">Wildberries <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">OZON <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Яндекс Маркет <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">FBS / FBO <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Без предоплаты <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">GPS-трекинг <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">10 автомобилей <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">300+ селлеров <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Екатеринбург <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Wildberries <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">OZON <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Яндекс Маркет <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">FBS / FBO <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Без предоплаты <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">GPS-трекинг <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">10 автомобилей <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">300+ селлеров <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">Екатеринбург <span class="ticker-sep">✦</span></div>
-  </div>
-</div>
-
 <!-- STATS -->
 <div class="stats">
   <div class="stat-box reveal">
@@ -835,6 +826,108 @@
   </div>
 </div>
 
+<!-- PARTNERS STANDALONE -->
+<section class="section-tight" style="padding-top:0;padding-bottom:0;">
+  <div style="max-width:900px;margin-inline:auto;">
+    <!-- ПАРТНЁРЫ -->
+    <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="partners-block">
+      <button onclick="this.closest('#partners-block').classList.toggle('open')" style="
+        width:100%;display:flex;align-items:center;justify-content:space-between;
+        padding:20px 28px;background:var(--card);border:none;cursor:pointer;
+        color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
+      ">
+        <span style="display:flex;align-items:center;gap:10px;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8899CC" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Наши партнёры</span>
+          <span style="color:var(--muted);font-size:13px;font-weight:300;">300+ компаний</span>
+        </span>
+        <span class="partners-arrow" style="color:var(--orange);font-size:18px;transition:transform 0.3s;">↓</span>
+      </button>
+      <div class="partners-body" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease;background:var(--card);">
+        <div style="padding:20px 0 24px;border-top:1px solid var(--border);">
+          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;padding:0 28px;">Нам доверяют и с нами сотрудничают:</p>
+
+          <!-- бегущая строка партнёров -->
+          <div style="overflow:hidden;position:relative;">
+            <!-- fade edges -->
+            <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,var(--card),transparent);z-index:2;pointer-events:none;"></div>
+            <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,var(--card),transparent);z-index:2;pointer-events:none;"></div>
+
+            <div style="display:flex;gap:14px;width:max-content;animation:scroll-partners 35s linear infinite;padding:6px 0;">
+
+              <!-- карточка 1 — Леонардо -->
+              <div class="p-card">
+                <svg width="160" height="50" viewBox="0 0 210 60"><circle cx="22" cy="30" r="18" fill="#e05c00"/><text x="16" y="36" font-family="serif" font-size="20" fill="white" font-weight="bold">L</text><text x="46" y="37" font-family="Arial" font-size="19" fill="#e05c00" font-weight="700" letter-spacing="0.5">ЛЕОНАРДО</text></svg>
+                <span class="p-label">Магазины для творчества</span>
+              </div>
+
+              <!-- карточка 2 — Mirex -->
+              <div class="p-card">
+                <svg width="150" height="50" viewBox="0 0 200 60"><text x="10" y="46" font-family="Arial" font-size="40" fill="#0055aa" font-weight="900" letter-spacing="-1">mirex</text></svg>
+                <span class="p-label">Флеш-накопители и CD</span>
+              </div>
+
+              <!-- карточка 3 — СпецРемСтрой -->
+              <div class="p-card">
+                <svg width="190" height="50" viewBox="0 0 260 60"><rect x="2" y="12" width="30" height="30" rx="4" fill="#cc2222"/><text x="7" y="32" font-family="Arial" font-size="14" fill="white" font-weight="bold">СРС</text><text x="38" y="34" font-family="Arial" font-size="18" fill="#cc2222" font-weight="700">СпецРемСтрой</text></svg>
+                <span class="p-label">Производитель оконных конструкций</span>
+              </div>
+
+              <!-- карточка 4 — AvtoMag196 -->
+              <div class="p-card">
+                <svg width="180" height="50" viewBox="0 0 240 60"><text x="4" y="38" font-family="Arial" font-size="22" fill="#ff5500" font-weight="900" letter-spacing="1">AVTOMAG196.ru</text></svg>
+                <span class="p-label">Интернет-магазин автозапчастей</span>
+              </div>
+
+              <!-- карточка 5 — Респотек -->
+              <div class="p-card">
+                <svg width="150" height="50" viewBox="0 0 210 60"><polygon points="14,10 26,30 14,50 2,30" fill="#6633aa"/><polygon points="26,10 38,30 26,50 14,30" fill="#9955cc"/><text x="44" y="38" font-family="Arial" font-size="16" fill="#9955cc" font-weight="700">РЕСПОТЕК</text></svg>
+                <span class="p-label">Профессиональный инструмент</span>
+              </div>
+
+              <!-- карточка 6 — Стройплатформа -->
+              <div class="p-card">
+                <svg width="200" height="50" viewBox="0 0 270 60"><polygon points="18,48 8,28 18,8 28,28" fill="#e07000"/><polygon points="28,48 18,28 28,8 38,28" fill="#f09030"/><text x="44" y="36" font-family="Arial" font-size="18" fill="#e07000" font-weight="700">СТРОЙПЛАТФОРМА</text></svg>
+                <span class="p-label">Строительные материалы</span>
+              </div>
+
+              <!-- карточка 7 — МегаМастер -->
+              <div class="p-card">
+                <svg width="180" height="50" viewBox="0 0 240 60"><rect x="2" y="12" width="32" height="32" rx="3" fill="#cc0000"/><text x="8" y="34" font-family="Arial" font-size="20" fill="white" font-weight="900">М</text><text x="42" y="35" font-family="Arial" font-size="19" fill="#cc0000" font-weight="700">МЕГАМАСТЕР</text></svg>
+                <span class="p-label">Электроинструменты</span>
+              </div>
+
+              <!-- карточка 8 — prostohome -->
+              <div class="p-card">
+                <svg width="150" height="50" viewBox="0 0 210 60"><text x="4" y="42" font-family="Georgia,serif" font-size="22" fill="#2266aa" font-weight="400" letter-spacing="-0.5">prostohome.</text></svg>
+                <span class="p-label">Производитель мебели</span>
+              </div>
+
+              <!-- плашка 300+ -->
+              <div class="p-card" style="background:rgba(255,140,53,0.08);border-color:rgba(255,140,53,0.3);min-width:160px;justify-content:center;">
+                <span style="font-size:28px;font-weight:900;color:var(--orange);font-family:'Bebas Neue',sans-serif;line-height:1;">300+</span>
+                <span class="p-label" style="text-align:center;">партнёров<br/>в Екатеринбурге</span>
+              </div>
+
+              <!-- повтор для бесконечной прокрутки -->
+              <div class="p-card"><svg width="160" height="50" viewBox="0 0 210 60"><circle cx="22" cy="30" r="18" fill="#e05c00"/><text x="16" y="36" font-family="serif" font-size="20" fill="white" font-weight="bold">L</text><text x="46" y="37" font-family="Arial" font-size="19" fill="#e05c00" font-weight="700" letter-spacing="0.5">ЛЕОНАРДО</text></svg><span class="p-label">Магазины для творчества</span></div>
+              <div class="p-card"><svg width="150" height="50" viewBox="0 0 200 60"><text x="10" y="46" font-family="Arial" font-size="40" fill="#0055aa" font-weight="900" letter-spacing="-1">mirex</text></svg><span class="p-label">Флеш-накопители и CD</span></div>
+              <div class="p-card"><svg width="190" height="50" viewBox="0 0 260 60"><rect x="2" y="12" width="30" height="30" rx="4" fill="#cc2222"/><text x="7" y="32" font-family="Arial" font-size="14" fill="white" font-weight="bold">СРС</text><text x="38" y="34" font-family="Arial" font-size="18" fill="#cc2222" font-weight="700">СпецРемСтрой</text></svg><span class="p-label">Производитель оконных конструкций</span></div>
+              <div class="p-card"><svg width="180" height="50" viewBox="0 0 240 60"><text x="4" y="38" font-family="Arial" font-size="22" fill="#ff5500" font-weight="900" letter-spacing="1">AVTOMAG196.ru</text></svg><span class="p-label">Интернет-магазин автозапчастей</span></div>
+              <div class="p-card"><svg width="150" height="50" viewBox="0 0 210 60"><polygon points="14,10 26,30 14,50 2,30" fill="#6633aa"/><polygon points="26,10 38,30 26,50 14,30" fill="#9955cc"/><text x="44" y="38" font-family="Arial" font-size="16" fill="#9955cc" font-weight="700">РЕСПОТЕК</text></svg><span class="p-label">Профессиональный инструмент</span></div>
+              <div class="p-card"><svg width="200" height="50" viewBox="0 0 270 60"><polygon points="18,48 8,28 18,8 28,28" fill="#e07000"/><polygon points="28,48 18,28 28,8 38,28" fill="#f09030"/><text x="44" y="36" font-family="Arial" font-size="18" fill="#e07000" font-weight="700">СТРОЙПЛАТФОРМА</text></svg><span class="p-label">Строительные материалы</span></div>
+              <div class="p-card"><svg width="180" height="50" viewBox="0 0 240 60"><rect x="2" y="12" width="32" height="32" rx="3" fill="#cc0000"/><text x="8" y="34" font-family="Arial" font-size="20" fill="white" font-weight="900">М</text><text x="42" y="35" font-family="Arial" font-size="19" fill="#cc0000" font-weight="700">МЕГАМАСТЕР</text></svg><span class="p-label">Электроинструменты</span></div>
+              <div class="p-card"><svg width="150" height="50" viewBox="0 0 210 60"><text x="4" y="42" font-family="Georgia,serif" font-size="22" fill="#2266aa" font-weight="400" letter-spacing="-0.5">prostohome.</text></svg><span class="p-label">Производитель мебели</span></div>
+              <div class="p-card" style="background:rgba(255,140,53,0.08);border-color:rgba(255,140,53,0.3);min-width:160px;justify-content:center;"><span style="font-size:28px;font-weight:900;color:var(--orange);font-family:'Bebas Neue',sans-serif;line-height:1;">300+</span><span class="p-label" style="text-align:center;">партнёров<br/>в Екатеринбурге</span></div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- MAP + CONTACTS + PRICE + REQUISITES — единый блок -->
 <section class="section-tight" id="map" style="padding-bottom:60px;">
   <div style="max-width:900px;margin-inline:auto;display:flex;flex-direction:column;gap:8px;">
@@ -854,6 +947,10 @@
         </a>
       </div>
     </div>
+
+
+
+
 
     <!-- КАРТА ПРОЕЗДА -->
     <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="routemap-block">
@@ -996,6 +1093,33 @@
 </section>
 
 <style>
+  #partners-block.open .partners-body { max-height: 1200px !important; }
+  #partners-block.open .partners-arrow { transform: rotate(180deg); }
+
+  .p-card {
+    flex-shrink: 0;
+    background: var(--darker);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 18px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 180px;
+    transition: border-color 0.2s;
+  }
+  .p-card:hover { border-color: rgba(100,140,255,0.35); }
+  .p-label {
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    white-space: nowrap;
+  }
+  @keyframes scroll-partners {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
   #routemap-block.open .routemap-body { max-height: 1000px !important; }
   #routemap-block.open .routemap-arrow { transform: rotate(180deg); }
   #contacts-block.open .contacts-body { max-height:300px!important; }
