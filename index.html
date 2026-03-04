@@ -422,6 +422,51 @@
     .footer-cta { grid-template-columns: 1fr; }
   }
 
+  /* ── MOBILE ── */
+  @media (max-width: 600px) {
+    /* Навбар */
+    nav { height: auto !important; padding: 8px 12px !important; }
+    .nav-btn { font-size: 12px !important; padding: 6px 10px !important; }
+
+    /* Hero */
+    .hero { padding-top: 80px !important; padding-bottom: 40px !important; }
+    .hero-cta { flex-direction: column; align-items: stretch; }
+    .hero-cta a { text-align: center; }
+
+    /* Секции */
+    .section { padding: 48px 16px !important; }
+    .section-tight { padding: 16px !important; }
+
+    /* Иногородние — сломанный блок */
+    #outoftown .reveal {
+      grid-template-columns: 1fr !important;
+      padding: 28px 20px !important;
+      gap: 28px !important;
+    }
+
+    /* Автопарк */
+    .fleet-grid { grid-template-columns: 1fr 1fr !important; }
+
+    /* Футер CTA */
+    .footer-cta { padding: 48px 16px 32px !important; }
+    .footer-cta > div:first-child > div {
+      flex-direction: column !important;
+      align-items: flex-start !important;
+    }
+
+    /* Блоки карта/контакты/прайс */
+    .section-tight > div > div { border-radius: 4px !important; }
+
+    /* Адрес в карте */
+    #map .reveal > div { flex-direction: column !important; align-items: flex-start !important; }
+
+    /* Статистика */
+    .stats-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+
+    /* Таблица прайса */
+    table td, table th { font-size: 12px !important; padding: 8px 0 !important; }
+  }
+
   .footer-cta-title {
     font-family: 'Bebas Neue', sans-serif;
     font-size: clamp(38px, 6vw, 64px);
@@ -733,7 +778,7 @@
 
 <!-- OUT OF TOWN BLOCK -->
 <section class="section" id="outoftown" style="padding-top:0;">
-  <div style="background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 60px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;" class="reveal">
+  <div style="background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: clamp(24px, 5vw, 60px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: center;" class="reveal">
     <div>
       <p class="section-eyebrow">Другой город</p>
       <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px); margin-top: 12px;">Вы из другого города? Не беда!</h2>
