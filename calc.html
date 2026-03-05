@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Калькулятор доставки — WB-OZON Delivery</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --orange: #FF6B00;
+    --orange-light: #FF8C35;
+    --dark: #0A0D1A;
+    --darker: #060810;
+    --card: #0F1428;
+    --text: #F0EDE8;
+    --muted: #8899CC;
+    --border: rgba(100,130,255,0.12);
+  }
+
+  body {
+    background: var(--darker);
+    color: var(--text);
+    font-family: 'Geologica', sans-serif;
+    font-weight: 300;
+    padding: 16px;
+    min-height: 100vh;
+  }
+
+  /* Адаптация под тему Telegram */
+  body.tg-dark {
+    background: var(--darker);
+  }
+
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header-logo {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .header-logo span { color: var(--orange); font-weight: 700; }
+
+  .calc-btn {
+    padding: 8px 14px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--darker);
+    color: var(--muted);
+    font-size: 13px;
+    font-family: 'Geologica', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .calc-btn:hover { border-color: var(--orange); color: var(--text); }
+  .calc-btn-active { border-color: var(--orange) !important; color: var(--orange) !important; background: rgba(255,140,53,0.08) !important; font-weight: 600; }
+
+  label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+
+  input[type=number] {
+    width: 100%;
+    padding: 8px 10px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--text);
+    font-size: 15px;
+    font-family: 'Geologica', sans-serif;
+    box-sizing: border-box;
+  }
+
+  .result-box {
+    background: rgba(255,140,53,0.08);
+    border: 1px solid rgba(255,140,53,0.25);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin-top: 20px;
+  }
+
+  .result-price {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--orange);
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 0.02em;
+  }
+
+  .result-breakdown {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.6;
+  }
+
+  .tg-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    background: var(--orange);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 14px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    margin-top: 14px;
+    font-family: 'Geologica', sans-serif;
+    border: none;
+    cursor: pointer;
+  }
+
+  .section { margin-bottom: 16px; }
+  .note { font-size: 11px; color: var(--muted); margin-top: 10px; opacity: 0.7; }
+
+  .size-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  .size-box { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px 16px; }
+
+  .qty-row { display: flex; align-items: center; gap: 12px; }
+  .qty-btn { width: 36px; height: 36px; border-radius: 4px; border: 1px solid var(--border); background: var(--card); color: var(--text); font-size: 20px; cursor: pointer; line-height: 1; flex-shrink: 0; }
+  .qty-val { font-size: 22px; font-weight: 700; min-width: 40px; text-align: center; }
+
+  .cat-badge { margin-top: 10px; padding: 8px 12px; border-radius: 4px; font-size: 12px; display: none; line-height: 1.6;
+    background: rgba(255,140,53,0.06); border: 1px solid rgba(255,140,53,0.2); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo"><span>WB-OZON</span> Delivery · Калькулятор</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:2px;">Екатеринбург · Доставка на маркетплейсы</div>
+  </div>
+</div>
+
+<!-- Маркетплейс -->
+<div class="section">
+  <label>Маркетплейс</label>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button onclick="calcSetMarket(this,'wb')"   class="calc-btn calc-btn-active">Wildberries</button>
+    <button onclick="calcSetMarket(this,'ozon')" class="calc-btn">OZON</button>
+    <button onclick="calcSetMarket(this,'ym')"   class="calc-btn">Яндекс Маркет</button>
+  </div>
+</div>
+
+<!-- Тип груза -->
+<div class="section">
+  <label>Тип груза</label>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button onclick="calcSetType(this,'box')"         class="calc-btn calc-btn-active">Коробы</button>
+    <button onclick="calcSetType(this,'pallet')"      class="calc-btn">Паллеты (готовые)</button>
+    <button onclick="calcSetType(this,'pallet_form')" class="calc-btn">Формирование паллета</button>
+    <button onclick="calcSetType(this,'kgt')"         class="calc-btn">КГТ / СГТ</button>
+    <button onclick="calcSetType(this,'single')"      class="calc-btn">Мелкие заказы</button>
+  </div>
+</div>
+
+<!-- Размеры -->
+<div class="section size-box" id="calc-box-wrap">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <label style="margin:0;">Размеры одного короба</label>
+    <div style="display:flex;gap:4px;">
+      <button onclick="calcSetUnit(this,'cm')" class="calc-btn calc-btn-active" style="padding:4px 10px;font-size:11px;">см</button>
+      <button onclick="calcSetUnit(this,'mm')" class="calc-btn" style="padding:4px 10px;font-size:11px;">мм</button>
+      <button onclick="calcSetUnit(this,'m')"  class="calc-btn" style="padding:4px 10px;font-size:11px;">м</button>
+    </div>
+  </div>
+  <div class="size-grid">
+    <div>
+      <label>Длина</label>
+      <input id="calc-l" type="number" min="1" placeholder="" oninput="calcUpdate()" onchange="calcUpdate()">
+    </div>
+    <div>
+      <label>Ширина</label>
+      <input id="calc-w" type="number" min="1" placeholder="" oninput="calcUpdate()" onchange="calcUpdate()">
+    </div>
+    <div>
+      <label>Высота</label>
+      <input id="calc-h" type="number" min="1" placeholder="" oninput="calcUpdate()" onchange="calcUpdate()">
+    </div>
+  </div>
+  <div id="calc-box-category" class="cat-badge"></div>
+</div>
+
+<!-- Количество -->
+<div class="section">
+  <label id="calc-qty-label">Количество коробов</label>
+  <div class="qty-row">
+    <button class="qty-btn" onclick="calcQty(-1)">−</button>
+    <span class="qty-val" id="calc-qty-val">1</span>
+    <button class="qty-btn" onclick="calcQty(+1)">+</button>
+    <input type="range" id="calc-qty-slider" min="1" max="100" value="1" oninput="calcSetQty(+this.value)" style="flex:1;accent-color:var(--orange);">
+  </div>
+</div>
+
+<!-- Забор -->
+<div class="section">
+  <label>Откуда забрать груз</label>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+    <button onclick="calcSetPickup(this,'ekad')"    class="calc-btn calc-btn-active">От вас (внутри ЕКАД)</button>
+    <button onclick="calcSetPickup(this,'out')"     class="calc-btn">От вас (за ЕКАД)</button>
+    <button onclick="calcSetPickup(this,'evening')" class="calc-btn">От вас (после 19:00)</button>
+    <button onclick="calcSetPickup(this,'tk')"      class="calc-btn">Из ТК (500 руб. + подача)</button>
+  </div>
+</div>
+
+<!-- Итог -->
+<div class="result-box">
+  <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">Предварительная стоимость</div>
+  <div class="result-price" id="calc-result">— руб.</div>
+  <div class="result-breakdown" id="calc-breakdown"></div>
+</div>
+
+<button class="tg-btn" id="calc-tg-btn" onclick="sendToTelegram()">
+  Отправить расчёт менеджеру
+</button>
+<p class="note">* Расчёт предварительный. Точную цену уточнит менеджер.</p>
+
+<script>
+(function(){
+  // Инициализация Telegram Web App
+  if (window.Telegram && window.Telegram.WebApp) {
+    window.Telegram.WebApp.ready();
+    window.Telegram.WebApp.expand();
+  }
+
+  var market='wb', type='box', qty=1, pickup='ekad', unit='cm';
+  var pickupCost  = {ekad:135, out:249, evening:399, tk:635};
+  var pickupLabel = {ekad:'Подача внутри ЕКАД (135 руб.)', out:'Подача за ЕКАД (249 руб.)', evening:'Подача после 19:00 (399 руб.)', tk:'Получение из ТК 500 руб. + подача 135 руб.'};
+  var VOL_OZON=48000, VOL_WB=96000;
+
+  function toCm(v){ if(!v||isNaN(v))return 0; if(unit==='mm')return v/10; if(unit==='m')return v*100; return +v; }
+
+  function getBoxPrice(vol){
+    if(market==='wb'||market==='ym'){
+      if(vol<=VOL_WB*1.10)return{price:139,label:'Стандарт WB (60x40x40 см)'};
+      if(vol<=VOL_WB*1.40)return{price:179,label:'Крупнее стандарта WB до 40%'};
+      if(vol<=VOL_WB*2.00)return{price:239,label:'Крупнее стандарта WB до 100%'};
+      return{price:278,label:'Свыше 100% стандарта WB',double:true};
+    }
+    if(vol<=VOL_OZON)return{price:119,label:'Стандарт OZON (30x40x40 см)'};
+    if(vol<VOL_WB)   return{price:119,label:'До стандарта WB - цена OZON'};
+    if(vol<=VOL_WB*1.10)return{price:139,label:'Стандарт WB - цена WB'};
+    if(vol<=VOL_WB*1.40)return{price:179,label:'Крупнее стандарта WB до 40%'};
+    if(vol<=VOL_WB*2.00)return{price:239,label:'Крупнее стандарта WB до 100%'};
+    return{price:278,label:'Свыше 100% стандарта WB',double:true};
+  }
+
+  window.calcSetMarket=function(btn,val){market=val;_btnActive(btn);calcUpdate();};
+  window.calcSetType=function(btn,val){
+    type=val;_btnActive(btn);
+    var labels={box:'Количество коробов',pallet:'Количество паллетов',pallet_form:'Количество паллетов',kgt:'Количество единиц КГТ',single:'Количество заказов'};
+    document.getElementById('calc-qty-label').textContent=labels[val];
+    document.getElementById('calc-box-wrap').style.display=(val==='box')?'':'none';
+    calcUpdate();
+  };
+  window.calcSetPickup=function(btn,val){pickup=val;_btnActive(btn);calcUpdate();};
+  window.calcSetUnit=function(btn,val){unit=val;_btnActive(btn);calcUpdate();};
+  window.calcQty=function(delta){qty=Math.max(1,Math.min(500,qty+delta));document.getElementById('calc-qty-val').textContent=qty;document.getElementById('calc-qty-slider').value=Math.min(qty,100);calcUpdate();};
+  window.calcSetQty=function(val){qty=+val;document.getElementById('calc-qty-val').textContent=qty;calcUpdate();};
+  function _btnActive(btn){btn.closest('div').querySelectorAll('.calc-btn').forEach(function(b){b.classList.remove('calc-btn-active');});btn.classList.add('calc-btn-active');}
+
+  window.lastTotal = 0;
+  window.calcUpdate = calcUpdate;
+  window.lastText = '';
+
+  function calcUpdate(){
+    var pCost=pickupCost[pickup], total=0, unitLabel='';
+    if(type==='box'){
+      var l=toCm(document.getElementById('calc-l').value);
+      var w=toCm(document.getElementById('calc-w').value);
+      var h=toCm(document.getElementById('calc-h').value);
+      var vol=l*w*h;
+      if(vol>0){
+        var res=getBoxPrice(vol);
+        total=pCost+res.price*qty;
+        unitLabel=qty+' коробов x '+res.price+' руб.';
+        var col=res.price<=119?'#4CAF82':'#FF8C35';
+        var volL=(vol/1000).toFixed(1); var cat='<span style="color:'+col+';font-weight:600;">'+res.label+' - '+res.price+' руб./короб</span><br><span style="color:#8899CC;font-size:11px;">Объём: '+volL+' л ('+Math.round(vol)+' см³)</span>';
+        if(res.double)cat+='<br><span style="color:#FF5555;">Считается как 2 короба</span>';
+        var catEl=document.getElementById('calc-box-category');
+        catEl.innerHTML=cat; catEl.style.display='block';
+      }else{
+        document.getElementById('calc-box-category').style.display='none';
+        document.getElementById('calc-result').textContent='- руб.';
+        document.getElementById('calc-breakdown').innerHTML='Введите размеры короба';
+        return;
+      }
+    }else if(type==='pallet'){
+      total=pCost+1149*qty; unitLabel=qty+' паллетов x 1149 руб.';
+    }else if(type==='pallet_form'){
+      total=pCost+1550*qty; unitLabel=qty+' паллетов x 1550 руб. (формирование)';
+    }else if(type==='kgt'){
+      var kc=qty===1?1149:1149+(qty-1)*399;
+      total=pCost+kc;
+      unitLabel='1-я ед.: 1149 руб.'+(qty>1?' + '+(qty-1)+' ед. x 399 руб.':'');
+    }else if(type==='single'){
+      total=pCost+50*qty; unitLabel=qty+' заказов x 50 руб.';
+    }
+    document.getElementById('calc-result').textContent=total.toLocaleString('ru-RU')+' руб.';
+    var bd=(pCost?pickupLabel[pickup]+(unitLabel?'<br>':''):'')+(unitLabel||'');
+    document.getElementById('calc-breakdown').innerHTML=bd;
+    window.lastTotal = total;
+
+    var mn={wb:'Wildberries',ozon:'OZON',ym:'Яндекс Маркет'};
+    var tn={box:'коробы',pallet:'паллеты',pallet_form:'паллеты (формирование)',kgt:'КГТ/СГТ',single:'мелкие заказы'};
+    var pn={ekad:'внутри ЕКАД',out:'за ЕКАД',evening:'после 19:00',tk:'из ТК'};
+    var l=document.getElementById('calc-l').value, w=document.getElementById('calc-w').value, h=document.getElementById('calc-h').value;
+    var sz=(type==='box'&&l&&w&&h)?'\nРазмер короба: '+l+'x'+w+'x'+h+' '+unit:'';
+    window.lastText = 'Здравствуйте! Хочу сделать поставку на '+mn[market]+'.\nГруз: '+tn[type]+', '+qty+' шт.'+sz+'\nЗабор: '+pn[pickup]+'\nРасчёт: '+(total>0?total.toLocaleString('ru-RU')+' руб.':'уточнить')+'\nПрошу подтвердить стоимость.';
+  }
+
+  window.sendToTelegram = function(){
+    if (window.Telegram && window.Telegram.WebApp && window.lastText) {
+      window.Telegram.WebApp.sendData(window.lastText);
+    } else {
+      window.open('https://t.me/WB_OZON_Delivery66?text='+encodeURIComponent(window.lastText), '_blank');
+    }
+  };
+
+  calcUpdate();
+})();
+</script>
+</body>
+</html>
