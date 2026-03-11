@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /cgi-bin/
+
+# Sitemaps
+Sitemap: https://expressdeliveryekb.ru/sitemap.xml
+
+# Crawl-delay (optional, for polite crawling)
+Crawl-delay: 1
+
+# Host directive for Yandex
+Host: https://expressdeliveryekb.ru
