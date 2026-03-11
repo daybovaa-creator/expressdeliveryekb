@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WB-OZON Delivery — Доставка на маркетплейсы</title>
+<title>Доставка на маркетплейсы в Екатеринбурге — WB, OZON, Яндекс Маркет | WB-OZON Delivery</title>
+  <meta name="description" content="Забираем товар, готовим к приёмке и сдаём на WB, OZON и Яндекс Маркет. Без предоплаты, ежедневно, 300+ клиентов в Екатеринбурге.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Geologica:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
@@ -67,7 +68,7 @@
     text-align: center;
     position: relative;
     z-index: 1;
-    max-width: 900px;
+    max-width:1100px;
   }
 
   .badge {
@@ -186,6 +187,23 @@
     background-clip: text;
     display: block;
   }
+  .hero-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(22px, 3vw, 36px);
+    letter-spacing: 0.05em;
+    opacity: 0.6;
+    margin-bottom: 4px;
+  }
+  .hero-geo {
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 20px;
+    margin-top: 8px;
+    display: block;
+    clear: both;
+  }
   .ticker-wrap {
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
@@ -243,7 +261,7 @@
     background: var(--border);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    margin: 80px 0 0;
+    margin: 0;
   }
 
   .stat-box {
@@ -269,13 +287,14 @@
 
   /* ── SECTION ── */
   .section {
-    max-width: 1200px;
-    margin-inline: auto;
-    padding: 100px 24px;
+    width: 100%;
+    padding: 80px 24px;
+  }
+  .section + .section {
+    border-top: 1px solid var(--border);
   }
   .section-tight {
-    max-width: 1200px;
-    margin-inline: auto;
+    width: 100%;
     padding: 32px 24px;
   }
 
@@ -356,17 +375,17 @@
 
   .step {
     position: relative;
-    padding-top: 24px;
+    padding-top: 0;
   }
 
   .step-num {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 80px;
+    font-size: 72px;
     line-height: 1;
     color: var(--orange);
-    opacity: 0.5;
-    position: absolute;
-    top: 0; right: 0;
+    opacity: 0.4;
+    display: block;
+    margin-bottom: 12px;
   }
 
   .step-line {
@@ -390,12 +409,13 @@
   /* ── TRUST BANNER ── */
   .trust-banner {
     background: var(--grad);
-    border-top: none;
-    border-bottom: none;
     padding: 80px 24px;
     text-align: center;
     position: relative;
     overflow: hidden;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
   }
 
   .trust-banner::before {
@@ -619,10 +639,10 @@
 ">
   <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">
     <a href="#features"  class="nav-btn">Услуги</a>
-    <a href="#price" onclick="setTimeout(()=>{document.getElementById('price').classList.add('open')},300)" class="nav-btn">Прайс</a>
-    <a href="#fleet"     class="nav-btn">Автопарк</a>
-    <a href="#outoftown" class="nav-btn">Другой город</a>
-    <a href="#map"       class="nav-btn">О нас</a>
+    <a href="#how"       class="nav-btn">Начать работу</a>
+    <a href="#price" onclick="setTimeout(()=>{const b=document.getElementById('price');const body=b.querySelector('.price-body');const arr=b.querySelector('.price-arrow');if(body.style.maxHeight==='0px'||!body.style.maxHeight){body.style.maxHeight='3000px';arr.style.transform='rotate(180deg)';}},400)" class="nav-btn">Прайс</a>
+    <a href="#reviews"   class="nav-btn">Отзывы</a>
+    <a href="#contact"   class="nav-btn">Контакты</a>
   </div>
 </nav>
 
@@ -635,8 +655,9 @@
       Работаем ежедневно, без выходных* и праздников
     </div>
     <h1>WB · OZON<span class="hero-accent">Delivery 🚚</span></h1>
+    <p class="hero-geo">Доставка на маркетплейсы · Екатеринбург</p>
     <p class="hero-sub">
-      Профессиональная доставка товаров на маркетплейсы. Заберём от Вас (склад, офис, квартира), у поставщика или из ТК. При необходимости проклеим и сдадим — без лишних вопросов.
+      Заберём товар у вас и сдадим на WB, OZON или Яндекс Маркет. При необходимости подготовим к поставке. Работаем ежедневно — без выходных, без предоплаты, без лишних вопросов.
     </p>
     <div class="hero-cta">
       <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram</span></a>
@@ -655,7 +676,7 @@
     <div class="ticker-item">Яндекс Маркет <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">FBS / FBO <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">Без предоплаты <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">GPS-трекинг <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">GPS онлайн <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">10 автомобилей <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">300+ селлеров <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">Екатеринбург <span class="ticker-sep">✦</span></div>
@@ -664,37 +685,17 @@
     <div class="ticker-item">Яндекс Маркет <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">FBS / FBO <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">Без предоплаты <span class="ticker-sep">✦</span></div>
-    <div class="ticker-item">GPS-трекинг <span class="ticker-sep">✦</span></div>
+    <div class="ticker-item">GPS онлайн <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">10 автомобилей <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">300+ селлеров <span class="ticker-sep">✦</span></div>
     <div class="ticker-item">Екатеринбург <span class="ticker-sep">✦</span></div>
   </div>
 </div>
 
-<!-- STATS -->
-<div class="stats">
-  <div class="stat-box reveal">
-    <div class="stat-num">300+</div>
-    <div class="stat-label">Довольных селлеров</div>
-  </div>
-  <div class="stat-box reveal">
-    <div class="stat-num">10</div>
-    <div class="stat-label">Автомобилей в парке</div>
-  </div>
-  <div class="stat-box reveal">
-    <div class="stat-num">24/7</div>
-    <div class="stat-label">На связи всегда</div>
-  </div>
-  <div class="stat-box reveal">
-    <div class="stat-num">0₽</div>
-    <div class="stat-label">Предоплата — ноль</div>
-  </div>
-</div>
-
 <!-- FEATURES -->
-<section class="section" id="features">
+<section class="section" id="features" style="border-bottom:1px solid var(--border);">
   <p class="section-eyebrow reveal">Почему выбирают нас</p>
-  <h2 class="section-title reveal">Всё под контролем — от забора до сдачи</h2>
+  <h2 class="section-title reveal">Берём на себя логистику — вы продаёте</h2>
 
   <div class="features-grid">
     <div class="feat reveal">
@@ -739,29 +740,51 @@
     </div>
     <div class="feat reveal">
       <div class="feat-icon">🏢</div>
-      <div class="feat-title">Сдача на транспортные компании</div>
-      <div class="feat-desc">При необходимости сдадим ваши поставки на ТК — возьмём на себя все этапы логистики.</div>
+      <div class="feat-title">Работа с транспортными компаниями</div>
+      <div class="feat-desc">Принимаем грузы из ТК и отправляем поставки через ТК — берём на себя все этапы логистики.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="section" style="padding:0;">
+  <div class="stats">
+    <div class="stat-box reveal">
+      <div class="stat-num">300+</div>
+      <div class="stat-label">Довольных селлеров</div>
+    </div>
+    <div class="stat-box reveal">
+      <div class="stat-num">10</div>
+      <div class="stat-label">Автомобилей в парке</div>
+    </div>
+    <div class="stat-box reveal">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">На связи всегда</div>
+    </div>
+    <div class="stat-box reveal">
+      <div class="stat-num">0₽</div>
+      <div class="stat-label">Предоплата — ноль</div>
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section" style="padding-top:0;">
-  <p class="section-eyebrow reveal">Как это работает</p>
-  <h2 class="section-title reveal">Четыре шага — и ваш товар на складе</h2>
+<section class="section" id="how" style="border-top:1px solid var(--border);">
+  <p class="section-eyebrow reveal">С чего начать</p>
+  <h2 class="section-title reveal">Четыре шага до результата</h2>
 
   <div class="how-grid">
     <div class="step reveal">
       <div class="step-num">01</div>
       <div class="step-line"></div>
       <div class="step-title">Оставьте заявку</div>
-      <div class="step-desc">Напишите или позвоните — обсудим объём, адрес забора и сроки.</div>
+      <div class="step-desc">Напишите в Telegram или позвоните — обсудим объём, адрес и удобное время.</div>
     </div>
     <div class="step reveal">
       <div class="step-num">02</div>
       <div class="step-line"></div>
       <div class="step-title">Получите расчёт</div>
-      <div class="step-desc">Дадим прозрачную цену, которая не изменится. Без скрытых условий.</div>
+      <div class="step-desc">Называем финальную цену сразу — она не изменится. Никаких скрытых условий.</div>
     </div>
     <div class="step reveal">
       <div class="step-num">03</div>
@@ -772,230 +795,64 @@
     <div class="step reveal">
       <div class="step-num">04</div>
       <div class="step-line"></div>
-      <div class="step-title">Сдача и оплата</div>
-      <div class="step-desc">Сдаём на WB, OZON или Яндекс Маркет, вы наблюдаете онлайн. Платите только по факту.</div>
+      <div class="step-title">Товар на складе — платите по факту</div>
+      <div class="step-desc">Сдаём на склад маркетплейса и сразу отчитываемся в группу с фото. Оплата — только после выполнения.</div>
     </div>
   </div>
 </section>
 
-<!-- FLEET GALLERY -->
-<section class="section" id="fleet" style="padding-top:0;">
-  <p class="section-eyebrow reveal">Наш автопарк</p>
-  <h2 class="section-title reveal">10 машин — готовы прямо сейчас</h2>
-  <p style="color:var(--muted);font-size:16px;margin-top:16px;margin-bottom:48px;max-width:600px;" class="reveal">
-    Весь автопарк с фирменным брендингом — от малотоннажных Лад до КАМАЗов. Перекрываем любые объёмы ежедневно.
-  </p>
+<!-- КОММУНИКАЦИЯ -->
+<section class="section" style="border-top:1px solid var(--border);">
+  <div style="max-width:1100px;margin-inline:auto;">
+    <p class="section-eyebrow reveal">Как мы работаем</p>
+    <h2 class="section-title reveal">Вся работа — в одной <span style="color:var(--orange);text-shadow:0 0 20px rgba(255,107,43,0.5);">Telegram</span>-группе Партнёра</h2>
+    <p class="section-sub reveal" style="margin-bottom:40px;">После подписания договора создаём группу в Telegram. В группе присутствуют все ответственные за доставку сотрудники нашей компании, а также вы можете добавить своих. Вся рабочая коммуникация — строго в группе.</p>
 
-  <div style="
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 4px;
-  ">
-    <div class="fleet-card reveal"><img src="images/001 - 002.jpeg" alt="001 · 002" loading="lazy"><div class="fleet-num">001 · 002 · ГАЗель</div></div>
-    <div class="fleet-card reveal"><img src="images/003.jpeg" alt="003" loading="lazy"><div class="fleet-num">003 · Лада</div></div>
-    <div class="fleet-card reveal"><img src="images/004.jpeg" alt="004" loading="lazy"><div class="fleet-num">004 · Лада</div></div>
-    <div class="fleet-card reveal"><img src="images/005.jpeg" alt="005" loading="lazy"><div class="fleet-num">005 · Лада</div></div>
-    <div class="fleet-card reveal"><img src="images/006.jpeg" alt="006" loading="lazy"><div class="fleet-num">006 · Лада</div></div>
-    <div class="fleet-card reveal"><img src="images/007.jpeg" alt="007" loading="lazy"><div class="fleet-num">007 · Лада</div></div>
-    <div class="fleet-card reveal"><img src="images/008.jpeg" alt="008" loading="lazy"><div class="fleet-num">008 · КАМАЗ</div></div>
-    <div class="fleet-card reveal"><img src="images/009.jpeg" alt="009" loading="lazy"><div class="fleet-num">009 · Лада</div></div>
-    <div class="fleet-card reveal"><img src="images/010.jpeg" alt="010" loading="lazy"><div class="fleet-num">010 · КАМАЗ</div></div>
-  </div>
-</section>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;" class="reveal">
 
-<!-- OUT OF TOWN BLOCK -->
-<section class="section" id="outoftown" style="padding-top:0;">
-  <div style="background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: clamp(24px, 5vw, 60px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: center;" class="reveal">
-    <div>
-      <p class="section-eyebrow">Другой город</p>
-      <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px); margin-top: 12px;">Вы из другого города? Не беда!</h2>
-      <p style="font-size: 16px; color: var(--muted); line-height: 1.8; margin-top: 24px;">
-        Отправьте ваш товар любой транспортной компанией до Екатеринбурга — мы заберём груз из ТК, при необходимости подготовим к приёмке и сдадим на WB, OZON или Яндекс Маркет.
-      </p>
-      <p style="font-size: 16px; color: var(--muted); line-height: 1.8; margin-top: 16px;">
-        Работаем полностью удалённо — все вопросы решаем в Telegram, отчитываемся по каждому этапу.
-      </p>
-      <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary" style="display: inline-flex; margin-top: 32px;"><span>Обсудить в Telegram</span></a>
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 20px;">
-      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
-        <div style="font-size: 28px; line-height: 1;">🚛</div>
-        <div>
-          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Отправьте товар ТК до Екатеринбурга</div>
-          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">СДЭК, Деловые Линии, ПЭК, Байкал Сервис и любые другие — заберём из любой ТК города.</div>
-        </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">🌅</div>
+        <div style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Каждое утро</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Бот отправляет вопрос об отгрузке. Клиент или его сотрудник отвечает — будет ли поставка сегодня.</p>
       </div>
-      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
-        <div style="font-size: 28px; line-height: 1;">📦</div>
-        <div>
-          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Подготовим и сдадим за вас</div>
-          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Проклеим, промаркируем и сдадим на маркетплейс — всё под ключ без вашего участия.</div>
-        </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">🚚</div>
+        <div style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Забор товара</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Логист ставит машину в маршрут. В назначенное время водитель приезжает, забирает товар и сразу отписывается в группу с фото.</p>
       </div>
-      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
-        <div style="font-size: 28px; line-height: 1;">💬</div>
-        <div>
-          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Отчёт на каждом этапе</div>
-          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Фото забора, фото сдачи, уведомление о приёмке — держим вас в курсе из любой точки страны.</div>
-        </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">✅</div>
+        <div style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">После сдачи</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Водитель сдаёт товар на склад маркетплейса и тут же сообщает об этом в группу. Вы всегда знаете статус поставки.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-
-<div class="trust-banner">
-  <div class="trust-big reveal">
-    <span>300+</span> СЕЛЛЕРОВ<br>КОТОРЫМ МЫ УЖЕ<br><span>ПОМОГАЕМ</span>
-  </div>
-  <p class="trust-sub reveal">Поможем и Вам!</p>
-</div>
-
-<!-- FOOTER CTA -->
-<div class="footer-cta" id="contact">
-  <div class="reveal" style="width:100%;">
-    <h2 class="footer-cta-title">Готовы начать?<br><span>Пишите прямо сейчас</span></h2>
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:16px;">
-      <p class="footer-cta-sub" style="margin-top:0;">Пишите в Telegram — ответим быстро, рассчитаем стоимость и согласуем удобное время забора.</p>
-      <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
-    </div>
-  </div>
-</div>
-
-<!-- PARTNERS STANDALONE -->
-<section class="section-tight" style="padding-top:0;padding-bottom:0;">
-  <div style="max-width:900px;margin-inline:auto;">
-    <!-- ПАРТНЁРЫ -->
-    <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="partners-block">
-      <button onclick="this.closest('#partners-block').classList.toggle('open')" style="
-        width:100%;display:flex;align-items:center;justify-content:space-between;
-        padding:20px 28px;background:var(--card);border:none;cursor:pointer;
-        color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
-      ">
-        <span style="display:flex;align-items:center;gap:10px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8899CC" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
-          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Наши партнёры</span>
-          <span style="color:var(--muted);font-size:13px;font-weight:300;">300+ компаний</span>
-        </span>
-        <span class="partners-arrow" style="color:var(--orange);font-size:18px;transition:transform 0.3s;">↓</span>
-      </button>
-      <div class="partners-body" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease;background:var(--card);">
-        <div style="padding:20px 0 24px;border-top:1px solid var(--border);">
-          <p style="font-size:13px;color:var(--muted);margin-bottom:16px;padding:0 28px;">С нами сотрудничают:</p>
-
-          <!-- бегущая строка партнёров -->
-          <div style="overflow:hidden;position:relative;">
-            <!-- fade edges -->
-            <div style="position:absolute;left:0;top:0;bottom:0;width:60px;background:linear-gradient(to right,var(--card),transparent);z-index:2;pointer-events:none;"></div>
-            <div style="position:absolute;right:0;top:0;bottom:0;width:60px;background:linear-gradient(to left,var(--card),transparent);z-index:2;pointer-events:none;"></div>
-
-            <div style="display:flex;gap:14px;width:max-content;animation:scroll-partners 35s linear infinite;padding:6px 0;">
-
-              <!-- карточка 1 — Леонардо -->
-              <div class="p-card">
-                <svg width="160" height="50" viewBox="0 0 210 60"><circle cx="22" cy="30" r="18" fill="#e05c00"/><text x="16" y="36" font-family="serif" font-size="20" fill="white" font-weight="bold">L</text><text x="46" y="37" font-family="Arial" font-size="19" fill="#e05c00" font-weight="700" letter-spacing="0.5">ЛЕОНАРДО</text></svg>
-                <span class="p-label">Магазины для творчества</span>
-              </div>
-
-              <!-- карточка 2 — Mirex -->
-              <div class="p-card">
-                <svg width="150" height="50" viewBox="0 0 200 60"><text x="10" y="46" font-family="Arial" font-size="40" fill="#0055aa" font-weight="900" letter-spacing="-1">mirex</text></svg>
-                <span class="p-label">Флеш-накопители и CD</span>
-              </div>
-
-              <!-- карточка 3 — СпецРемСтрой -->
-              <div class="p-card">
-                <svg width="190" height="50" viewBox="0 0 260 60"><rect x="2" y="12" width="30" height="30" rx="4" fill="#cc2222"/><text x="7" y="32" font-family="Arial" font-size="14" fill="white" font-weight="bold">СРС</text><text x="38" y="34" font-family="Arial" font-size="18" fill="#cc2222" font-weight="700">СпецРемСтрой</text></svg>
-                <span class="p-label">Производитель оконных конструкций</span>
-              </div>
-
-              <!-- карточка 4 — AvtoMag196 -->
-              <div class="p-card">
-                <svg width="180" height="50" viewBox="0 0 240 60"><text x="4" y="38" font-family="Arial" font-size="22" fill="#ff5500" font-weight="900" letter-spacing="1">AVTOMAG196.ru</text></svg>
-                <span class="p-label">Интернет-магазин автозапчастей</span>
-              </div>
-
-              <!-- карточка 5 — Респотек -->
-              <div class="p-card">
-                <svg width="150" height="50" viewBox="0 0 210 60"><polygon points="14,10 26,30 14,50 2,30" fill="#6633aa"/><polygon points="26,10 38,30 26,50 14,30" fill="#9955cc"/><text x="44" y="38" font-family="Arial" font-size="16" fill="#9955cc" font-weight="700">РЕСПОТЕК</text></svg>
-                <span class="p-label">Профессиональный инструмент</span>
-              </div>
-
-              <!-- карточка 6 — Стройплатформа -->
-              <div class="p-card">
-                <svg width="200" height="50" viewBox="0 0 270 60"><polygon points="18,48 8,28 18,8 28,28" fill="#e07000"/><polygon points="28,48 18,28 28,8 38,28" fill="#f09030"/><text x="44" y="36" font-family="Arial" font-size="18" fill="#e07000" font-weight="700">СТРОЙПЛАТФОРМА</text></svg>
-                <span class="p-label">Строительные материалы</span>
-              </div>
-
-              <!-- карточка 7 — МегаМастер -->
-              <div class="p-card">
-                <svg width="180" height="50" viewBox="0 0 240 60"><rect x="2" y="12" width="32" height="32" rx="3" fill="#cc0000"/><text x="8" y="34" font-family="Arial" font-size="20" fill="white" font-weight="900">М</text><text x="42" y="35" font-family="Arial" font-size="19" fill="#cc0000" font-weight="700">МЕГАМАСТЕР</text></svg>
-                <span class="p-label">Электроинструменты</span>
-              </div>
-
-              <!-- карточка 8 — prostohome -->
-              <div class="p-card">
-                <svg width="150" height="50" viewBox="0 0 210 60"><text x="4" y="42" font-family="Georgia,serif" font-size="22" fill="#2266aa" font-weight="400" letter-spacing="-0.5">prostohome.</text></svg>
-                <span class="p-label">Производитель мебели</span>
-              </div>
-
-              <!-- плашка 300+ -->
-              <div class="p-card" style="background:rgba(255,140,53,0.08);border-color:rgba(255,140,53,0.3);min-width:160px;justify-content:center;">
-                <span style="font-size:28px;font-weight:900;color:var(--orange);font-family:'Bebas Neue',sans-serif;line-height:1;">300+</span>
-                <span class="p-label" style="text-align:center;">партнёров<br/>в Екатеринбурге</span>
-              </div>
-
-              <!-- повтор для бесконечной прокрутки -->
-              <div class="p-card"><svg width="160" height="50" viewBox="0 0 210 60"><circle cx="22" cy="30" r="18" fill="#e05c00"/><text x="16" y="36" font-family="serif" font-size="20" fill="white" font-weight="bold">L</text><text x="46" y="37" font-family="Arial" font-size="19" fill="#e05c00" font-weight="700" letter-spacing="0.5">ЛЕОНАРДО</text></svg><span class="p-label">Магазины для творчества</span></div>
-              <div class="p-card"><svg width="150" height="50" viewBox="0 0 200 60"><text x="10" y="46" font-family="Arial" font-size="40" fill="#0055aa" font-weight="900" letter-spacing="-1">mirex</text></svg><span class="p-label">Флеш-накопители и CD</span></div>
-              <div class="p-card"><svg width="190" height="50" viewBox="0 0 260 60"><rect x="2" y="12" width="30" height="30" rx="4" fill="#cc2222"/><text x="7" y="32" font-family="Arial" font-size="14" fill="white" font-weight="bold">СРС</text><text x="38" y="34" font-family="Arial" font-size="18" fill="#cc2222" font-weight="700">СпецРемСтрой</text></svg><span class="p-label">Производитель оконных конструкций</span></div>
-              <div class="p-card"><svg width="180" height="50" viewBox="0 0 240 60"><text x="4" y="38" font-family="Arial" font-size="22" fill="#ff5500" font-weight="900" letter-spacing="1">AVTOMAG196.ru</text></svg><span class="p-label">Интернет-магазин автозапчастей</span></div>
-              <div class="p-card"><svg width="150" height="50" viewBox="0 0 210 60"><polygon points="14,10 26,30 14,50 2,30" fill="#6633aa"/><polygon points="26,10 38,30 26,50 14,30" fill="#9955cc"/><text x="44" y="38" font-family="Arial" font-size="16" fill="#9955cc" font-weight="700">РЕСПОТЕК</text></svg><span class="p-label">Профессиональный инструмент</span></div>
-              <div class="p-card"><svg width="200" height="50" viewBox="0 0 270 60"><polygon points="18,48 8,28 18,8 28,28" fill="#e07000"/><polygon points="28,48 18,28 28,8 38,28" fill="#f09030"/><text x="44" y="36" font-family="Arial" font-size="18" fill="#e07000" font-weight="700">СТРОЙПЛАТФОРМА</text></svg><span class="p-label">Строительные материалы</span></div>
-              <div class="p-card"><svg width="180" height="50" viewBox="0 0 240 60"><rect x="2" y="12" width="32" height="32" rx="3" fill="#cc0000"/><text x="8" y="34" font-family="Arial" font-size="20" fill="white" font-weight="900">М</text><text x="42" y="35" font-family="Arial" font-size="19" fill="#cc0000" font-weight="700">МЕГАМАСТЕР</text></svg><span class="p-label">Электроинструменты</span></div>
-              <div class="p-card"><svg width="150" height="50" viewBox="0 0 210 60"><text x="4" y="42" font-family="Georgia,serif" font-size="22" fill="#2266aa" font-weight="400" letter-spacing="-0.5">prostohome.</text></svg><span class="p-label">Производитель мебели</span></div>
-              <div class="p-card" style="background:rgba(255,140,53,0.08);border-color:rgba(255,140,53,0.3);min-width:160px;justify-content:center;"><span style="font-size:28px;font-weight:900;color:var(--orange);font-family:'Bebas Neue',sans-serif;line-height:1;">300+</span><span class="p-label" style="text-align:center;">партнёров<br/>в Екатеринбурге</span></div>
-
-            </div>
-          </div>
-        </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">📊</div>
+        <div style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Еженедельный расчёт</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Расчётный период — пн–вс. Каждый понедельник бухгалтер считает поездки за прошлую неделю и выставляет счёт прямо в группу. Отправляем УПД — работаем в ЭДО.</p>
       </div>
-    </div>
-  </div>
-</section>
 
-
-<!-- VIDEO -->
-<section class="section-tight" style="padding-top:0;padding-bottom:0;">
-  <div style="max-width:900px;margin-inline:auto;">
-    <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="video-block">
-      <button onclick="this.closest('#video-block').classList.toggle('open');" style="
-        width:100%;display:flex;align-items:center;justify-content:space-between;
-        padding:20px 28px;background:var(--card);border:none;cursor:pointer;
-        color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
-      ">
-        <span style="display:flex;align-items:center;gap:10px;">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8899CC" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Видео о нас</span>
-        </span>
-        <span class="video-arrow" style="color:var(--orange);font-size:18px;transition:transform 0.3s;">↓</span>
-      </button>
-      <div class="video-body" style="max-height:0;overflow:hidden;transition:max-height 0.5s ease;">
-        <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;">
-          <iframe src="https://vkvideo.ru/video_ext.php?oid=-236437962&id=456239017&hash=809711198a12700e&hd=4"
-            style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
-            allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
-            allowfullscreen>
-          </iframe>
-        </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">💬</div>
+        <div style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Если не планируется</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Логист отвечает в группе, желает хорошего дня и машину в маршрут не ставит. Никаких лишних звонков и согласований.</p>
       </div>
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:24px;">
+        <div style="font-size:28px;margin-bottom:12px;">🔒</div>
+        <div style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px;">Прозрачность</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;">Вся история переписки, фото, счета и документы хранятся в группе. Вы можете добавить своих сотрудников в любой момент.</p>
+      </div>
+
     </div>
   </div>
 </section>
 
 <!-- MAP + CONTACTS + PRICE + REQUISITES — единый блок -->
 <section class="section-tight" id="map" style="padding-bottom:60px;">
-  <div style="max-width:900px;margin-inline:auto;display:flex;flex-direction:column;gap:8px;">
+  <div style="max-width:1100px;margin-inline:auto;display:flex;flex-direction:column;gap:8px;">
 
     <!-- КАРТА -->
     <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;">
@@ -1019,7 +876,7 @@
 
     <!-- КАРТА ПРОЕЗДА -->
     <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="routemap-block">
-      <button onclick="this.closest('#routemap-block').classList.toggle('open')" style="
+      <button onclick="const b=this.closest('#routemap-block');const body=b.querySelector('.routemap-body');const arr=b.querySelector('.routemap-arrow');const isOpen=body.style.maxHeight&&body.style.maxHeight!='0px';body.style.maxHeight=isOpen?'0px':'600px';arr.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';" style="
         width:100%;display:flex;align-items:center;justify-content:space-between;
         padding:20px 28px;background:var(--card);border:none;cursor:pointer;
         color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
@@ -1042,7 +899,7 @@
 
     <!-- КОНТАКТЫ -->
     <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="contacts-block">
-      <button onclick="this.closest('[id=contacts-block]').classList.toggle('open')" style="
+      <button onclick="const b=this.closest('[id=contacts-block]');const body=b.querySelector('.contacts-body');const arr=b.querySelector('.contacts-arrow');const isOpen=body.style.maxHeight&&body.style.maxHeight!='0px';body.style.maxHeight=isOpen?'0px':'600px';arr.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';" style="
         width:100%;display:flex;align-items:center;justify-content:space-between;
         padding:20px 28px;background:var(--card);border:none;cursor:pointer;
         color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
@@ -1077,14 +934,14 @@
 
     <!-- ПРАЙС -->
     <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="price">
-      <button onclick="this.closest('#price').classList.toggle('open')" style="
+      <button onclick="const b=this.closest('#price');const body=b.querySelector('.price-body');const arr=b.querySelector('.price-arrow');const isOpen=body.style.maxHeight&&body.style.maxHeight!='0px';body.style.maxHeight=isOpen?'0px':'3000px';arr.style.transform=isOpen?'rotate(0deg)':'rotate(180deg)';" style="
         width:100%;display:flex;align-items:center;justify-content:space-between;
         padding:20px 28px;background:var(--card);border:none;cursor:pointer;
         color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
       ">
         <span style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Прайс-лист</span>
-          <span style="color:var(--muted);font-size:13px;font-weight:300;">действует с 01.01.2026</span>
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Прайс-лист + калькулятор расчёта стоимости</span>
+          <span style="color:var(--muted);font-size:13px;font-weight:300;">действует с 01.01.2026 года</span>
         </span>
         <span class="price-arrow" style="color:var(--orange);font-size:18px;transition:transform 0.3s;">↓</span>
       </button>
@@ -1316,114 +1173,429 @@
       </div>
     </div>
 
-    <!-- РЕКВИЗИТЫ -->
-    <div class="reveal" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;" id="requisites">
-      <button onclick="this.closest('#requisites').classList.toggle('open')" style="
-        width:100%;display:flex;align-items:center;justify-content:space-between;
-        padding:20px 28px;background:var(--card);border:none;cursor:pointer;
-        color:var(--text);font-family:'Geologica',sans-serif;font-size:15px;font-weight:500;text-align:left;
-      ">
-        <span style="display:flex;align-items:center;gap:12px;">
-          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Реквизиты</span>
-          <span style="color:var(--muted);font-size:13px;font-weight:300;">ИП Дайбов Андрей Андреевич</span>
-        </span>
-        <span class="req-arrow" style="color:var(--orange);font-size:18px;transition:transform 0.3s;">↓</span>
-      </button>
-      <div class="req-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;background:var(--card);">
-        <div style="padding:8px 28px 24px;border-top:1px solid var(--border);">
-          <table style="width:100%;border-collapse:collapse;margin-top:8px;">
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);width:40%;">Полное наименование</td><td style="padding:10px 0;font-size:14px;">ИП Дайбов Андрей Андреевич</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">ИНН</td><td style="padding:10px 0;font-size:14px;">667005514504</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">ОГРНИП</td><td style="padding:10px 0;font-size:14px;">324665800025776</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">Адрес</td><td style="padding:10px 0;font-size:14px;">620072, Свердловская область, г. Екатеринбург, ул. 40 лет Комсомола 1/7</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">Банк</td><td style="padding:10px 0;font-size:14px;">АО «ТБанк»</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">Расчётный счёт</td><td style="padding:10px 0;font-size:14px;">40802810300005927881</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">Корр. счёт</td><td style="padding:10px 0;font-size:14px;">30101810145250000974</td></tr>
-            <tr style="border-bottom:1px solid var(--border)"><td style="padding:10px 0;font-size:13px;color:var(--muted);">БИК</td><td style="padding:10px 0;font-size:14px;">7710140679</td></tr>
-          </table>
+    
+
+
+<!-- TRUST BANNER FULL WIDTH -->
+<div style="border-top:1px solid var(--border);padding-top:80px;"></div>
+<div style="position:relative;width:100vw;left:50%;right:50%;margin-left:-50vw;margin-right:-50vw;box-sizing:border-box;background:var(--grad);padding:80px 24px;text-align:center;overflow:hidden;">
+  <div class="trust-big reveal"><span>300+</span> СЕЛЛЕРОВ<br>КОТОРЫМ МЫ УЖЕ<br><span>ПОМОГАЕМ</span></div>
+  <p class="trust-sub reveal">Поможем и Вам!</p>
+</div>
+
+<!-- ОТЗЫВЫ -->
+<section class="section" id="reviews" style="border-top:1px solid var(--border);">
+  <div style="max-width:1100px;margin-inline:auto;">
+    <p class="section-eyebrow reveal">Отзывы клиентов</p>
+    <h2 class="section-title reveal">Что говорят о нас</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:24px;" class="reveal">
+
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#4CAF82;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">В</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Виктория</div>
+            <div style="font-size:11px;color:var(--muted);">24 июля 2024</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
         </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Хотела бы выразить благодарность логистической компании за их высокий уровень обслуживания. Очень впечатлена: команда всегда на связи и все задачи выполнены точно в срок. Честно говоря, не ожидала, чт...</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#1A3FB5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">В</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Вероника</div>
+            <div style="font-size:11px;color:var(--muted);">7 августа 2024</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Экспресс Деливери — это супер герои! Буквально за 10 минут добавили мой склад в Берёзовске в маршрут. Спасибо Вам! Теперь вы знаете куда возить мебель на Озон 😊</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#4CAF82;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Е</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Екатерина</div>
+            <div style="font-size:11px;color:var(--muted);">27 марта 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Супер ребята. Работой довольна на все 100%. Обращалась не один раз. Очень оперативные — отвечают сразу (и днём, и ночью), приезжают день в день, сдают всё вовремя, а то и раньше. Всегда чёткий отчёт п...</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#1A3FB5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Д</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Дарья Сенцова</div>
+            <div style="font-size:11px;color:var(--muted);">6 февраля 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Спасибо всей команде! Ответили на все вопросы, озвучили конкретную сумму — самая демократичная цена по сравнению с конкурентами. В назначенный день машина приехала без опозданий. После сдачи товара ср...</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#6B2FBF;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">И</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Игорь</div>
+            <div style="font-size:11px;color:var(--muted);">23 января 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Уже два месяца работаю с данной компанией, ежедневно отгружаю им коробки с товаром, зарекомендовали себя с лучшей стороны. С самого начала был составлен договор, всё честно, открыто, всегда находятся ...</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#FF6B00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Т</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Татьяна</div>
+            <div style="font-size:11px;color:var(--muted);">4 декабря 2024</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Всё очень быстро и качественно. Деловые линии не смогли доставить товар на WB. Связался с парнями, съездили забрали груз у ДЛ, перемаркировали и сдали на WB с невероятной скоростью — меньше чем за пол...</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#1A3FB5;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">К</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Калянова Дарья</div>
+            <div style="font-size:11px;color:var(--muted);">16 ноября 2024</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Забрали товар в заранее оговорённый день, в этот же день отправили на склад Озон. На каждом этапе оповещают, присылают фото. Рекомендую ребят однозначно! И буду сама ещё обращаться!</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#4CAF82;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Н</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Наталья Ми</div>
+            <div style="font-size:11px;color:var(--muted);">5 февраля 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Работаем уже долго, очень нравится! Внимательные, ответственные, быстрые! Отвечают 24/7. Рекомендуем!</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#E91E63;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Д</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Диана Халидова</div>
+            <div style="font-size:11px;color:var(--muted);">14 ноября 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Все было сделано на высшем уровне</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#FF6B00;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Х</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">ХОББИЛЭНД</div>
+            <div style="font-size:11px;color:var(--muted);">1 мая 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Очень выручают, доставляют быстро. Только положительные эмоции от сотрудничества.</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#4CAF82;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">P</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Pult-e</div>
+            <div style="font-size:11px;color:var(--muted);">29 декабря 2024</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Всё замечательно и в срок! Работаем с организацией ежедневно. Спасибо! С наступающим всю команду)</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#FF9800;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Ю</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Юлия</div>
+            <div style="font-size:11px;color:var(--muted);">3 февраля 2025</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Всё отлично, рекомендую. При необходимости буду обращаться ещё.</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#4CAF82;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;">Е</div>
+          <div>
+            <div style="font-weight:600;font-size:14px;">Екатерина</div>
+            <div style="font-size:11px;color:var(--muted);">13 декабря 2024</div>
+          </div>
+          <div style="margin-left:auto;color:#FFB800;font-size:14px;">★★★★★</div>
+        </div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.7;flex:1;">Всё очень понравилось. Ребята быстро выходят на связь, всегда её поддерживают. Поставку сделали своевременно и без каких-либо проблем. Очень дружелюбные и приятные. Буду рекомендовать и работать с ним...</p>
+        <div style="font-size:11px;color:var(--muted);opacity:0.6;">Авито · Доставка на маркетплейсы</div>
       </div>
     </div>
-
+    <div style="text-align:center;" class="reveal">
+      <a href="https://www.avito.ru/profile/rating?page_from=profile_menu" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border:1px solid var(--border);border-radius:6px;color:var(--muted);text-decoration:none;font-size:13px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--orange)';this.style.color='var(--text)'" onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+        Все отзывы на Авито →
+      </a>
+    </div>
   </div>
 </section>
 
-<style>
-  #video-block.open .video-body { max-height:600px!important; }
-  #video-block.open .video-arrow { transform:rotate(180deg); }
-  #partners-block.open .partners-body { max-height: 1200px !important; }
-  #partners-block.open .partners-arrow { transform: rotate(180deg); }
-
-  .calc-btn {
-    padding: 8px 14px;
-    border-radius: 4px;
-    border: 1px solid var(--border);
-    background: var(--darker);
-    color: var(--muted);
-    font-size: 13px;
-    font-family: 'Geologica', sans-serif;
-    cursor: pointer;
-    transition: all 0.15s;
-    white-space: nowrap;
-  }
-  .calc-btn:hover { border-color: var(--orange); color: var(--text); }
-  .calc-btn-active { border-color: var(--orange) !important; color: var(--orange) !important; background: rgba(255,140,53,0.08) !important; font-weight: 600; }
-
-    flex-shrink: 0;
-    background: var(--darker);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 18px 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    min-width: 180px;
-    transition: border-color 0.2s;
-  }
-  .p-card:hover { border-color: rgba(100,140,255,0.35); }
-  .p-label {
-    font-size: 12px;
-    color: var(--muted);
-    text-align: center;
-    white-space: nowrap;
-  }
-  @keyframes scroll-partners {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-  }
-  #routemap-block.open .routemap-body { max-height: 1000px !important; }
-  #routemap-block.open .routemap-arrow { transform: rotate(180deg); }
-  #contacts-block.open .contacts-body { max-height:300px!important; }
-  #contacts-block.open .contacts-arrow { transform:rotate(180deg); }
-  #price.open .price-body { max-height:4000px!important; }
-  #price.open .price-arrow { transform:rotate(180deg); }
-  #requisites.open .req-body { max-height:600px!important; }
-  #requisites.open .req-arrow { transform:rotate(180deg); }
-</style>
 
 
+<!-- PARTNERS STANDALONE -->
+<section class="section" style="border-top:1px solid var(--border);">
+  <div style="max-width:1100px;margin-inline:auto;">
+    <p class="section-eyebrow reveal">Наши партнёры</p>
+    <h2 class="section-title reveal" style="margin-bottom:28px;">С нами работают 300+ компаний, например</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;" class="reveal">
+
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#e05c00;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">Л</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">Леонардо</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Магазины для творчества</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#0055cc;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">M</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">Mirex</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Флеш-накопители и CD-диски</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#2a7a2a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">С</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">СпецРемСтрой</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Производитель оконных конструкций</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#9955cc;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">A</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">AvtoMag196</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Интернет-магазин автозапчастей</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#cc3333;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">Р</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">Респотек</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Профессиональный инструмент</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#e07000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">С</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">Стройплатформа</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Строительные материалы</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#1155aa;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">М</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">МегаМастер</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Электроинструменты и оснастка</div>
+        </div>
+        <div style="background:var(--card2,#141830);border:1px solid var(--border);border-radius:8px;padding:20px 18px;display:flex;flex-direction:column;gap:10px;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;border-radius:8px;background:#3a8a5a;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:17px;color:#fff;flex-shrink:0;">P</div>
+            <div style="font-weight:700;font-size:14px;color:var(--text);">prostohome</div>
+          </div>
+          <div style="font-size:12px;color:var(--muted);line-height:1.5;">Производитель мебели</div>
+        </div>
+    </div>
+    <div style="text-align:center;margin-top:20px;padding-bottom:10px;" class="reveal">
+      <span style="font-size:13px;color:var(--muted);">И ещё 300+ компаний по всему Екатеринбургу</span>
+    </div>
+  </div>
+</section>
+
+<!-- VIDEO OPEN -->
+<section class="section" style="border-top:1px solid var(--border);background:var(--dark);">
+  <div style="max-width:1100px;margin-inline:auto;">
+    <p class="section-eyebrow reveal">О нас</p>
+    <h2 class="section-title reveal" style="margin-bottom:28px;">Смотрите как мы работаем</h2>
+    <div class="reveal" style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:10px;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+      <iframe src="https://vkvideo.ru/video_ext.php?oid=-236437962&id=456239017&hash=809711198a12700e&hd=4"
+          style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture; screen-wake-lock;"
+          allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- FLEET GALLERY -->
+<section class="section" id="fleet" style="border-top:1px solid var(--border);">
+  <p class="section-eyebrow reveal">Наш автопарк</p>
+  <h2 class="section-title reveal">10 машин — готовы прямо сейчас</h2>
+  <p style="color:var(--muted);font-size:16px;margin-top:16px;margin-bottom:48px;max-width:600px;" class="reveal">
+    Весь автопарк с фирменным брендингом — от малотоннажных Лад до КАМАЗов. Перекрываем любые объёмы ежедневно.
+  </p>
+
+  <div style="
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 4px;
+  ">
+    <div class="fleet-card reveal"><img src="images/001 - 002.jpeg" alt="001 · 002" loading="lazy"><div class="fleet-num">001 · 002 · ГАЗель</div></div>
+    <div class="fleet-card reveal"><img src="images/003.jpeg" alt="003" loading="lazy"><div class="fleet-num">003 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/004.jpeg" alt="004" loading="lazy"><div class="fleet-num">004 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/005.jpeg" alt="005" loading="lazy"><div class="fleet-num">005 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/006.jpeg" alt="006" loading="lazy"><div class="fleet-num">006 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/007.jpeg" alt="007" loading="lazy"><div class="fleet-num">007 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/008.jpeg" alt="008" loading="lazy"><div class="fleet-num">008 · КАМАЗ</div></div>
+    <div class="fleet-card reveal"><img src="images/009.jpeg" alt="009" loading="lazy"><div class="fleet-num">009 · Лада</div></div>
+    <div class="fleet-card reveal"><img src="images/010.jpeg" alt="010" loading="lazy"><div class="fleet-num">010 · КАМАЗ</div></div>
+  </div>
+</section>
+
+<!-- OUT OF TOWN BLOCK -->
+<section class="section" id="outoftown" style="border-top:1px solid var(--border);">
+  <div style="background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: clamp(24px, 5vw, 60px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: center;" class="reveal">
+    <div>
+      <p class="section-eyebrow">Другой город</p>
+      <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px); margin-top: 12px;">Вы из другого города? Не беда!</h2>
+      <p style="font-size: 16px; color: var(--muted); line-height: 1.8; margin-top: 24px;">
+        Отправьте ваш товар любой транспортной компанией до Екатеринбурга — мы заберём груз из ТК, при необходимости подготовим к приёмке и сдадим на WB, OZON или Яндекс Маркет.
+      </p>
+      <p style="font-size: 16px; color: var(--muted); line-height: 1.8; margin-top: 16px;">
+        Работаем полностью удалённо — все вопросы решаем в Telegram, отчитываемся по каждому этапу.
+      </p>
+      <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary" style="display: inline-flex; margin-top: 32px;"><span>Обсудить в Telegram</span></a>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">🚛</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Отправьте товар ТК до Екатеринбурга</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">СДЭК, Деловые Линии, ПЭК, Байкал Сервис и любые другие — заберём из любой ТК города.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">📦</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Подготовим и сдадим за вас</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Проклеим, промаркируем и сдадим на маркетплейс — всё под ключ без вашего участия.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">💬</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Отчёт на каждом этапе</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Фото забора, фото сдачи, уведомление о приёмке — держим вас в курсе из любой точки страны.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 
+<div <!-- FOOTER CTA -->
+<div class="footer-cta" id="contact">
+  <div class="reveal" style="width:100%;">
+    <h2 class="footer-cta-title">Готовы начать?<br><span>Пишите прямо сейчас</span></h2>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:16px;">
+      <p class="footer-cta-sub" style="margin-top:0;">Напишите нам — ответим в течение нескольких минут, рассчитаем стоимость и согласуем удобное время забора. Без предоплаты и долгих переговоров.</p>
+      <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
+    </div>
+  </div>
+</div>
 
-
-
-  <div style="text-align:center;">© 2026 WB-OZON Delivery · Екатеринбург · Wildberries · OZON · Яндекс Маркет · FBS / FBO · Работаем с 2024 года · <a href="tel:+79326166161" style="color:#555;text-decoration:none;">+7 932 616-61-61</a></div>
-  <div style="text-align:center;font-size:12px;color:#666;margin-top:6px;">* Единственный выходной — 1 января</div>
-</footer>
 
 <script>
-  // Intersection observer for reveal animations
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
+    entries.forEach(e => {
       if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
+        e.target.classList.add('visible');
         observer.unobserve(e.target);
       }
     });
   }, { threshold: 0.1 });
-
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
+
+<!-- РЕКВИЗИТЫ -->
+<section class="section" style="border-top:1px solid var(--border);padding-bottom:60px;">
+  <div style="max-width:1100px;margin-inline:auto;">
+    <div style="border:1px solid var(--border);border-radius:8px;overflow:hidden;" id="req-block">
+      <button onclick="const b=document.getElementById('req-body');const a=document.getElementById('req-arrow');const open=b.style.maxHeight&&b.style.maxHeight!='0px';b.style.maxHeight=open?'0px':'600px';a.style.transform=open?'rotate(0deg)':'rotate(180deg)';" style="width:100%;display:flex;align-items:center;justify-content:space-between;padding:18px 24px;background:var(--card);border:none;cursor:pointer;color:var(--text);font-family:'Geologica',sans-serif;text-align:left;">
+        <span style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);">Реквизиты</span>
+          <span style="font-size:13px;color:var(--muted);font-weight:300;">ИП Дайбов Андрей Андреевич</span>
+        </span>
+        <span id="req-arrow" style="color:var(--orange);font-size:18px;transition:transform 0.3s;">↓</span>
+      </button>
+      <div id="req-body" style="max-height:0;overflow:hidden;transition:max-height 0.4s ease;background:var(--card);">
+        <table style="width:100%;border-collapse:collapse;font-size:14px;border-top:1px solid var(--border);">
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);width:45%;">Полное наименование</td>
+            <td style="padding:13px 24px;font-weight:500;">ИП Дайбов Андрей Андреевич</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">ИНН</td>
+            <td style="padding:13px 24px;">667005514504</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">ОГРНИП</td>
+            <td style="padding:13px 24px;">324665800025776</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">Расчётный счёт</td>
+            <td style="padding:13px 24px;">40802810300005927881</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">Банк</td>
+            <td style="padding:13px 24px;">АО «ТБанк»</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">БИК</td>
+            <td style="padding:13px 24px;">044525974</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">Корр. счёт</td>
+            <td style="padding:13px 24px;">30101810145250000974</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:13px 24px;color:var(--muted);">Налогообложение</td>
+            <td style="padding:13px 24px;">УСН (доходы) 6% + НДС 5%</td>
+          </tr>
+          <tr>
+            <td style="padding:13px 24px;color:var(--muted);">Адрес</td>
+            <td style="padding:13px 24px;">620017, г. Екатеринбург, ул. 40 лет Комсомола, д. 1/7</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- КОПИРАЙТ -->
+<footer style="background:#060810;border-top:1px solid var(--border);padding:28px 24px;text-align:center;">
+  <p style="font-size:12px;color:var(--muted);line-height:2;">
+    © 2026 WB-OZON Delivery · Екатеринбург · Wildberries · OZON · Яндекс Маркет · FBS / FBO · Работаем с 2024 года · +7 932 616-61-61
+  </p>
+  <p style="font-size:11px;color:var(--muted);opacity:0.5;margin-top:6px;">
+    * Единственный выходной — 1 января
+  </p>
+</footer>
+
 </body>
 </html>
