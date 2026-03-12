@@ -700,6 +700,7 @@
   <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">
     <a href="#features"  class="nav-btn">Услуги</a>
     <a href="#how"       class="nav-btn">Начать работу</a>
+    <a href="#calculator" class="nav-btn">Калькулятор</a>
     <a href="#price" onclick="setTimeout(()=>{const b=document.getElementById('price');const body=b.querySelector('.price-body');const arr=b.querySelector('.price-arrow');if(body.style.maxHeight==='0px'||!body.style.maxHeight){body.style.maxHeight='3000px';arr.style.transform='rotate(180deg)';}},400)" class="nav-btn">Прайс</a>
     <a href="#reviews"   class="nav-btn">Отзывы</a>
     <a href="#contact"   class="nav-btn">Контакты</a>
@@ -862,6 +863,28 @@
       <div class="step-desc">Сдаём на склад маркетплейса и сразу отчитываемся в группу с фото. Оплата — только после выполнения.</div>
     </div>
   </div>
+  </div>
+</section>
+
+<!-- КАЛЬКУЛЯТОР -->
+<section class="section" id="calculator" style="border-top:1px solid var(--border);">
+  <div style="max-width:1100px;margin-inline:auto;">
+    <p class="section-eyebrow reveal">Калькулятор</p>
+    <h2 class="section-title reveal">Узнайте, сколько вы <span style="color:var(--orange);">реально тратите</span> на доставку</h2>
+    <p style="color:var(--muted);font-size:16px;margin-top:16px;margin-bottom:40px;max-width:650px;line-height:1.7;" class="reveal">
+      Сравните ваши текущие расходы на самовоз, Яндекс Доставку или другой сервис — с нашим тарифом. Расчёт по Яндекс Картам с учётом реального маршрута.
+    </p>
+    <div class="reveal" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--card);">
+      <iframe src="calculator.html" style="width:100%;min-height:900px;border:none;display:block;" id="calc-iframe"></iframe>
+    </div>
+    <script>
+      // Auto-resize iframe to fit content
+      window.addEventListener('message', function(e) {
+        if (e.data && e.data.type === 'calcHeight') {
+          document.getElementById('calc-iframe').style.height = e.data.height + 'px';
+        }
+      });
+    </script>
   </div>
 </section>
 

@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор самовоза — WB·OZON Delivery</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- ⚠️ ЗАМЕНИТЕ YOUR_API_KEY на ваш ключ Яндекс Карт -->
+<script src="https://api-maps.yandex.ru/2.1/?apikey=f4e6f6ec-5055-48fb-b03b-3d39bfb9e442&lang=ru_RU"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: #0F1428;
+    color: #e2e8f0;
+    min-height: auto;
+    padding: 16px 8px;
+    margin: 0;
+  }
+  .wrap { max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
+  .glow { position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%); pointer-events: none; }
+  .badge { display: inline-block; padding: 4px 14px; background: rgba(59,130,246,0.15); border-radius: 100px; font-size: 11px; font-weight: 700; color: #60a5fa; letter-spacing: 1px; margin-bottom: 14px; border: 1px solid rgba(59,130,246,0.2); }
+  h1 { font-size: 26px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; background: linear-gradient(135deg, #f1f5f9, #94a3b8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .sub { font-size: 14px; color: #64748b; }
+  .card { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 18px; padding: 20px; margin-bottom: 14px; }
+  .card-title { font-size: 14px; font-weight: 700; color: #e2e8f0; margin-bottom: 14px; }
+  .label { font-size: 13px; font-weight: 500; color: #94a3b8; margin-bottom: 6px; margin-top: 14px; }
+  .input { width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; color: #e2e8f0; font-size: 14px; font-family: 'Manrope', sans-serif; outline: none; }
+  .input:focus { border-color: rgba(59,130,246,0.5); }
+  .input-num { text-align: center; font-size: 16px; font-weight: 700; }
+  .fuel-btn { flex: 1; padding: 10px 6px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); background: transparent; color: #94a3b8; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Manrope', sans-serif; transition: all 0.15s; }
+  .fuel-btn.active { border-color: rgba(59,130,246,0.5); background: rgba(59,130,246,0.1); color: #60a5fa; }
+  .fuel-sub { font-weight: 400; font-size: 11px; }
+  .wh-item { padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; margin-bottom: 6px; border: 1px solid rgba(255,255,255,0.06); background: rgba(255,255,255,0.02); transition: all 0.15s; }
+  .wh-item.active { border-color: rgba(59,130,246,0.5); background: rgba(59,130,246,0.1); }
+  .wh-name { font-weight: 600; color: #e2e8f0; }
+  .wh-item.active .wh-name { color: #60a5fa; }
+  .wh-addr { color: #64748b; font-size: 11px; margin-top: 2px; }
+  .dist-box { margin-top: 12px; padding: 12px 16px; background: rgba(59,130,246,0.08); border-radius: 12px; border: 1px solid rgba(59,130,246,0.15); display: flex; justify-content: space-between; align-items: center; }
+  .dist-val { font-size: 20px; font-weight: 800; color: #60a5fa; }
+  #map { width: 100%; height: 200px; border-radius: 12px; margin-top: 12px; overflow: hidden; }
+  .slider-wrap { margin-top: 14px; }
+  .slider-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .slider-label { font-size: 13px; font-weight: 500; color: #94a3b8; }
+  .slider-val { font-size: 15px; font-weight: 700; color: #e2e8f0; }
+  input[type=range] { width: 100%; height: 6px; border-radius: 3px; outline: none; -webkit-appearance: none; cursor: pointer; }
+  input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; appearance: none; margin: 0; display: none; }
+  .warn { font-size: 11px; color: #f59e0b; margin-top: 6px; padding: 8px 10px; background: rgba(245,158,11,0.08); border-radius: 8px; line-height: 1.4; }
+  .hour-tip { background: rgba(59,130,246,0.06); border: 1px solid rgba(59,130,246,0.12); border-radius: 12px; padding: 16px; margin-bottom: 14px; font-size: 13px; color: #94a3b8; line-height: 1.7; }
+  .tip-toggle { background: none; border: none; color: #60a5fa; font-size: 13px; font-weight: 600; cursor: pointer; padding: 0; margin-bottom: 10px; font-family: 'Manrope', sans-serif; text-decoration: underline; text-decoration-style: dotted; text-underline-offset: 3px; }
+  .hr-box { display: flex; justify-content: space-between; padding: 12px 14px; background: rgba(59,130,246,0.06); border-radius: 10px; margin-top: 8px; }
+  .hr-val { font-size: 18px; font-weight: 800; color: #60a5fa; }
+  .btn-calc { width: 100%; padding: 18px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: 'Manrope', sans-serif; box-shadow: 0 4px 24px rgba(59,130,246,0.3); margin-top: 4px; }
+  .btn-calc:disabled { background: rgba(255,255,255,0.05); color: #475569; box-shadow: none; cursor: default; }
+  .result { transition: all 0.5s cubic-bezier(0.16,1,0.3,1); margin-top: 4px; }
+  .res-self { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 16px; padding: 20px; margin-bottom: 12px; }
+  .res-our { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); border-radius: 16px; padding: 20px; margin-bottom: 12px; }
+  .res-save { background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(16,185,129,0.1)); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 24px 20px; text-align: center; margin-bottom: 16px; }
+  .mini-stat { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 10px; text-align: center; }
+  .btn-tg { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 14px; font-size: 16px; font-weight: 700; text-align: center; text-decoration: none; box-shadow: 0 4px 24px rgba(16,185,129,0.3); font-family: 'Manrope', sans-serif; margin-bottom: 10px; }
+  .btn-phone { display: block; width: 100%; padding: 14px; background: transparent; color: #94a3b8; border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; font-size: 14px; font-weight: 500; text-align: center; text-decoration: none; font-family: 'Manrope', sans-serif; margin-bottom: 10px; }
+  .btn-reset { width: 100%; padding: 12px; background: transparent; color: #475569; border: none; font-size: 13px; cursor: pointer; font-family: 'Manrope', sans-serif; }
+  .hidden { display: none; }
+  .suggest-list { position: absolute; top: 100%; left: 0; right: 0; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; margin-top: 4px; z-index: 100; overflow: hidden; }
+  .suggest-item { padding: 10px 14px; font-size: 13px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cbd5e1; }
+  .suggest-item:hover { background: rgba(59,130,246,0.1); }
+  .formula-row { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 12px 0; }
+  .formula-sign { font-size: 28px; font-weight: 300; color: #60a5fa; line-height: 1; }
+  .formula-block { text-align: center; }
+  .formula-main { font-size: 16px; font-weight: 700; color: #e2e8f0; }
+  .formula-sub { font-size: 11px; color: #64748b; }
+  .formula-result { font-size: 16px; font-weight: 700; color: #60a5fa; }
+  .save-chips { margin-top: 16px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .save-chip { background: rgba(96,165,250,0.1); border-radius: 12px; padding: 12px 20px; }
+  .save-chip.green { background: rgba(52,211,153,0.1); }
+  .save-chip-val { font-size: 28px; font-weight: 800; }
+  .save-chip-label { font-size: 11px; color: #94a3b8; }
+  .footnote { font-size: 10px; color: #374151; text-align: center; margin-top: 20px; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap">
+
+  <!-- Header -->
+  <div style="text-align:center;margin-bottom:28px">
+    <div class="badge">КАЛЬКУЛЯТОР ДОСТАВКИ</div>
+    <h1>Сколько вы реально тратите на доставку?</h1>
+    <p class="sub">Сравните ваши текущие расходы с нашим тарифом</p>
+  </div>
+
+  <!-- Delivery Mode -->
+  <div class="card">
+    <div class="card-title">📋 Как вы сейчас доставляете?</div>
+    <div id="mode-btns" style="display:flex;flex-direction:column;gap:6px"></div>
+  </div>
+
+  <!-- Competitor input (hidden by default) -->
+  <div class="card hidden" id="competitor-card">
+    <div class="card-title" id="competitor-title">💰 Ваши текущие расходы</div>
+    <div id="competitor-desc" style="font-size:12px;color:#64748b;margin-bottom:12px;line-height:1.5"></div>
+    <div id="competitor-fields"></div>
+  </div>
+
+  <!-- Route (self mode only) -->
+  <div class="card" id="route-card">
+    <div class="card-title">📍 Маршрут</div>
+    <div class="label" style="margin-top:0">Ваш адрес (откуда везёте товар)</div>
+    <div style="position:relative">
+      <input type="text" id="address" class="input" placeholder="Начните вводить улицу в Екатеринбурге..." autocomplete="off">
+      <div id="suggestions" class="suggest-list hidden"></div>
+    </div>
+
+    <div class="label">Склады маркетплейсов (нажимайте в порядке маршрута)</div>
+    <div id="wh-list"></div>
+
+    <div id="route-info" class="hidden">
+      <div class="dist-box" style="flex-direction:column;gap:6px">
+        <div id="route-desc" style="font-size:12px;color:#94a3b8;line-height:1.4"></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+          <span style="font-size:13px;color:#94a3b8">Расстояние:</span>
+          <span class="dist-val" id="dist-display">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;width:100%">
+          <span style="font-size:13px;color:#94a3b8">Время в дороге (с пробками):</span>
+          <span style="font-size:18px;font-weight:800;color:#fb923c" id="route-time-display">—</span>
+        </div>
+      </div>
+      <div id="map"></div>
+    </div>
+    <div id="route-loading" class="hidden" style="font-size:13px;color:#64748b;margin-top:8px">Строим маршрут...</div>
+  </div>
+
+  <!-- Vehicle (self mode only) -->
+  <div class="card" id="vehicle-card">
+    <div class="card-title">🚗 Автомобиль</div>
+    <div class="label" style="margin-top:0">Тип топлива</div>
+    <div style="display:flex;gap:8px" id="fuel-btns"></div>
+    <div class="slider-wrap">
+      <div class="slider-head">
+        <span class="slider-label">Расход топлива</span>
+        <span class="slider-val"><span id="cons-val">10</span> л/100км</span>
+      </div>
+      <input type="range" id="cons" min="5" max="25" step="0.5" value="10">
+    </div>
+  </div>
+
+  <!-- Trips (self mode only) -->
+  <div class="card" id="trips-card">
+    <div class="card-title">📦 Поездки и груз</div>
+    <div class="slider-wrap" style="margin-top:0">
+      <div class="slider-head">
+        <span class="slider-label">Поездок в неделю</span>
+        <span class="slider-val"><span id="trips-val">3</span> раз</span>
+      </div>
+      <input type="range" id="trips" min="1" max="14" step="1" value="3">
+    </div>
+    <div class="label">Что везёте</div>
+    <div id="cargo-dropdown" style="position:relative">
+      <div id="cargo-selected" class="input" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+        <span id="cargo-selected-text">Короб Ozon 30×40×40</span>
+        <span style="color:#64748b">▾</span>
+      </div>
+      <div id="cargo-options" class="hidden" style="position:absolute;top:100%;left:0;right:0;background:#1e293b;border:1px solid rgba(255,255,255,0.15);border-radius:10px;margin-top:4px;z-index:50;overflow:hidden"></div>
+    </div>
+    <input type="hidden" id="cargo" value="box_oz">
+    <div class="label">Количество за поездку</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="text" inputmode="decimal" id="qty" class="input input-num" value="20" min="0" style="flex:1">
+      <span id="qty-unit" style="font-size:13px;color:#64748b;white-space:nowrap">шт</span>
+    </div>
+    <div class="label" style="margin-top:16px">Время на складах (очередь + разгрузка + приёмка)</div>
+    <div style="font-size:11px;color:#64748b;margin-bottom:8px;line-height:1.5">
+      Время в дороге мы уже посчитали по карте. Укажите, сколько в среднем вы тратите на всех складах: заехать, выгрузить, сдать, дождаться приёмки.
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input type="text" inputmode="decimal" id="load-hrs" class="input input-num" value="" placeholder="Введите часы" min="0" step="0.5" style="flex:1">
+      <span style="font-size:13px;color:#64748b;white-space:nowrap">часов</span>
+    </div>
+    <div id="total-time-box" style="margin-top:10px;padding:10px 14px;background:rgba(251,146,60,0.06);border-radius:10px;display:flex;justify-content:space-between;align-items:center">
+      <span style="font-size:12px;color:#94a3b8">Итого на поездку:</span>
+      <span style="font-size:16px;font-weight:800;color:#fb923c" id="total-time-display">—</span>
+    </div>
+    <!-- Hidden field for total hours used in calculation -->
+    <input type="hidden" id="hrs" value="2.5">
+    <div class="warn" id="wh-warn"></div>
+  </div>
+
+  <!-- Hour (self mode only) -->
+  <div class="card" id="hour-card">
+    <div class="card-title">⏰ Стоимость вашего часа</div>
+    <div style="font-size:13px;color:#94a3b8;line-height:1.6;margin-bottom:10px">
+      Каждый час на самовоз — час, который вы <b style="color:#f87171">не тратите</b> на развитие бизнеса. Когда вы стоите в очереди на приёмке — вы не работаете с поставщиками, не оптимизируете карточки, не ищете новые товары.
+    </div>
+    <button class="tip-toggle" id="tip-toggle">Как посчитать стоимость часа? ↓</button>
+    <div id="hour-tip" class="hour-tip hidden">
+      <div style="margin-bottom:14px">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:8px">Формула:</div>
+        <div class="formula-row">
+          <div class="formula-block"><div class="formula-main" id="formula-top-label">Доход</div></div>
+          <div class="formula-sign">/</div>
+          <div class="formula-block"><div class="formula-main">Часы/день</div><div class="formula-sub">× 22 дня</div></div>
+          <div class="formula-sign">=</div>
+          <div class="formula-block"><div class="formula-result">Цена часа</div></div>
+        </div>
+      </div>
+      <p style="margin:0 0 10px;font-size:12px;line-height:1.6">
+        <b style="color:#e2e8f0">Почему не 160 часов?</b> Потому что мало кто реально работает 8 часов чисто над бизнесом. Если вы тратите 2 часа на самовоз — ваш продуктивный день уже 6 часов. И каждый час стоит дороже.
+      </p>
+      <p style="margin:0;font-size:12px;line-height:1.6">Это <b style="color:#e2e8f0">упущенная выгода</b> — час на самовозе мог принести вам эти деньги.</p>
+    </div>
+
+    <div class="label" style="margin-top:0">Как считаем стоимость часа?</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px" id="hour-mode-btns">
+      <div class="wh-item active" data-hmode="revenue" style="cursor:pointer">
+        <span class="wh-name">От оборота бизнеса</span>
+        <div class="wh-addr">Сколько потенциально мог заработать бизнес за это время. Самая честная оценка для предпринимателя.</div>
+      </div>
+      <div class="wh-item" data-hmode="profit" style="cursor:pointer">
+        <span class="wh-name">От чистой прибыли</span>
+        <div class="wh-addr">Сколько реально остаётся после всех расходов. Более консервативная оценка.</div>
+      </div>
+      <div class="wh-item" data-hmode="salary" style="cursor:pointer">
+        <span class="wh-name">От зарплаты, которую плачу себе</span>
+        <div class="wh-addr">Сколько вы реально забираете себе из бизнеса каждый месяц.</div>
+      </div>
+    </div>
+
+    <div class="label" id="rev-label">Месячный оборот (₽)</div>
+    <input type="text" inputmode="decimal" id="rev" class="input" value="500000">
+    <div class="slider-wrap">
+      <div class="slider-head">
+        <span class="slider-label">Часов в день работаете над бизнесом</span>
+        <span class="slider-val"><span id="workhrs-val">8</span> ч/день</span>
+      </div>
+      <input type="range" id="workhrs" min="2" max="14" step="1" value="8">
+    </div>
+    <div style="font-size:11px;color:#64748b;margin-top:2px;margin-bottom:8px">Считайте только продуктивные часы — без самовоза, без дороги</div>
+    <div class="hr-box">
+      <span style="font-size:13px;color:#94a3b8">Ваш час стоит:</span>
+      <span class="hr-val" id="hr-display">2 841 ₽</span>
+    </div>
+    <div id="hr-formula" style="font-size:11px;color:#64748b;margin-top:6px;text-align:right"></div>
+  </div>
+
+  <!-- Button -->
+  <button class="btn-calc" id="btn-calc" disabled>Выберите адрес для расчёта</button>
+
+  <!-- Result -->
+  <div id="result" class="result hidden">
+    <!-- Explanation (self mode only) -->
+    <div class="card" id="explanation-card" style="border-color:rgba(251,146,60,0.2);background:rgba(251,146,60,0.04)">
+      <div style="font-size:14px;color:#e2e8f0;line-height:1.7">
+        <span style="font-size:18px">💡</span> <b>Важно понимать:</b> большая часть суммы ниже — это <b style="color:#fb923c">не деньги, которые вы кому-то платите</b>. Это ваше время, переведённое в рубли. Вы не замечаете этих расходов, потому что не получаете счёт. Но они реальны: <b style="color:#fb923c">каждый час за рулём и в очереди — это час, который мог принести вам деньги</b>, если бы вы занимались бизнесом.
+      </div>
+    </div>
+
+    <!-- Step 1: One trip breakdown -->
+    <div class="card" style="border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.04)">
+      <div style="font-size:13px;font-weight:700;color:#f87171;margin-bottom:16px">🚗 Шаг 1. Одна поездка на склад</div>
+      <div id="res-step1"></div>
+      <div id="res-trip-total" style="margin-top:12px;padding:12px 14px;background:rgba(239,68,68,0.08);border-radius:10px;display:flex;justify-content:space-between;align-items:center"></div>
+    </div>
+
+    <!-- Step 2: Monthly -->
+    <div class="card" style="border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.04)">
+      <div style="font-size:13px;font-weight:700;color:#f87171;margin-bottom:12px">📅 Шаг 2. За месяц</div>
+      <div id="res-step2"></div>
+      <div id="res-month-total" style="margin-top:12px;padding:14px;background:rgba(239,68,68,0.1);border-radius:12px;text-align:center"></div>
+      <div id="res-extra-warn" style="margin-top:10px;padding:10px;background:rgba(251,146,60,0.08);border-radius:10px;font-size:11px;color:#fb923c;line-height:1.5"></div>
+    </div>
+
+    <!-- Step 3: Our price -->
+    <div class="card" style="border-color:rgba(16,185,129,0.2);background:rgba(16,185,129,0.04)">
+      <div style="font-size:13px;font-weight:700;color:#34d399;margin-bottom:12px">✅ Шаг 3. А если через WB·OZON Delivery?</div>
+      <div id="res-step3"></div>
+      <div id="res-our-total-block" style="margin-top:12px;padding:14px;background:rgba(16,185,129,0.1);border-radius:12px;text-align:center"></div>
+      <div style="font-size:12px;color:#34d399;margin-top:10px;line-height:1.5">
+        Забираем от вашей двери → сдаём на склад → фото-отчёт в Telegram. Вы не тратите ни минуты.
+      </div>
+      <div style="font-size:11px;color:#64748b;margin-top:10px;padding:10px;background:rgba(255,255,255,0.03);border-radius:8px;line-height:1.6">
+        * Рассчитано по базовому тарифу (подача внутри ЕКАД, дневное время). Возможные доплаты:<br>
+        • За ЕКАД: 249 ₽ вместо 135 ₽<br>
+        • После 19:00: 399 ₽ вместо 135 ₽<br>
+        • Подъём на этаж / спуск в цоколь: +100 ₽<br>
+        • Получение груза из ТК: +500 ₽<br>
+        <span style="color:#34d399">Точную сумму рассчитаем индивидуально — напишите нам.</span>
+      </div>
+    </div>
+
+    <!-- Saving -->
+    <div class="res-save" id="res-save"></div>
+
+    <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-tg">Написать в Telegram</a>
+    <a href="tel:+79326166161" class="btn-phone">📞 +7 932 616-61-61</a>
+    <button class="btn-reset" id="btn-reset">← Пересчитать</button>
+  </div>
+
+  <p class="footnote">* Расчёт приблизительный. Топливо — средние цены Екатеринбург, март 2026.<br>Расстояние рассчитано по Яндекс Картам.</p>
+</div>
+
+<script>
+const WAREHOUSES = [
+  { id:"ozon_fbs", name:"Ozon FBS", addr:"Екатеринбург, Черняховского, 104", coords:null, notes:"Ozon FBS: пропуск заранее, выгрузка самостоятельно, занести на склад, пикание каждой позиции" },
+  { id:"ozon_fbo", name:"Ozon FBO Залесье", addr:"Верхняя Пышма, посёлок Залесье, Ясная улица, 1", coords:null, notes:"Ozon FBO: пропуск заранее, очереди на выгрузку, закидывать коробки на дебаркадер самостоятельно" },
+  { id:"ozon_rfc", name:"Ozon РФЦ Кольцовский", addr:"Екатеринбург, Логопарк Кольцовский, строение 15", coords:null, notes:"Ozon РФЦ: пропуск заранее, взять бегунок у диспетчера, сдать товар, вернуть бегунок, выгрузка самостоятельно, закидывать на дебаркадер" },
+  { id:"wb_persp", name:"WB FBO/FBS", addr:"Екатеринбург, Перспективная, 14", coords:null, notes:"WB: пропуск, выгрузка самостоятельно, коробки закидывать на дебаркадер, больше 1 куба могут не принять" },
+  { id:"wb_chern", name:"WB FBS (новый)", addr:"Екатеринбург, Черняховского, 86", coords:null, notes:"WB: пропуск, выгрузка самостоятельно, коробки закидывать на дебаркадер, платная приёмка" },
+  { id:"ym_serov", name:"Яндекс Маркет", addr:"Екатеринбург, Серовский тракт, 11-й километр, строение 1", coords:null, notes:"ЯМ: далеко от центра, неудобная разгрузка — заносить товар через двери, пропуск заранее" },
+];
+const FUELS = [{id:"92",name:"АИ-92",price:56},{id:"95",name:"АИ-95",price:60},{id:"dt",name:"ДТ",price:72}];
+const CARGOS = [
+  {id:"small",name:"Мелкие отправления (с ладонь)",price:50,u:"шт"},
+  {id:"box_oz",name:"Короб Ozon 30×40×40",price:119,u:"шт"},
+  {id:"box_wb",name:"Короб WB 60×40×40",price:139,u:"шт"},
+  {id:"pallet",name:"Паллет 120×80×190",price:1149,u:"шт"},
+];
+const PICKUP=135, WEAR=5;
+
+const MODES = [
+  { id:"self", name:"Вожу сам", icon:"🚗", desc:"Сам еду на склад, сдаю, возвращаюсь" },
+  { id:"yandex", name:"Яндекс Доставка / грузовое такси", icon:"🚕", desc:"Заказываю машину через Яндекс Go" },
+  { id:"gazel", name:"Наёмная газель", icon:"🚛", desc:"Нанимаю газель / грузовик для поездки на склад" },
+  { id:"other", name:"Другой сервис доставки", icon:"📦", desc:"Пользуюсь другой компанией" },
+];
+
+let state = {
+  whOrder: [],  // array of warehouse indices in selection order
+  fuelIdx: 0,
+  userCoords: null,
+  distance: null,
+  map: null,
+  route: null,
+  mode: "self",
+};
+
+const fmt = n => Math.round(n).toLocaleString("ru-RU");
+const $=s=>document.querySelector(s);
+const $$=s=>document.querySelectorAll(s);
+
+// Render warehouses - multi-select with order numbers
+function renderWH() {
+  const el = $("#wh-list");
+  el.innerHTML = WAREHOUSES.map((w,i) => {
+    const orderIdx = state.whOrder.indexOf(i);
+    const isSelected = orderIdx !== -1;
+    const num = isSelected ? orderIdx + 1 : "";
+    return `
+    <div class="wh-item ${isSelected?'active':''}" data-i="${i}" style="cursor:pointer">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;${isSelected ? 'background:#3b82f6;color:#fff' : 'background:rgba(255,255,255,0.06);color:#475569'}">${num}</div>
+          <div>
+            <span class="wh-name">${w.name}</span>
+            <div class="wh-addr">${w.addr}</div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join("");
+  el.querySelectorAll(".wh-item").forEach(item => {
+    item.onclick = () => {
+      const idx = +item.dataset.i;
+      const pos = state.whOrder.indexOf(idx);
+      if (pos !== -1) {
+        state.whOrder.splice(pos, 1);
+      } else {
+        state.whOrder.push(idx);
+      }
+      renderWH();
+      updateWarnings();
+      if (state.userCoords && state.whOrder.length > 0) buildRoute();
+      else { state.distance = null; $("#route-info").classList.add("hidden"); autoRecalc(); }
+      updateCalcBtn();
+    };
+  });
+}
+
+function updateWarnings() {
+  const warnEl = $("#wh-warn");
+  if (state.whOrder.length === 0) {
+    warnEl.innerHTML = "";
+    return;
+  }
+  warnEl.innerHTML = state.whOrder.map(i => {
+    const w = WAREHOUSES[i];
+    return `<div style="margin-bottom:4px">⚠️ <b>${w.name}:</b> ${w.notes.replace(/^[^:]+:\s*/, '')}</div>`;
+  }).join("");
+}
+
+// Render fuel buttons
+function renderFuel() {
+  const el = $("#fuel-btns");
+  el.innerHTML = FUELS.map((f,i) => `
+    <button class="fuel-btn ${i===state.fuelIdx?'active':''}" data-i="${i}">
+      ${f.name}<br><span class="fuel-sub">${f.price} ₽/л</span>
+    </button>
+  `).join("");
+  el.querySelectorAll(".fuel-btn").forEach(btn => {
+    btn.onclick = () => { state.fuelIdx = +btn.dataset.i; renderFuel(); };
+  });
+}
+
+// Render cargo select
+function renderCargo() {
+  const opts = $("#cargo-options");
+  const sel = $("#cargo-selected");
+  const selText = $("#cargo-selected-text");
+  const hidden = $("#cargo");
+  
+  opts.innerHTML = CARGOS.map(c => `
+    <div class="cargo-opt" data-id="${c.id}" style="padding:12px 14px;cursor:pointer;font-size:13px;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,0.05);transition:background 0.1s">
+      ${c.name}
+    </div>
+  `).join("");
+  
+  sel.onclick = (e) => {
+    e.stopPropagation();
+    opts.classList.toggle("hidden");
+  };
+  
+  opts.querySelectorAll(".cargo-opt").forEach(item => {
+    item.onmouseenter = () => item.style.background = "rgba(59,130,246,0.15)";
+    item.onmouseleave = () => item.style.background = "transparent";
+    item.onclick = (e) => {
+      e.stopPropagation();
+      const c = CARGOS.find(x => x.id === item.dataset.id);
+      hidden.value = c.id;
+      selText.textContent = c.name;
+      $("#qty-unit").textContent = c.u;
+      opts.classList.add("hidden");
+      autoRecalc();
+    };
+  });
+  
+  document.addEventListener("click", () => opts.classList.add("hidden"));
+}
+
+// Yandex Maps: geocoder search + route
+function initYandex() {
+  ymaps.ready(() => {
+    // Geocode all warehouse addresses
+    let geocoded = 0;
+    WAREHOUSES.forEach((wh, i) => {
+      ymaps.geocode(wh.addr, { results: 1 }).then(res => {
+        const obj = res.geoObjects.get(0);
+        if (obj) {
+          WAREHOUSES[i].coords = obj.geometry.getCoordinates();
+        }
+        geocoded++;
+        if (geocoded === WAREHOUSES.length) {
+          console.log("All warehouses geocoded", WAREHOUSES.map(w => w.name + ": " + w.coords));
+        }
+      });
+    });
+
+    let debounce = null;
+    const addr = $("#address");
+    const sugEl = $("#suggestions");
+
+    addr.addEventListener("input", function() {
+      clearTimeout(debounce);
+      const q = this.value.trim();
+      if (q.length < 3) { sugEl.classList.add("hidden"); sugEl.innerHTML = ""; return; }
+      
+      debounce = setTimeout(() => {
+        ymaps.geocode("Екатеринбург, " + q, { results: 5 }).then(res => {
+          const items = [];
+          res.geoObjects.each(obj => {
+            items.push({
+              name: obj.getAddressLine(),
+              coords: obj.geometry.getCoordinates()
+            });
+          });
+          if (items.length === 0) { sugEl.classList.add("hidden"); return; }
+          sugEl.innerHTML = items.map((it, i) => 
+            `<div class="suggest-item" data-i="${i}">${it.name}</div>`
+          ).join("");
+          sugEl.classList.remove("hidden");
+
+          sugEl.querySelectorAll(".suggest-item").forEach(el => {
+            el.onclick = () => {
+              const item = items[+el.dataset.i];
+              addr.value = item.name;
+              state.userCoords = item.coords;
+              sugEl.classList.add("hidden");
+              sugEl.innerHTML = "";
+              buildRoute();
+            };
+          });
+        });
+      }, 350);
+    });
+
+    // Close suggestions on click outside
+    document.addEventListener("click", function(e) {
+      if (!addr.contains(e.target) && !sugEl.contains(e.target)) {
+        sugEl.classList.add("hidden");
+      }
+    });
+  });
+}
+
+function buildRoute() {
+  if (!state.userCoords || state.whOrder.length === 0) return;
+  // Check all selected warehouses have coords
+  const allGeocoded = state.whOrder.every(i => WAREHOUSES[i].coords !== null);
+  if (!allGeocoded) {
+    // Retry in 500ms — geocoding might still be in progress
+    setTimeout(buildRoute, 500);
+    return;
+  }
+  $("#route-loading").classList.remove("hidden");
+  $("#route-info").classList.add("hidden");
+
+  // Build waypoints: home → wh1 → wh2 → ... → home
+  const points = [state.userCoords];
+  state.whOrder.forEach(i => points.push(WAREHOUSES[i].coords));
+  points.push(state.userCoords); // return home
+
+  ymaps.ready(() => {
+    if (state.route && state.map) {
+      state.map.geoObjects.remove(state.route);
+    }
+
+    ymaps.route(points, { mapStateAutoApply: true }).then(route => {
+      const totalDist = route.getLength() / 1000;
+      state.distance = Math.round(totalDist * 10) / 10;
+      
+      // Get travel time in minutes
+      const travelTimeSec = route.getJamsTime ? route.getJamsTime() : route.getTime();
+      const travelTimeMin = Math.round(travelTimeSec / 60);
+      state.travelTimeMin = travelTimeMin;
+
+      // Build route description
+      const whNames = state.whOrder.map(i => WAREHOUSES[i].name);
+      const routeDesc = "Ваш адрес → " + whNames.join(" → ") + " → обратно";
+      
+      const travelHrs = Math.floor(travelTimeMin / 60);
+      const travelMins = travelTimeMin % 60;
+      const timeStr = travelHrs > 0 ? `${travelHrs} ч ${travelMins} мин` : `${travelMins} мин`;
+      
+      $("#dist-display").textContent = state.distance.toFixed(1) + " км";
+      $("#route-time-display").textContent = timeStr;
+      $("#route-desc").textContent = routeDesc;
+      $("#route-loading").classList.add("hidden");
+      $("#route-info").classList.remove("hidden");
+
+      // Map
+      if (!state.map) {
+        state.map = new ymaps.Map("map", {
+          center: state.userCoords,
+          zoom: 10,
+          controls: ["zoomControl"]
+        });
+      }
+      if (state.route) state.map.geoObjects.remove(state.route);
+      // Remove old markers
+      if (state.markers) state.markers.forEach(m => state.map.geoObjects.remove(m));
+      state.markers = [];
+      
+      state.route = route;
+      route.getPaths().options.set({ strokeColor: "3b82f6", strokeWidth: 4, opacity: 0.8 });
+      state.map.geoObjects.add(route);
+
+      // Add home marker
+      const homeMark = new ymaps.Placemark(state.userCoords, {
+        iconContent: "🏠",
+        hintContent: "Ваш адрес"
+      }, {
+        preset: "islands#blueStretchyIcon"
+      });
+      state.map.geoObjects.add(homeMark);
+      state.markers.push(homeMark);
+
+      // Add numbered warehouse markers
+      state.whOrder.forEach((whIdx, i) => {
+        const wh = WAREHOUSES[whIdx];
+        const mark = new ymaps.Placemark(wh.coords, {
+          iconContent: (i + 1) + ". " + wh.name,
+          hintContent: wh.addr
+        }, {
+          preset: "islands#darkBlueStretchyIcon"
+        });
+        state.map.geoObjects.add(mark);
+        state.markers.push(mark);
+      });
+
+      state.map.setBounds(route.getBounds(), { checkZoomRange: true, zoomMargin: 40 });
+
+      updateCalcBtn();
+      updateTotalTime();
+      autoRecalc();
+    }).catch(() => {
+      $("#route-loading").classList.add("hidden");
+    });
+  });
+}
+
+function updateCalcBtn() {
+  const btn = $("#btn-calc");
+  const ok = state.distance !== null && state.whOrder.length > 0 && +$("#qty").value > 0;
+  btn.disabled = !ok;
+  btn.textContent = ok ? "Рассчитать мои расходы" : "Укажите адрес и выберите склады";
+}
+
+function hideResult() {
+  $("#result").classList.add("hidden");
+  $("#btn-calc").classList.remove("hidden");
+}
+
+function calculate() {
+  const fuel = FUELS[state.fuelIdx];
+  const cargo = CARGOS.find(c => c.id === $("#cargo").value);
+  const cons = +$("#cons").value;
+  const trips = +$("#trips").value;
+  const qty = +$("#qty").value;
+  const hrs = +$("#hrs").value;
+  const rev = +$("#rev").value;
+  const workHrs = +$("#workhrs").value;
+  const dist = state.distance;
+
+  const hourlyRate = Math.round(rev / (workHrs * 22));
+  const rt = dist; // distance is already full route (home → warehouses → home)
+  const cFuel = Math.round(rt * cons / 100 * fuel.price);
+  const cTime = Math.round(hrs * hourlyRate);
+  const cWear = Math.round(rt * WEAR);
+  const cTrip = cFuel + cTime + cWear;
+  const tpm = trips * 4;
+  const mSelf = Math.round(cTrip * tpm);
+  const oTrip = PICKUP + cargo.price * qty; // one pickup for all warehouses
+  const mOur = Math.round(oTrip * tpm);
+  const sav = mSelf - mOur;
+  const savP = mSelf > 0 ? Math.round(sav / mSelf * 100) : 0;
+  const hFree = Math.round(hrs * tpm);
+  const whNames = state.whOrder.map(i => WAREHOUSES[i].name).join(" → ");
+
+  const line = (icon, text, formula, result, color) => `
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <span style="font-size:16px;flex-shrink:0">${icon}</span>
+      <div style="flex:1">
+        <div style="font-size:13px;color:#e2e8f0;font-weight:600">${text}</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">${formula}</div>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:${color};white-space:nowrap;flex-shrink:0">${result}</div>
+    </div>
+  `;
+
+  // Step 1: One trip
+  $("#res-step1").innerHTML =
+    line("⛽", "Бензин", `${rt} км (весь маршрут) × ${cons} л/100км × ${fuel.price} ₽/л`, fmt(cFuel) + " ₽", "#fca5a5") +
+    line("⏰", "Ваше время", `${hrs} ч × ${fmt(hourlyRate)} ₽/час`, fmt(cTime) + " ₽", "#fca5a5") +
+    line("🔧", "Износ авто", `${rt} км × ${WEAR} ₽/км (ТО, шины, амортизация)`, fmt(cWear) + " ₽", "#fca5a5");
+
+  $("#res-trip-total").innerHTML = `
+    <span style="font-size:14px;font-weight:700;color:#e2e8f0">Итого за одну поездку:</span>
+    <span style="font-size:20px;font-weight:800;color:#fca5a5">${fmt(cTrip)} <span style="font-size:0.7em">₽</span></span>
+  `;
+
+  // Step 2: Monthly
+  const mFuel = cFuel * tpm;
+  const mTime = cTime * tpm;
+  const mWear = cWear * tpm;
+
+  $("#res-step2").innerHTML = `
+    <div style="font-size:13px;color:#94a3b8;margin-bottom:12px">${trips} раз/нед × 4 недели = <b style="color:#e2e8f0">${tpm} поездок в месяц</b></div>
+  ` +
+    line("⛽", "Бензин за месяц", `${fmt(cFuel)} ₽ за поездку × ${tpm} поездок`, fmt(mFuel) + " ₽", "#fca5a5") +
+    line("⏰", "Ваше время за месяц", `${fmt(cTime)} ₽ за поездку × ${tpm} поездок`, fmt(mTime) + " ₽", "#fca5a5") +
+    line("🔧", "Износ авто за месяц", `${fmt(cWear)} ₽ за поездку × ${tpm} поездок`, fmt(mWear) + " ₽", "#fca5a5");
+  
+  $("#res-month-total").innerHTML = `
+    <div style="font-size:12px;color:#f87171;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">ВАШ САМОВОЗ В МЕСЯЦ</div>
+    <div style="font-size:32px;font-weight:800;color:#fca5a5;line-height:1">${fmt(mSelf)} <span style="font-size:0.7em">₽</span></div>
+    <div style="font-size:12px;color:#94a3b8;margin-top:6px">из них ${fmt(mTime)} ₽ — это ваше время (${hFree} часов)</div>
+  `;
+  
+  // Warning for self mode
+  $("#res-extra-warn").innerHTML = "⚠️ И это ещё без учёта: парковка, штрафы, заказ пропусков, платная приёмка, возвраты из-за ошибок маркировки, ограничение 1 куб на WB";
+
+  // Step 3: Our price
+  const whCount = state.whOrder.length;
+  const whListText = whCount > 1 ? `на ${whCount} складов (${whNames})` : `на склад ${whNames}`;
+  
+  $("#res-step3").innerHTML = `
+    <div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <div style="font-size:13px;color:#e2e8f0;font-weight:600;margin-bottom:4px">За одну поездку ${whListText}:</div>
+      <div style="font-size:12px;color:#64748b;line-height:1.6">
+        Подача автомобиля к вам: <span style="color:#6ee7b7;font-weight:600">${PICKUP} <span style="font-size:0.7em">₽</span></span><br>
+        ${qty} × ${cargo.name}: <span style="color:#6ee7b7;font-weight:600">${qty} × ${cargo.price} ₽ = ${fmt(qty * cargo.price)} <span style="font-size:0.7em">₽</span></span>
+      </div>
+      <div style="font-size:14px;color:#6ee7b7;font-weight:700;margin-top:6px">= ${fmt(oTrip)} ₽ за поездку</div>
+    </div>
+    <div style="font-size:14px;color:#e2e8f0;margin-top:10px;line-height:1.8">
+      <span style="color:#6ee7b7;font-weight:700">${fmt(oTrip)} <span style="font-size:0.7em">₽</span></span>
+      <span style="color:#64748b"> × </span>
+      <span style="color:#e2e8f0;font-weight:700">${tpm} поездок</span>
+    </div>
+  `;
+  $("#res-our-total-block").innerHTML = `
+    <div style="font-size:12px;color:#34d399;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">WB·OZON DELIVERY В МЕСЯЦ</div>
+    <div style="font-size:32px;font-weight:800;color:#6ee7b7;line-height:1">${fmt(mOur)} <span style="font-size:0.7em">₽</span></div>
+    <div style="font-size:12px;color:#94a3b8;margin-top:6px">+ 0 часов вашего времени</div>
+  `;
+
+  // Saving
+  const saveEl = $("#res-save");
+  if (sav > 0) {
+    const yearMoney = sav * 12;
+    const yearHours = hFree * 12;
+    const yearDays = Math.round(yearHours / 8);
+    const yearMonths = Math.floor(yearDays / 30);
+    const yearMonthsRemainder = yearDays % 30;
+    
+    // Склонение месяцев
+    const monthWord = (n) => {
+      if (n === 1) return "месяц";
+      if (n >= 2 && n <= 4) return "месяца";
+      return "месяцев";
+    };
+    const dayWord = (n) => {
+      const last = n % 10;
+      const tens = Math.floor(n % 100 / 10);
+      if (tens === 1) return "дней";
+      if (last === 1) return "день";
+      if (last >= 2 && last <= 4) return "дня";
+      return "дней";
+    };
+    
+    let yearMonthsText = "";
+    if (yearMonths >= 1 && yearMonthsRemainder > 0) {
+      yearMonthsText = yearMonths + " " + monthWord(yearMonths) + " и " + yearMonthsRemainder + " " + dayWord(yearMonthsRemainder);
+    } else if (yearMonths >= 1) {
+      yearMonthsText = yearMonths + " " + monthWord(yearMonths);
+    }
+    
+    // Живое сравнение — точное, на основе реальных месяцев и дней
+    const yearFraction = yearDays / 365;
+    let timeMeaning = "";
+    if (yearFraction >= 0.75) timeMeaning = `${yearDays} дней — это ${yearMonthsText}. Три четверти года вы проводите за рулём и в очередях. Три четверти года без семьи, без отдыха, без жизни.`;
+    else if (yearFraction >= 0.5) timeMeaning = `${yearDays} дней — это ${yearMonthsText}. Полгода вашей жизни уходит на дорогу, очереди и разгрузку. Полгода без семьи, без отдыха, без развития бизнеса.`;
+    else if (yearFraction >= 0.35) timeMeaning = `${yearDays} дней — это ${yearMonthsText}. Почти полгода вы стоите в очередях и крутите руль вместо того, чтобы быть с семьёй, заниматься спортом, хобби или развивать бизнес.`;
+    else if (yearFraction >= 0.2) timeMeaning = `${yearDays} дней — это ${yearMonthsText}. Четверть года вы проводите не с близкими, не на отдыхе, а в очередях на приёмке и за рулём.`;
+    else if (yearMonths >= 1) timeMeaning = `${yearDays} дней — это ${yearMonthsText}. Больше месяца жизни, который можно было провести с семьёй, с детьми, заняться здоровьем или вложить в рост бизнеса.`;
+    else if (yearDays >= 14) timeMeaning = `${yearDays} дней — это полноценный отпуск. Вместо моря и отдыха — очереди на складе и разгрузка коробок.`;
+    else timeMeaning = `${yearDays} дней свободного времени — на семью, хобби или развитие бизнеса. Вместо очередей и разгрузки.`;
+
+    // What can you do with the money
+    let moneyMeaning = "";
+    if (yearMoney >= 2000000) moneyMeaning = "Вложите в бизнес: закупите товар, запустите рекламу, наймите сотрудника — и заработайте в разы больше";
+    else if (yearMoney >= 1000000) moneyMeaning = "Это хороший автомобиль или мощное вложение в рекламу и рост бизнеса";
+    else if (yearMoney >= 500000) moneyMeaning = "Это семейный отпуск за границу или серьёзное вложение в бизнес";
+    else if (yearMoney >= 200000) moneyMeaning = "Это отпуск с семьёй или новое оборудование для бизнеса";
+    else moneyMeaning = "Это подарки близким или вложение в развитие";
+
+    saveEl.classList.remove("hidden");
+    saveEl.innerHTML = `
+      <div style="font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:1px;margin-bottom:16px">ВАША ЭКОНОМИЯ</div>
+      
+      <div style="margin-bottom:16px">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:6px;font-weight:600">В месяц:</div>
+        <div style="display:flex;gap:10px;justify-content:center">
+          <div class="save-chip"><div class="save-chip-val" style="color:#60a5fa">${fmt(sav)} <span style="font-size:0.7em">₽</span></div><div class="save-chip-label">экономия / мес</div></div>
+          <div class="save-chip"><div class="save-chip-val" style="color:#60a5fa">+${hFree} ч</div><div class="save-chip-label">свободного времени / мес</div></div>
+        </div>
+      </div>
+      
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px;margin-bottom:16px">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:6px;font-weight:600">За год:</div>
+        <div style="display:flex;gap:10px;justify-content:center">
+          <div class="save-chip green"><div class="save-chip-val" style="color:#34d399">${fmt(yearMoney)} <span style="font-size:0.7em">₽</span></div><div class="save-chip-label">экономия / год</div></div>
+          <div class="save-chip green"><div class="save-chip-val" style="color:#34d399">+${yearHours} ч</div><div class="save-chip-label">свободного времени / год</div></div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:16px">
+        <div style="font-size:12px;color:#94a3b8;margin-bottom:10px;font-weight:600">Что это значит для вас:</div>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(52,211,153,0.06);border-radius:10px">
+            <span style="font-size:18px;flex-shrink:0">💰</span>
+            <div>
+              <div style="font-size:14px;color:#e2e8f0;font-weight:700">${fmt(yearMoney)} ₽ в год</div>
+              <div style="font-size:12px;color:#94a3b8;margin-top:2px">${moneyMeaning}. Или вложите в рекламу и заработайте ещё больше.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(96,165,250,0.06);border-radius:10px">
+            <span style="font-size:18px;flex-shrink:0">⏰</span>
+            <div>
+              <div style="font-size:14px;color:#e2e8f0;font-weight:700">${yearHours} часов = ${yearDays} полных дней${yearMonths >= 1 ? " = " + yearMonthsText : ""}</div>
+              <div style="font-size:12px;color:#94a3b8;margin-top:2px">${timeMeaning}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    saveEl.classList.add("hidden");
+  }
+
+  $("#btn-calc").classList.add("hidden");
+  $("#result").classList.remove("hidden");
+}
+
+// Slider updates
+function setupSlider(id, valId) {
+  const sl = $("#"+id);
+  const updateBg = () => {
+    const p = (sl.value-sl.min)/(sl.max-sl.min)*100;
+    sl.style.background = `linear-gradient(to right,#3b82f6 0%,#3b82f6 ${p}%,rgba(255,255,255,0.08) ${p}%,rgba(255,255,255,0.08) 100%)`;
+    if (valId) $("#"+valId).textContent = sl.value;
+  };
+  // Don't overwrite oninput — use a separate listener for visual update
+  sl.removeEventListener("input", sl._bgUpdate);
+  sl._bgUpdate = updateBg;
+  sl.addEventListener("input", updateBg);
+  updateBg();
+}
+
+let hourMode = "revenue"; // revenue, profit, salary
+
+const HOUR_MODE_LABELS = {
+  revenue: { label: "Месячный оборот (₽)", formula: "Оборот", placeholder: "500000" },
+  profit: { label: "Чистая прибыль в месяц (₽)", formula: "Прибыль", placeholder: "150000" },
+  salary: { label: "Зарплата, которую платите себе (₽)", formula: "Зарплата", placeholder: "100000" },
+};
+
+function initHourModes() {
+  document.querySelectorAll("#hour-mode-btns .wh-item").forEach(item => {
+    item.onclick = () => {
+      hourMode = item.dataset.hmode;
+      document.querySelectorAll("#hour-mode-btns .wh-item").forEach(b => b.classList.remove("active"));
+      item.classList.add("active");
+      const cfg = HOUR_MODE_LABELS[hourMode];
+      $("#rev-label").textContent = cfg.label;
+      $("#rev").placeholder = cfg.placeholder;
+      $("#formula-top-label").textContent = cfg.formula;
+      updateHourly();
+      autoRecalc();
+    };
+  });
+}
+
+function updateHourly() {
+  const rev = +$("#rev").value;
+  const wh = +$("#workhrs").value;
+  const hr = Math.round(rev / (wh * 22));
+  const cfg = HOUR_MODE_LABELS[hourMode];
+  $("#hr-display").textContent = fmt(hr) + " ₽";
+  $("#hr-formula").textContent = `${fmt(rev)} ₽ / (${wh}ч × 22 дня) = ${fmt(hr)} ₽/час`;
+}
+
+// Mode rendering
+function renderModes() {
+  const el = $("#mode-btns");
+  el.innerHTML = MODES.map(m => `
+    <div class="wh-item ${state.mode===m.id?'active':''}" data-mode="${m.id}" style="cursor:pointer">
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:20px">${m.icon}</span>
+        <div>
+          <span class="wh-name">${m.name}</span>
+          <div class="wh-addr">${m.desc}</div>
+        </div>
+      </div>
+    </div>
+  `).join("");
+  el.querySelectorAll(".wh-item").forEach(item => {
+    item.onclick = () => {
+      state.mode = item.dataset.mode;
+      renderModes();
+      updateModeUI();
+      hideResult();
+    };
+  });
+}
+
+function updateModeUI() {
+  const isSelf = state.mode === "self";
+  const isCompetitor = !isSelf;
+  
+  // Show/hide self-only cards
+  $("#route-card").classList.toggle("hidden", isCompetitor);
+  $("#vehicle-card").classList.toggle("hidden", isCompetitor);
+  $("#trips-card").classList.toggle("hidden", isCompetitor);
+  $("#hour-card").classList.toggle("hidden", isCompetitor);
+  
+  // Show/hide competitor card
+  const cc = $("#competitor-card");
+  cc.classList.toggle("hidden", isSelf);
+  
+  if (isCompetitor) {
+    const mode = state.mode;
+    if (mode === "yandex") {
+      $("#competitor-title").textContent = "🚕 Яндекс Доставка / грузовое такси";
+      $("#competitor-desc").textContent = "Укажите, сколько платите за одну доставку через Яндекс Go или подобный сервис, и сколько раз в неделю отправляете.";
+      $("#competitor-fields").innerHTML = `
+        <div class="label" style="margin-top:0">Стоимость одного рейса (₽)</div>
+        <input type="text" inputmode="decimal" id="comp-trip" class="input input-num" value="1500" min="0">
+        <div style="font-size:11px;color:#64748b;margin-top:4px">Яндекс грузовой: обычно 1 000–3 000 ₽ за рейс по Екатеринбургу</div>
+      `;
+    } else if (mode === "gazel") {
+      $("#competitor-title").textContent = "🚛 Наёмная газель";
+      $("#competitor-desc").textContent = "Укажите, сколько платите за один рейс наёмной газели на склад маркетплейса.";
+      $("#competitor-fields").innerHTML = `
+        <div class="label" style="margin-top:0">Стоимость одного рейса (₽)</div>
+        <input type="text" inputmode="decimal" id="comp-trip" class="input input-num" value="3000" min="0">
+        <div style="font-size:11px;color:#64748b;margin-top:4px">Газель по Екатеринбургу: обычно 2 500–5 000 ₽ за рейс</div>
+      `;
+    } else if (mode === "other") {
+      $("#competitor-title").textContent = "📦 Другой сервис доставки";
+      $("#competitor-desc").textContent = "Можете указать стоимость за поездку или общую сумму в месяц — как вам удобнее.";
+      $("#competitor-fields").innerHTML = `
+        <div class="label" style="margin-top:0">Как удобнее считать?</div>
+        <div style="display:flex;gap:8px;margin-bottom:12px">
+          <button class="fuel-btn active" id="comp-per-trip-btn" onclick="setCompMode('trip')">За поездку</button>
+          <button class="fuel-btn" id="comp-per-month-btn" onclick="setCompMode('month')">В месяц</button>
+        </div>
+        <div id="comp-trip-wrap">
+          <div class="label" style="margin-top:0">Стоимость одного рейса (₽)</div>
+          <input type="text" inputmode="decimal" id="comp-trip" class="input input-num" value="2000" min="0">
+        </div>
+        <div id="comp-month-wrap" class="hidden">
+          <div class="label" style="margin-top:0">Сумма в месяц (₽)</div>
+          <input type="text" inputmode="decimal" id="comp-month" class="input input-num" value="30000" min="0">
+        </div>
+      `;
+    }
+    // Add trips/qty fields for all non-self modes
+    $("#competitor-fields").innerHTML += `
+      <div class="slider-wrap">
+        <div class="slider-head">
+          <span class="slider-label">Поездок в неделю</span>
+          <span class="slider-val"><span id="comp-trips-val">3</span> раз</span>
+        </div>
+        <input type="range" id="comp-trips" min="1" max="14" step="1" value="3">
+      </div>
+    `;
+    setTimeout(() => setupSlider("comp-trips","comp-trips-val"), 10);
+    // Cargo for all competitor modes
+    $("#competitor-fields").innerHTML += `
+      <div class="label">Что везёте</div>
+      <div id="comp-cargo-dropdown" style="position:relative">
+        <div id="comp-cargo-selected" class="input" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center">
+          <span id="comp-cargo-selected-text">Короб Ozon 30×40×40</span>
+          <span style="color:#64748b">▾</span>
+        </div>
+        <div id="comp-cargo-options" class="hidden" style="position:absolute;top:100%;left:0;right:0;background:#1e293b;border:1px solid rgba(255,255,255,0.15);border-radius:10px;margin-top:4px;z-index:50;overflow:hidden">
+          ${CARGOS.map(c => `<div class="cargo-opt" data-id="${c.id}" style="padding:12px 14px;cursor:pointer;font-size:13px;color:#cbd5e1;border-bottom:1px solid rgba(255,255,255,0.05);transition:background 0.1s">${c.name}</div>`).join("")}
+        </div>
+      </div>
+      <input type="hidden" id="comp-cargo" value="box_oz">
+      <div class="label">Количество за поездку</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input type="text" inputmode="decimal" id="comp-qty" class="input input-num" value="20" min="0" style="flex:1">
+        <span style="font-size:13px;color:#64748b;white-space:nowrap">шт</span>
+      </div>
+    `;
+    // Init comp cargo dropdown
+    setTimeout(() => {
+      const compSel = $("#comp-cargo-selected");
+      const compOpts = $("#comp-cargo-options");
+      if (compSel) {
+        compSel.onclick = (e) => { e.stopPropagation(); compOpts.classList.toggle("hidden"); };
+        compOpts.querySelectorAll(".cargo-opt").forEach(item => {
+          item.onmouseenter = () => item.style.background = "rgba(59,130,246,0.15)";
+          item.onmouseleave = () => item.style.background = "transparent";
+          item.onclick = (e) => {
+            e.stopPropagation();
+            $("#comp-cargo").value = item.dataset.id;
+            $("#comp-cargo-selected-text").textContent = item.textContent.trim();
+            compOpts.classList.add("hidden");
+            autoRecalc();
+          };
+        });
+        document.addEventListener("click", () => compOpts.classList.add("hidden"));
+      }
+    }, 20);
+    // Focus clear zero for new inputs
+    setTimeout(() => {
+      document.querySelectorAll("#competitor-fields .input-num").forEach(el => {
+        el.addEventListener("focus", function() { if (+this.value === 0) this.value = ""; });
+        el.addEventListener("blur", function() { if (this.value === "") this.value = 0; });
+      });
+      // Wire up auto-recalculate for competitor fields
+      document.querySelectorAll("#competitor-fields input, #competitor-fields select").forEach(el => {
+        el.addEventListener("input", autoRecalc);
+        el.addEventListener("change", autoRecalc);
+      });
+      updateCalcBtn();
+    }, 10);
+  }
+  updateCalcBtn();
+}
+
+let compMode = "trip";
+function setCompMode(m) {
+  compMode = m;
+  if (m === "trip") {
+    $("#comp-per-trip-btn").classList.add("active");
+    $("#comp-per-month-btn").classList.remove("active");
+    $("#comp-trip-wrap").classList.remove("hidden");
+    $("#comp-month-wrap").classList.add("hidden");
+  } else {
+    $("#comp-per-trip-btn").classList.remove("active");
+    $("#comp-per-month-btn").classList.add("active");
+    $("#comp-trip-wrap").classList.add("hidden");
+    $("#comp-month-wrap").classList.remove("hidden");
+  }
+}
+
+// Override updateCalcBtn for all modes
+const origUpdateCalcBtn = updateCalcBtn;
+updateCalcBtn = function() {
+  const btn = $("#btn-calc");
+  if (state.mode === "self") {
+    const ok = state.distance !== null && +$("#qty").value > 0;
+    btn.disabled = !ok;
+    btn.textContent = ok ? "Рассчитать мои расходы" : "Укажите адрес для расчёта";
+  } else {
+    btn.disabled = false;
+    btn.textContent = "Рассчитать и сравнить";
+  }
+};
+
+// Override calculate for all modes
+const origCalculate = calculate;
+calculate = function() {
+  if (state.mode === "self") {
+    $("#explanation-card").classList.remove("hidden");
+    origCalculate();
+    return;
+  }
+  
+  // Competitor modes
+  const cargo = CARGOS.find(c => c.id === ($("#comp-cargo")||{}).value) || CARGOS[1];
+  const qty = +($("#comp-qty")||{value:20}).value || 20;
+  let compTrips, compMonthly, compPerTrip;
+  
+  if (state.mode === "other" && compMode === "month") {
+    compMonthly = +($("#comp-month")||{value:0}).value;
+    compTrips = 12; // assume
+    compPerTrip = Math.round(compMonthly / compTrips);
+  } else {
+    compPerTrip = +($("#comp-trip")||{value:0}).value;
+    const tripsWk = +($("#comp-trips")||{value:3}).value;
+    compTrips = tripsWk * 4;
+    compMonthly = compPerTrip * compTrips;
+  }
+  
+  const oTrip = PICKUP + cargo.price * qty;
+  const mOur = Math.round(oTrip * compTrips);
+  const sav = compMonthly - mOur;
+  const savP = compMonthly > 0 ? Math.round(sav / compMonthly * 100) : 0;
+  
+  const modeName = MODES.find(m=>m.id===state.mode).name;
+
+  // Build result
+  const resEl = $("#result");
+  
+  // Reuse step1 for competitor breakdown
+  $("#res-step1").innerHTML = `
+    <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0">
+      <span style="font-size:16px">💸</span>
+      <div style="flex:1">
+        <div style="font-size:13px;color:#e2e8f0;font-weight:600">Стоимость рейса</div>
+        <div style="font-size:11px;color:#64748b;margin-top:2px">${modeName}</div>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:#fca5a5">${fmt(compPerTrip)} <span style="font-size:0.7em">₽</span></div>
+    </div>
+  `;
+  $("#res-trip-total").innerHTML = `
+    <span style="font-size:14px;font-weight:700;color:#e2e8f0">За поездку (${modeName}):</span>
+    <span style="font-size:20px;font-weight:800;color:#fca5a5">${fmt(compPerTrip)} <span style="font-size:0.7em">₽</span></span>
+  `;
+  
+  // Step 2
+  $("#res-step2").innerHTML = `
+    <div style="font-size:13px;color:#94a3b8;margin-bottom:12px">
+      <span style="color:#fca5a5;font-weight:700">${fmt(compPerTrip)} <span style="font-size:0.7em">₽</span></span> за рейс × 
+      <b style="color:#e2e8f0">${compTrips} поездок</b> в месяц
+    </div>
+  `;
+  $("#res-month-total").innerHTML = `
+    <div style="font-size:12px;color:#f87171;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">${modeName.toUpperCase()} В МЕСЯЦ</div>
+    <div style="font-size:32px;font-weight:800;color:#fca5a5;line-height:1">${fmt(compMonthly)} <span style="font-size:0.7em">₽</span></div>
+  `;
+  
+  // Warning for competitor modes
+  if (state.mode === "other") {
+    $("#res-extra-warn").innerHTML = `⚠️ <b>Как считают конкуренты:</b> большинство сервисов доставки привязаны к кубометрам — 1 куб ≈ 1 500 ₽, каждый дополнительный +700 ₽. Отправили 10 маленьких коробок, которые не заняли и половины куба? Всё равно платите за целый куб.<br><br><b style="color:#34d399">У нас — поштучный расчёт.</b> Отдали маленькую коробку — заплатили за маленькую. Отдали большую — за большую. Никаких округлений до куба. Плюс фиксированная цена — без доплат за очередь, простой или «сложную приёмку».`;
+  } else {
+    $("#res-extra-warn").innerHTML = "⚠️ И это ещё без учёта: платное ожидание, доплата за очередь на складе, наценка за время разгрузки, доп. расходы «по факту». Частники и сервисы часто набалтывают дополнительные суммы за простой, за этажность, за сверхурочные часы. <b style='color:#34d399'>У нас цена фиксированная</b> — вы знаете итоговую сумму до поездки, и она не меняется.";
+  }
+  
+  // Step 3
+  $("#res-step3").innerHTML = `
+    <div style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <div style="font-size:13px;color:#e2e8f0;font-weight:600;margin-bottom:4px">За одну поездку:</div>
+      <div style="font-size:12px;color:#64748b;line-height:1.6">
+        Подача автомобиля к вам: <span style="color:#6ee7b7;font-weight:600">${PICKUP} <span style="font-size:0.7em">₽</span></span><br>
+        ${qty} × ${cargo.name}: <span style="color:#6ee7b7;font-weight:600">${qty} × ${cargo.price} ₽ = ${fmt(qty * cargo.price)} <span style="font-size:0.7em">₽</span></span>
+      </div>
+      <div style="font-size:14px;color:#6ee7b7;font-weight:700;margin-top:6px">= ${fmt(oTrip)} ₽ за поездку</div>
+    </div>
+    <div style="font-size:14px;color:#e2e8f0;margin-top:10px;line-height:1.8">
+      <span style="color:#6ee7b7;font-weight:700">${fmt(oTrip)} <span style="font-size:0.7em">₽</span></span>
+      <span style="color:#64748b"> × </span>
+      <span style="color:#e2e8f0;font-weight:700">${compTrips} поездок</span>
+    </div>
+  `;
+  $("#res-our-total-block").innerHTML = `
+    <div style="font-size:12px;color:#34d399;font-weight:700;letter-spacing:0.5px;margin-bottom:4px">WB·OZON DELIVERY В МЕСЯЦ</div>
+    <div style="font-size:32px;font-weight:800;color:#6ee7b7;line-height:1">${fmt(mOur)} <span style="font-size:0.7em">₽</span></div>
+  `;
+  
+  // Saving
+  const saveEl = $("#res-save");
+  if (sav > 0) {
+    saveEl.classList.remove("hidden");
+    saveEl.innerHTML = `
+      <div style="font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:1px;margin-bottom:16px">ВАША ЭКОНОМИЯ</div>
+      <div style="margin-bottom:16px">
+        <div style="display:flex;gap:10px;justify-content:center">
+          <div class="save-chip green"><div class="save-chip-val" style="color:#34d399">${fmt(sav)} <span style="font-size:0.7em">₽</span></div><div class="save-chip-label">экономия / мес</div></div>
+          <div class="save-chip green"><div class="save-chip-val" style="color:#34d399">${fmt(sav * 12)} <span style="font-size:0.7em">₽</span></div><div class="save-chip-label">экономия / год</div></div>
+        </div>
+      </div>
+      <div style="border-top:1px solid rgba(255,255,255,0.08);padding-top:14px">
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(52,211,153,0.06);border-radius:10px">
+          <span style="font-size:18px">💰</span>
+          <div>
+            <div style="font-size:14px;color:#e2e8f0;font-weight:700">${fmt(sav * 12)} ₽ в год</div>
+            <div style="font-size:12px;color:#94a3b8;margin-top:2px">Эти деньги можно вложить в рекламу, товар или провести время с семьёй.</div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else {
+    // We're more expensive — be honest about it
+    const diff = mOur - compMonthly;
+    saveEl.classList.remove("hidden");
+    saveEl.innerHTML = `
+      <div style="font-size:16px;font-weight:800;color:#e2e8f0;margin-bottom:6px">Да, у нас дороже на ${fmt(diff)} ₽/мес.</div>
+      <div style="font-size:13px;color:#94a3b8;margin-bottom:16px;line-height:1.6">Мы не будем хитрить — по цифрам мы дороже. Но вот что вы получаете за эти деньги:</div>
+      
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">💬</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">Всегда на связи.</b> Персональная группа в Telegram — быстрая коммуникация, фото-отчёты, счета. Без звонков на горячую линию и ожидания ответа.</div>
+        </div>
+        
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">🚛</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">10 машин — всегда приедем.</b> Даже если одна сломалась, маршрут не остановится. Ваш товар не застрянет на складе.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">📍</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">GPS-маяк в каждой машине.</b> Всегда знаете, где ваш груз. Не нужно звонить и спрашивать «ну где вы?»</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">📅</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">Работаем 364 дня в году.</b> Единственный выходной — 1 января. Все остальные дни, включая праздники и выходные — мы на маршруте. Всегда можете на нас рассчитывать.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">💰</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">Фиксированные цены.</b> Никаких доплат за очередь, простой, «сложную приёмку». Сумма, которую вы видите — финальная. Без сюрпризов.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">🤝</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">Оплата по факту.</b> Никаких предоплат — платите только за выполненную работу. Любая форма оплаты.</div>
+        </div>
+
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px">
+          <span style="font-size:16px;flex-shrink:0">📄</span>
+          <div style="font-size:12px;color:#94a3b8;line-height:1.5"><b style="color:#e2e8f0">Закрывающие документы.</b> Предоставим УПД, работаем в ЭДО. Всё прозрачно для вашей бухгалтерии.</div>
+        </div>
+      </div>
+      
+      <div style="margin-top:16px;padding:14px;background:rgba(59,130,246,0.08);border-radius:12px;font-size:13px;color:#e2e8f0;line-height:1.6;text-align:center">
+        <b>Разница — ${fmt(Math.round(diff / compTrips))} ₽ за поездку.</b><br>
+        <span style="color:#94a3b8">За эту сумму вы получаете надёжность, прозрачность и спокойствие.</span>
+      </div>
+    `;
+  }
+  
+  // Hide self-only explanation for competitor modes
+  $("#explanation-card").classList.add("hidden");
+  
+  $("#btn-calc").classList.add("hidden");
+  resEl.classList.remove("hidden");
+};
+
+// Focus clear zero
+document.querySelectorAll(".input-num, #rev, #load-hrs").forEach(el => {
+  el.addEventListener("focus", function() { if (+this.value === 0) this.value = ""; });
+  el.addEventListener("blur", function() { if (this.value === "") this.value = 0; });
+});
+
+// Init
+renderModes();
+renderWH();
+renderFuel();
+renderCargo();
+setupSlider("cons","cons-val");
+setupSlider("trips","trips-val");
+setupSlider("workhrs","workhrs-val");
+updateHourly();
+updateModeUI();
+initHourModes();
+
+// Auto-recalculate if result is already visible
+function updateTotalTime() {
+  const travelMin = state.travelTimeMin || 0;
+  const loadVal = $("#load-hrs") ? $("#load-hrs").value : "";
+  const loadHrs = loadVal === "" ? 0 : +loadVal;
+  const totalMin = travelMin + Math.round(loadHrs * 60);
+  const totalHrs = totalMin / 60;
+  
+  // Update hidden hrs field for calculation
+  $("#hrs").value = Math.round(totalHrs * 10) / 10;
+  
+  // Display
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  const timeStr = h > 0 ? `${h} ч ${m} мин` : `${m} мин`;
+  
+  const tH = Math.floor(travelMin / 60);
+  const tM = travelMin % 60;
+  const tStr = tH > 0 ? `${tH} ч ${tM} мин` : `${tM} мин`;
+  
+  if (travelMin > 0 && loadVal === "") {
+    $("#total-time-display").innerHTML = `${tStr} <span style="font-size:12px;color:#64748b">+ введите время на складах ↑</span>`;
+  } else if (travelMin > 0) {
+    $("#total-time-display").textContent = timeStr;
+  } else {
+    $("#total-time-display").textContent = "—";
+  }
+}
+
+function autoRecalc() {
+  if (!$("#result").classList.contains("hidden")) {
+    calculate();
+  }
+}
+
+$("#rev").oninput = () => { updateHourly(); autoRecalc(); };
+$("#workhrs").oninput = () => { updateHourly(); autoRecalc(); };
+$("#qty").oninput = () => { updateCalcBtn(); autoRecalc(); };
+$("#load-hrs").oninput = () => { updateTotalTime(); autoRecalc(); };
+$("#cons").addEventListener("input", autoRecalc);
+$("#trips").addEventListener("input", autoRecalc);
+$("#btn-calc").onclick = () => calculate();
+$("#btn-reset").onclick = () => { hideResult(); updateModeUI(); };
+$("#tip-toggle").onclick = function() {
+  const tip = $("#hour-tip");
+  const show = tip.classList.toggle("hidden");
+  this.textContent = !show ? "Скрыть ↑" : "Как посчитать стоимость часа? ↓";
+};
+
+// Init Yandex
+if (typeof ymaps !== "undefined") {
+  initYandex();
+} else {
+  // Fallback: manual km input if Yandex not loaded
+  const addr = $("#address");
+  addr.placeholder = "Яндекс Карты не загрузились. Укажите расстояние вручную ↓";
+  addr.disabled = true;
+  const fb = document.createElement("div");
+  fb.style.cssText = "margin-top:12px";
+  fb.innerHTML = `
+    <div class="label">Общее расстояние маршрута (все склады + возврат, км)</div>
+    <input type="text" inputmode="decimal" id="manual-km" class="input input-num" value="30" min="1">
+  `;
+  addr.parentElement.after(fb);
+  const mkm = fb.querySelector("#manual-km");
+  mkm.oninput = () => {
+    state.distance = +mkm.value;
+    $("#dist-display").textContent = state.distance + " км";
+    $("#route-info").classList.remove("hidden");
+    $("#map").style.display = "none";
+    updateCalcBtn();
+  };
+  mkm.dispatchEvent(new Event("input"));
+}
+
+// Report height to parent for iframe auto-resize
+function reportHeight() {
+  if (window.parent !== window) {
+    const h = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type: 'calcHeight', height: h }, '*');
+  }
+}
+setInterval(reportHeight, 500);
+new MutationObserver(reportHeight).observe(document.body, { childList: true, subtree: true, attributes: true });
+</script>
+</body>
+</html>
