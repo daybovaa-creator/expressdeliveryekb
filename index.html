@@ -869,22 +869,28 @@
 <!-- КАЛЬКУЛЯТОР -->
 <section class="section" id="calculator" style="border-top:1px solid var(--border);">
   <div style="max-width:1100px;margin-inline:auto;">
-    <p class="section-eyebrow reveal">Калькулятор</p>
-    <h2 class="section-title reveal">Узнайте, сколько вы <span style="color:var(--orange);">реально тратите</span> на доставку</h2>
-    <p style="color:var(--muted);font-size:16px;margin-top:16px;margin-bottom:40px;max-width:650px;line-height:1.7;" class="reveal">
-      Сравните ваши текущие расходы на самовоз, Яндекс Доставку или другой сервис — с нашим тарифом. Расчёт по Яндекс Картам с учётом реального маршрута.
-    </p>
-    <div class="reveal" style="border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--card);">
-      <iframe src="calculator.html" style="width:100%;min-height:900px;border:none;display:block;" id="calc-iframe"></iframe>
+    <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:clamp(32px,5vw,60px);text-align:center;">
+      <p class="section-eyebrow" style="margin-bottom:20px;">Калькулятор</p>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);line-height:1;margin-bottom:16px;">Сколько вы <span style="color:var(--orange);">реально тратите</span> на доставку?</h2>
+      <p style="color:var(--muted);font-size:16px;max-width:560px;margin-inline:auto;line-height:1.7;margin-bottom:36px;">
+        Самовоз, Яндекс Доставка, наёмная газель или другой сервис — посчитайте все расходы и сравните с нашим тарифом. Маршрут по Яндекс Картам, расчёт за 30 секунд.
+      </p>
+      <a href="calculator.html" class="btn-primary" style="display:inline-flex;font-size:17px;padding:20px 48px;"><span>Рассчитать мои расходы →</span></a>
+      <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:32px;">
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
+          <span style="font-size:18px;">🚗</span> Самовоз
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
+          <span style="font-size:18px;">🚕</span> Яндекс Доставка
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
+          <span style="font-size:18px;">🚛</span> Наёмная газель
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
+          <span style="font-size:18px;">📦</span> Другой сервис
+        </div>
+      </div>
     </div>
-    <script>
-      // Auto-resize iframe to fit content
-      window.addEventListener('message', function(e) {
-        if (e.data && e.data.type === 'calcHeight') {
-          document.getElementById('calc-iframe').style.height = e.data.height + 'px';
-        }
-      });
-    </script>
   </div>
 </section>
 
