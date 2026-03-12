@@ -20,7 +20,6 @@
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": "WB-OZON Delivery",
-    "description": "Доставка товаров на склады Wildberries, OZON и Яндекс Маркет в Екатеринбурге. Забор от селлера, маркировка, оплата по факту.",
     "url": "https://expressdeliveryekb.ru/",
     "telephone": "+7-932-616-61-61",
     "address": {
@@ -41,8 +40,104 @@
       "name": "Екатеринбург"
     },
     "serviceType": ["Доставка на Wildberries", "Доставка на OZON", "Доставка на Яндекс Маркет", "Забор товара", "Маркировка"],
-    "openingHours": "Mo-Su 08:00-20:00",
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+        "opens": "08:00",
+        "closes": "20:00"
+      }
+    ],
+    "description": "Доставка товаров на склады Wildberries, OZON и Яндекс Маркет в Екатеринбурге. Забор от селлера, маркировка, оплата по факту. Работаем 364 дня в году.",
     "priceRange": "₽₽"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Как оплачивать доставку на маркетплейсы?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Оплата строго по факту выполненных работ. Никаких предоплат. Принимаем любую форму оплаты: расчётный счёт, карта, наличные."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Работаете ли в выходные и праздники?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да. Мы работаем 364 дня в году. Единственный выходной — 1 января."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "С какими маркетплейсами работаете?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Wildberries (FBS, FBO), OZON (FBS, FBO, РФЦ) и Яндекс Маркет. Доставляем на все действующие склады маркетплейсов в Екатеринбурге."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Какой минимальный объём для доставки?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "От одного заказа. Работаем и с одной коробкой, и с паллетными отгрузками."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Что если товар повредят при доставке?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "По договору мы несём полную материальную ответственность за ваш груз. Если что-то случится — мы возмещаем ущерб."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Нужно ли самому оформлять пропуск на склад маркетплейса?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Нет. Пропуска на все маркетплейсы мы оформляем самостоятельно."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как отслеживать где мой груз?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "GPS-маяк в каждой машине. Плюс водитель отчитывается в вашу персональную Telegram-группу с фото на каждом этапе."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Работаете ли официально? Есть ли договор?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да. Работаем как ИП, заключаем договор, предоставляем закрывающие документы (УПД), работаем в ЭДО."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Можно ли работать из другого города?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Да. Отправьте товар любой транспортной компанией до Екатеринбурга — мы заберём груз из ТК, подготовим и сдадим на маркетплейс."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Как быстро можете забрать товар?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "В день обращения. 10 машин на маршрутах ежедневно — обычно согласовываем время забора в течение нескольких минут."
+        }
+      }
+    ]
   }
   </script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>">
@@ -519,6 +614,13 @@
       gap: 28px !important;
     }
 
+    /* Дропшиппинг */
+    #dropshipping .reveal {
+      grid-template-columns: 1fr !important;
+      padding: 28px 20px !important;
+      gap: 28px !important;
+    }
+
     /* Автопарк */
     .fleet-grid { grid-template-columns: 1fr 1fr !important; }
 
@@ -569,6 +671,54 @@
     flex-direction: column;
     align-items: center;
     gap: 8px;
+  }
+
+  /* ── FAQ ── */
+  .faq-item {
+    border: 1px solid var(--border);
+    background: var(--card);
+    border-radius: 0;
+    overflow: hidden;
+  }
+  .faq-item:first-child { border-radius: 6px 6px 0 0; }
+  .faq-item:last-child { border-radius: 0 0 6px 6px; }
+  .faq-q {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text);
+    font-family: 'Geologica', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    gap: 16px;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: var(--card2); }
+  .faq-arrow {
+    color: var(--orange);
+    font-size: 18px;
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); }
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding: 0 24px;
+  }
+  .faq-item.open .faq-a {
+    max-height: 300px;
+    padding: 0 24px 20px;
   }
 
   /* ── FLEET GALLERY ── */
@@ -700,9 +850,10 @@
   <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center;">
     <a href="#features"  class="nav-btn">Услуги</a>
     <a href="#how"       class="nav-btn">Начать работу</a>
-    <a href="#calculator" class="nav-btn">Калькулятор</a>
+    <a href="#calculator" class="nav-btn">Сравнить расходы</a>
     <a href="#price" onclick="setTimeout(()=>{const b=document.getElementById('price');const body=b.querySelector('.price-body');const arr=b.querySelector('.price-arrow');if(body.style.maxHeight==='0px'||!body.style.maxHeight){body.style.maxHeight='3000px';arr.style.transform='rotate(180deg)';}},400)" class="nav-btn">Прайс</a>
     <a href="#reviews"   class="nav-btn">Отзывы</a>
+    <a href="#faq"       class="nav-btn">FAQ</a>
     <a href="#contact"   class="nav-btn">Контакты</a>
   </div>
 </nav>
@@ -806,10 +957,11 @@
       <div class="feat-desc">Принимаем грузы из ТК и отправляем поставки через ТК — берём на себя все этапы логистики.</div>
     </div>
   </div>
+  <div style="text-align:center;margin-top:48px;" class="reveal">
+    <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
+  </div>
   </div>
 </section>
-
-<!-- STATS -->
 <section class="section" style="padding:0;">
   <div class="stats">
     <div class="stat-box reveal">
@@ -863,6 +1015,9 @@
       <div class="step-desc">Сдаём на склад маркетплейса и сразу отчитываемся в группу с фото. Оплата — только после выполнения.</div>
     </div>
   </div>
+  <div style="text-align:center;margin-top:48px;" class="reveal">
+    <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
+  </div>
   </div>
 </section>
 
@@ -871,11 +1026,11 @@
   <div style="max-width:1100px;margin-inline:auto;">
     <div class="reveal" style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:clamp(32px,5vw,60px);text-align:center;">
       <p class="section-eyebrow" style="margin-bottom:20px;">Калькулятор</p>
-      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);line-height:1;margin-bottom:16px;">Сколько вы <span style="color:var(--orange);">реально тратите</span> на доставку?</h2>
+      <h2 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,64px);line-height:1;margin-bottom:16px;">Возите сами? <span style="color:var(--orange);">Сравните расходы</span></h2>
       <p style="color:var(--muted);font-size:16px;max-width:560px;margin-inline:auto;line-height:1.7;margin-bottom:36px;">
-        Самовоз, Яндекс Доставка, наёмная газель или другой сервис — посчитайте все расходы и сравните с нашим тарифом. Маршрут по Яндекс Картам, расчёт за 30 секунд.
+        Посчитайте, сколько реально стоит ваш самовоз, Яндекс Доставка или наёмная газель — с учётом бензина, времени и износа. И сравните с нашим тарифом. Многие удивляются.
       </p>
-      <a href="calculator.html" class="btn-primary" style="display:inline-flex;font-size:17px;padding:20px 48px;"><span>Рассчитать мои расходы →</span></a>
+      <a href="calculator.html" class="btn-primary" style="display:inline-flex;font-size:17px;padding:20px 48px;"><span>Сравнить расходы →</span></a>
       <div style="display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-top:32px;">
         <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);">
           <span style="font-size:18px;">🚗</span> Самовоз
@@ -1531,6 +1686,9 @@
     <div style="text-align:center;margin-top:20px;padding-bottom:10px;" class="reveal">
       <span style="font-size:13px;color:var(--muted);">И ещё 300+ компаний по всему Екатеринбургу</span>
     </div>
+    <div style="text-align:center;margin-top:24px;" class="reveal">
+      <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
+    </div>
   </div>
 </section>
 
@@ -1614,8 +1772,170 @@
   </div>
 </section>
 
+<!-- ДРОПШИППИНГ -->
+<section class="section" id="dropshipping" style="border-top:1px solid var(--border);">
+  <div style="background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: clamp(24px, 5vw, 60px); display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 60px); align-items: center;" class="reveal">
+    <div>
+      <p class="section-eyebrow">Дропшиппинг</p>
+      <h2 class="section-title" style="font-size: clamp(32px, 4vw, 52px); margin-top: 12px;">Ваш поставщик в Екатеринбурге — мы доставим за вас</h2>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.6; margin-top: 16px; padding: 12px 16px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <span style="color: var(--orange); font-weight: 500;">Дропшиппинг</span> — модель, при которой вы продаёте товар на маркетплейсе, но физически его не храните. Товар отгружает ваш поставщик или производитель напрямую.
+      </div>
+      <p style="font-size: 16px; color: var(--muted); line-height: 1.8; margin-top: 20px;">
+        Вы в другом городе, а ваш поставщик, производство или филиал — в Екатеринбурге? Не нужно приезжать. Мы заберём товар напрямую у поставщика и сдадим на маркетплейс от вашего имени.
+      </p>
+      <p style="font-size: 16px; color: var(--muted); line-height: 1.8; margin-top: 12px;">
+        Работаем полностью удалённо — управляете отгрузками из любой точки страны через Telegram.
+      </p>
+      <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary" style="display: inline-flex; margin-top: 32px;"><span>Обсудить в Telegram</span></a>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">🏭</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Поставщик отгружает — мы забираем</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Ваш производитель или поставщик в Екатеринбурге готовит товар — мы приезжаем и забираем напрямую с его склада.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">📦</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Подготовим и сдадим на маркетплейс</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">При необходимости промаркируем, проклеим и сдадим на WB, OZON или Яндекс Маркет — всё под ключ.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">🌍</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Управляйте из любого города</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Москва, Казань, Новосибирск — неважно. Вся коммуникация в Telegram-группе: фото забора, фото сдачи, счета.</div>
+        </div>
+      </div>
+      <div style="display: flex; align-items: flex-start; gap: 20px; padding: 24px; background: var(--darker); border-radius: 4px; border: 1px solid var(--border);">
+        <div style="font-size: 28px; line-height: 1;">🔄</div>
+        <div>
+          <div style="font-size: 15px; font-weight: 500; margin-bottom: 6px;">Работаем с вашим поставщиком напрямую</div>
+          <div style="font-size: 13px; color: var(--muted); line-height: 1.6;">Можем добавить вашего поставщика в Telegram-группу — согласовываем забор без вашего участия. Вы только контролируете.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-<div <!-- FOOTER CTA -->
+<!-- FAQ -->
+<section class="section" id="faq" style="border-top:1px solid var(--border);">
+  <div style="max-width:800px;margin-inline:auto;">
+    <p class="section-eyebrow reveal">Вопросы</p>
+    <h2 class="section-title reveal">Частые вопросы</h2>
+
+    <div style="margin-top:48px;display:flex;flex-direction:column;gap:2px;" class="reveal">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Как оплачивать?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          Оплата строго по факту выполненных работ. Никаких предоплат. Принимаем любую форму оплаты: расчётный счёт, карта, наличные. Расчётный период — понедельник–воскресенье, счёт выставляем каждый понедельник.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Работаете ли в выходные и праздники?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          Да. Мы работаем 364 дня в году. Единственный выходной — 1 января. Все остальные дни, включая праздники и выходные — мы на маршруте.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>С какими маркетплейсами работаете?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          Wildberries (FBS, FBO), OZON (FBS, FBO, РФЦ) и Яндекс Маркет. Доставляем на все действующие склады маркетплейсов в Екатеринбурге.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Какой минимальный объём?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          От одного заказа. Масштаб не имеет значения — работаем и с одной коробкой, и с паллетными отгрузками.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Что если товар повредят при доставке?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          По договору мы несём полную материальную ответственность за ваш груз. Если что-то случится — мы возмещаем ущерб.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Нужно ли мне самому оформлять пропуск на склад?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          Нет. Пропуска на все маркетплейсы мы оформляем самостоятельно. Вам не нужно об этом думать.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Как отслеживать, где мой груз?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          GPS-маяк в каждой машине — вы всегда знаете, где ваш товар. Плюс водитель отчитывается в вашу персональную Telegram-группу с фото на каждом этапе: забрал → в пути → сдал.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Есть ли договор? Работаете ли официально?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          Да. Работаем как ИП, заключаем договор, предоставляем закрывающие документы (УПД), работаем в ЭДО. Всё прозрачно для вашей бухгалтерии.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Я из другого города — можно ли с вами работать?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          Да. Отправьте товар любой транспортной компанией до Екатеринбурга — мы заберём груз из ТК, подготовим и сдадим на маркетплейс. Работаем полностью удалённо, всё через Telegram.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="this.parentElement.classList.toggle('open')">
+          <span>Как быстро можете забрать товар?</span>
+          <span class="faq-arrow">↓</span>
+        </button>
+        <div class="faq-a">
+          В день обращения. 10 машин на маршрутах ежедневно — если есть свободный слот, заберём в тот же день. Обычно согласовываем время забора в течение нескольких минут.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER CTA -->
 <div class="footer-cta" id="contact">
   <div class="reveal" style="width:100%;">
     <h2 class="footer-cta-title">Готовы начать?<br><span>Пишите прямо сейчас</span></h2>
