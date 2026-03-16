@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькулятор выплат Wildberries 2026</title>
+<style>
+  :root{--wb-purple:#6B2FA0;--wb-dark:#1A1028;--wb-accent:#CB11AB;--wb-green:#2ECC71;--wb-orange:#F39C12;--wb-blue:#3498DB;--wb-red:#E74C3C}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;background:linear-gradient(170deg,var(--wb-dark) 0%,#2d1650 35%,#4a1a7a 70%,var(--wb-purple) 100%);font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;padding:24px 16px;color:#fff}
+  .header{text-align:center;max-width:480px;margin:0 auto 20px}
+  .badge{display:inline-block;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:14px}
+  .header h1{font-size:30px;font-weight:800;margin:0 0 8px;background:linear-gradient(135deg,#fff 30%,#d4b8eb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.15}
+  .header p{font-size:14px;color:rgba(255,255,255,0.45);margin:0 0 14px}
+  .warn-banner{display:inline-block;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.25);border-radius:10px;padding:7px 14px;font-size:12px;color:var(--wb-orange);line-height:1.5}
+  .warn-red{background:rgba(231,76,60,0.1);border:1px solid rgba(231,76,60,0.25);color:var(--wb-red);margin-top:8px}
+  .card{max-width:480px;margin:0 auto 16px;background:rgba(255,255,255,0.055);border-radius:24px;border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(24px);overflow:hidden}
+  .section{padding:24px 24px 16px}
+  .section-label{display:block;font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.35);margin-bottom:10px;font-weight:600}
+  .week-row{display:flex;align-items:center;gap:8px}
+  .week-btn{width:40px;height:48px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.05);color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .week-btn:disabled{opacity:.25;cursor:default}
+  .week-btn:not(:disabled):hover{background:rgba(255,255,255,0.12)}
+  .week-display{flex:1;text-align:center;padding:10px 0;background:rgba(255,255,255,0.07);border-radius:12px;border:1.5px solid rgba(107,47,160,0.5)}
+  .week-display .dates{font-size:18px;font-weight:800}
+  .week-display .meta{font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px}
+  .meta .new-rules{color:var(--wb-orange);font-weight:600}
+  .meta .old-rules{color:var(--wb-green);font-weight:600}
+  .meta .frozen{color:var(--wb-red);font-weight:600}
+  .types{display:flex;gap:6px;padding:0 24px 20px}
+  .type-btn{flex:1;padding:10px 4px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.025);border:1.5px solid rgba(255,255,255,0.07);border-radius:12px;color:#fff;transition:all .2s}
+  .type-btn.active{background:rgba(255,255,255,0.1)}
+  .type-btn .label{font-weight:700;font-size:13px}
+  .type-btn .fee{font-size:10px;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:5px;display:inline-block}
+  .divider{height:1px;background:rgba(255,255,255,0.06);margin:0 24px}
+  .hero{background:linear-gradient(135deg,rgba(46,204,113,0.12),rgba(107,47,160,0.12));border:1px solid rgba(46,204,113,0.2);border-radius:16px;padding:22px 18px;text-align:center;margin-bottom:24px}
+  .hero .hero-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:rgba(255,255,255,0.45);margin-bottom:6px;font-weight:600}
+  .hero .hero-num{font-size:42px;font-weight:800;color:var(--wb-green);line-height:1}
+  .hero .hero-num span{font-size:18px;font-weight:600;color:rgba(255,255,255,0.4);margin-left:6px}
+  .hero .hero-dates{font-size:13px;color:rgba(255,255,255,0.4);margin-top:8px}
+  .hero .hero-dates strong{color:rgba(255,255,255,0.7)}
+  .hero-frozen{border-color:rgba(231,76,60,0.3)!important;background:linear-gradient(135deg,rgba(231,76,60,0.12),rgba(107,47,160,0.12))!important}
+  .hero-frozen .hero-num{color:var(--wb-red)!important}
+  .tl-label{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:14px;font-weight:600}
+  .tl-step{display:flex;gap:14px;position:relative;padding:4px 0}
+  .tl-step .tl-line{position:absolute;left:13px;top:32px;bottom:-4px;width:2px;background:rgba(255,255,255,0.07);border-radius:1px}
+  .tl-step.last .tl-line{display:none}
+  .tl-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;z-index:2;flex-shrink:0}
+  .tl-content{flex:1;padding-bottom:12px}
+  .tl-step.last .tl-content{padding-bottom:0}
+  .tl-title{font-size:13px;font-weight:700;color:#fff;line-height:1.3}
+  .tl-date{font-size:12px;color:rgba(255,255,255,0.45);margin-top:2px}
+  .tl-date .extra{color:rgba(255,255,255,0.3)}
+  .tl-badge{font-size:11px;margin-top:5px;padding:4px 10px;border-radius:6px;display:inline-block;line-height:1.3}
+  .cal-wrap{background:#fff;border-radius:16px;padding:16px;color:var(--wb-dark)}
+  .cal-grid{display:grid;gap:14px}
+  .cal-grid.cols2{grid-template-columns:1fr 1fr}
+  .cal-month-title{text-align:center;font-weight:700;margin-bottom:6px;font-size:12px;color:var(--wb-dark)}
+  .cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:1px;text-align:center}
+  .cal-days .hdr{font-size:9px;color:#999;font-weight:600;padding:2px 0}
+  .cal-days .day{font-size:11px;padding:3px 0;border-radius:4px}
+  .cal-legend{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+  .cal-legend .item{display:flex;align-items:center;gap:4px;font-size:10px;color:#888}
+  .cal-legend .dot{width:10px;height:10px;border-radius:3px}
+  .note{margin-top:18px;padding:14px 16px;background:rgba(255,255,255,0.035);border-radius:12px;border:1px solid rgba(255,255,255,0.06);font-size:12px;line-height:1.65;color:rgba(255,255,255,0.4)}
+  .note strong{color:rgba(255,255,255,0.6)}
+  .note .hl-orange{color:var(--wb-orange);font-weight:700}
+  .note .hl-red{color:var(--wb-red);font-weight:700}
+  .type-flow{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.7;color:rgba(255,255,255,0.5)}
+  .type-flow .flow-line{display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin:3px 0}
+  .type-flow .flow-step{display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,0.06);border-radius:6px;padding:2px 8px;font-size:11px;white-space:nowrap}
+  .type-flow .flow-arrow{color:rgba(255,255,255,0.2);font-size:13px}
+  .type-flow .flow-step.hl{background:rgba(108,92,231,0.15);color:var(--wb-accent)}
+  .type-flow .flow-step.green{background:rgba(46,204,113,0.15);color:var(--wb-green)}
+  .type-flow .flow-step.orange{background:rgba(243,156,18,0.15);color:var(--wb-orange)}
+  .type-flow .flow-title{font-weight:700;color:rgba(255,255,255,0.65);margin-bottom:4px;font-size:11px}
+  .comm-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px}
+  .comm-box .comm-title{font-size:11px;color:rgba(255,255,255,0.5);margin-bottom:10px;font-weight:600}
+  .comm-box .comm-input-row{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+  .comm-box input{flex:1;padding:10px 12px;font-size:15px;font-family:inherit;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:10px;color:#fff;outline:none;max-width:220px}
+  .comm-box input:focus{border-color:var(--wb-accent)}
+  .comm-box input::placeholder{color:rgba(255,255,255,0.25)}
+  .comm-box .comm-suffix{font-size:14px;color:rgba(255,255,255,0.4);font-weight:600}
+  .comm-result{display:flex;gap:10px;flex-wrap:wrap}
+  .comm-card{flex:1;min-width:130px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;text-align:center}
+  .comm-card .cc-num{font-size:20px;font-weight:800;color:var(--wb-orange)}
+  .comm-card .cc-num.green{color:var(--wb-green)}
+  .comm-card .cc-label{font-size:10px;color:rgba(255,255,255,0.4);margin-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+  .footer{text-align:center;margin-top:20px;font-size:10px;color:rgba(255,255,255,0.15)}
+</style>
+</head>
+<body>
+
+<div style="max-width:480px;margin:0 auto;padding:16px 16px 0">
+  <a href="tools.html" style="display:inline-flex;align-items:center;gap:6px;color:rgba(255,255,255,0.5);text-decoration:none;font-size:13px;padding:6px 0;transition:color .2s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">← Полезное</a>
+</div>
+
+<div class="header">
+  <div class="badge">📦 Wildberries · Калькулятор выплат</div>
+  <h1>Когда придут деньги за продажи?</h1>
+  <p>Выберите неделю продаж — покажем сроки выплаты</p>
+  <div class="warn-banner">⚠️ С <strong>30 марта 2026</strong> — срок до кнопки «Вывести» увеличен на 2 недели</div>
+  <div class="warn-banner warn-red">🚫 <strong>31 марта — 19 апреля</strong> — переходный период, выплат не будет</div>
+</div>
+
+<div class="card">
+  <div class="section">
+    <span class="section-label">Период продаж (расчётная неделя)</span>
+    <div class="week-row">
+      <button class="week-btn" id="prevBtn" onclick="changeWeek(-1)">‹</button>
+      <div class="week-display">
+        <div class="dates" id="weekDates"></div>
+        <div class="meta" id="weekMeta"></div>
+      </div>
+      <button class="week-btn" id="nextBtn" onclick="changeWeek(1)">›</button>
+    </div>
+  </div>
+  <div style="padding:0 24px 8px"><span class="section-label">Тип вывода</span></div>
+  <div class="types" id="typeBtns"></div>
+  <div id="typeExplain" style="padding:0 24px 16px"></div>
+  <div id="commCalc" style="padding:0 24px 16px;display:none"></div>
+  <div class="divider"></div>
+  <div style="padding:24px" id="resultArea"></div>
+</div>
+
+<div class="footer">Расчёт приблизительный · Учтены праздники РФ 2026 · Фактические сроки зависят от банка</div>
+
+<script>
+var MONTHS_FULL=["Январь","Февраль","Март","Апрель","Май","Июнь","Июль","Август","Сентябрь","Октябрь","Ноябрь","Декабрь"];
+var MONTHS_SHORT=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];
+var WD=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];
+var COLORS={purple:"#6B2FA0",blue:"#3498DB",orange:"#F39C12",accent:"#CB11AB",green:"#2ECC71",darkgreen:"#27ae60",red:"#E74C3C"};
+
+// ============ ПРАЗДНИЧНЫЕ ДНИ РФ 2026 ============
+// Формат: "YYYY-MM-DD"
+var HOLIDAYS_2026 = [
+  // Новогодние каникулы + Рождество + перенос
+  "2026-01-01","2026-01-02","2026-01-03","2026-01-04","2026-01-05",
+  "2026-01-06","2026-01-07","2026-01-08","2026-01-09", // 9 янв — перенос с 3 янв (сб)
+  // 23 февраля (Пн)
+  "2026-02-23",
+  // 8 марта (Вс) → перенос на 9 марта (Пн)
+  "2026-03-08","2026-03-09",
+  // 1 мая (Пт)
+  "2026-05-01",
+  // 9 мая (Сб) → перенос на 11 мая (Пн)
+  "2026-05-09","2026-05-11",
+  // 12 июня (Пт)
+  "2026-06-12",
+  // 4 ноября (Ср)
+  "2026-11-04",
+  // 31 декабря (Чт) — перенос с 4 янв (Вс)
+  "2026-12-31",
+  // Также добавим 2025 конец года для корректности
+  "2025-12-31",
+  // И 2027 начало
+  "2027-01-01","2027-01-02","2027-01-03","2027-01-04","2027-01-05",
+  "2027-01-06","2027-01-07","2027-01-08",
+];
+
+var holidaySet = {};
+HOLIDAYS_2026.forEach(function(d){ holidaySet[d] = true; });
+
+function noon(d){ var r=new Date(d); r.setHours(12,0,0,0); return r; }
+function addDays(d,n){ var r=new Date(d); r.setDate(r.getDate()+n); return noon(r); }
+function isWknd(d){ var day=d.getDay(); return day===0||day===6; }
+
+function dateKey(d){
+  return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+}
+
+function isHoliday(d){ return !!holidaySet[dateKey(d)]; }
+function isNonBusinessDay(d){ return isWknd(d) || isHoliday(d); }
+
+function sameDay(a,b){ return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate(); }
+function between(d,s,e){ return d.getTime()>=s.getTime()&&d.getTime()<=e.getTime(); }
+function daysBetween(a,b){ return Math.round((b-a)/864e5); }
+
+function getMonday(d){
+  var r=new Date(d); var day=r.getDay();
+  r.setDate(r.getDate()-(day===0?6:day-1));
+  return noon(r);
+}
+
+function fmtDate(d){ return d.getDate().toString().padStart(2,'0')+'.'+(d.getMonth()+1).toString().padStart(2,'0')+'.'+d.getFullYear(); }
+function fmtShort(d){ return d.getDate()+' '+MONTHS_SHORT[d.getMonth()]; }
+
+// 5 банковских дней с учётом праздников РФ. День нажатия НЕ считается.
+function addBizDays(start,count){
+  var r=new Date(start);
+  r.setDate(r.getDate()+1); // день нажатия не считается
+  var added=0;
+  while(added<count){
+    if(!isNonBusinessDay(r)) added++;
+    if(added<count) r.setDate(r.getDate()+1);
+  }
+  return noon(r);
+}
+
+// Переходный период: 31 марта — 19 апреля 2026 (выплат нет)
+var FREEZE_START = noon(new Date(2026,2,31)); // 31 марта
+var FREEZE_END = noon(new Date(2026,3,19));   // 19 апреля
+
+// Новые правила: с отчёта 23.03.2026 (за неделю 16-22 марта)
+var NEW_RULES_REPORT = noon(new Date(2026,2,23));
+
+var weeks=[];
+(function(){
+  var today=new Date(); var cur=getMonday(today);
+  for(var i=-20;i<=52;i++){
+    var s=addDays(cur,i*7); var e=addDays(s,6);
+    weeks.push({start:s,end:e});
+  }
+})();
+
+var weekIdx=weeks.findIndex(function(w){return sameDay(w.start,getMonday(new Date()))});
+if(weekIdx<0) weekIdx=20;
+var withdrawType="free";
+
+var typeOptions=[
+  {key:"free",label:"Бесплатный",extra:"0%",color:COLORS.green},
+  {key:"daily",label:"Любой день",extra:"+2.5%",color:COLORS.orange},
+  {key:"instant",label:"Сейчас",extra:"≈4.3%",color:COLORS.accent},
+];
+
+function initTypes(){
+  var wrap=document.getElementById('typeBtns');
+  wrap.innerHTML='';
+  typeOptions.forEach(function(opt){
+    var btn=document.createElement('button');
+    btn.className='type-btn'+(withdrawType===opt.key?' active':'');
+    btn.style.borderColor=withdrawType===opt.key?opt.color:'rgba(255,255,255,0.07)';
+    btn.setAttribute('data-type',opt.key);
+    btn.innerHTML='<div class="label">'+opt.label+'</div><div class="fee" style="color:'+opt.color+';background:'+opt.color+'15;border:1px solid '+opt.color+'20">'+opt.extra+'</div>';
+    wrap.appendChild(btn);
+  });
+}
+
+document.getElementById('typeBtns').addEventListener('click',function(e){
+  var btn=e.target.closest('[data-type]');
+  if(!btn) return;
+  var newType=btn.getAttribute('data-type');
+  if(newType && newType!==withdrawType){
+    withdrawType=newType;
+    render();
+  }
+});
+
+function compute(){
+  var wk=weeks[weekIdx];
+  var weekStart=wk.start, weekEnd=wk.end;
+  var reportDate=addDays(weekEnd,1);
+  var isNew=reportDate>=NEW_RULES_REPORT;
+
+  /*
+    «Вывести сейчас» — досрочный вывод с ТЕКУЩЕГО баланса.
+    Не ждёт отчёта и 3 недель. Деньги приходят в тот же день (до 13:00).
+    Комиссия 4,3%.
+
+    «Бесплатный» и «Любой день» — оба работают с суммой, которая
+    стала доступна к выводу после отчёта + период ожидания.
+    Разница: бесплатный — только по понедельникам, любой день — когда хочешь.
+    Оба — 5 рабочих дней после нажатия «Вывести».
+  */
+
+  if(withdrawType==="instant"){
+    // «Вывести сейчас» — баланс обновляется ежедневно, вывод сразу
+    // Деньги доступны на следующий день после продажи (условно)
+    // Но отчёт всё равно формируется по неделям, поэтому привязываемся к концу недели
+    var withdrawDate=addDays(weekEnd,2); // через ~1 день после конца недели
+    var isFrozen=between(withdrawDate,FREEZE_START,FREEZE_END);
+    if(isFrozen) withdrawDate=addDays(FREEZE_END,1);
+    // Деньги приходят в тот же день (если до 13:00) или на след. рабочий
+    var minPayout=new Date(withdrawDate);
+    if(isNonBusinessDay(minPayout)) while(isNonBusinessDay(minPayout)) minPayout.setDate(minPayout.getDate()+1);
+    minPayout=noon(minPayout);
+    var maxPayout=addDays(minPayout,1);
+    if(isNonBusinessDay(maxPayout)) while(isNonBusinessDay(maxPayout)) maxPayout.setDate(maxPayout.getDate()+1);
+    maxPayout=noon(maxPayout);
+
+    return {
+      weekStart:weekStart,weekEnd:weekEnd,reportDate:reportDate,isNew:isNew,
+      isFrozen:isFrozen,withdrawDate:withdrawDate,availableDate:withdrawDate,
+      minPayout:minPayout,maxPayout:maxPayout,
+      totalDays:daysBetween(weekEnd,minPayout),
+      maxTotalDays:daysBetween(weekEnd,maxPayout)
+    };
+  }
+
+  // «Бесплатный» и «Любой день» — ждём отчёт + период
+  var availableDate=isNew?addDays(reportDate,21):addDays(reportDate,7);
+
+  var withdrawDate;
+  if(withdrawType==="daily"){
+    // Можно вывести сразу как сумма стала доступна
+    withdrawDate=new Date(availableDate);
+  } else {
+    // Бесплатный — только по понедельникам
+    withdrawDate=new Date(availableDate);
+    if(withdrawDate.getDay()!==1){
+      while(withdrawDate.getDay()!==1) withdrawDate=addDays(withdrawDate,1);
+    }
+  }
+
+  // Проверяем переходный период
+  var isFrozen=between(withdrawDate,FREEZE_START,FREEZE_END);
+  if(isFrozen){
+    withdrawDate=addDays(FREEZE_END,1);
+    if(withdrawType==="free" && withdrawDate.getDay()!==1){
+      while(withdrawDate.getDay()!==1) withdrawDate=addDays(withdrawDate,1);
+    }
+  }
+
+  // 5 рабочих дней (день нажатия не считается)
+  var minPayout=addBizDays(withdrawDate,5);
+  var maxPayout=addDays(minPayout,2);
+  while(isNonBusinessDay(maxPayout)) maxPayout=addDays(maxPayout,1);
+
+  return {
+    weekStart:weekStart,weekEnd:weekEnd,reportDate:reportDate,isNew:isNew,
+    isFrozen:isFrozen,withdrawDate:withdrawDate,availableDate:availableDate,
+    minPayout:minPayout,maxPayout:maxPayout,
+    totalDays:daysBetween(weekEnd,minPayout),
+    maxTotalDays:daysBetween(weekEnd,maxPayout)
+  };
+}
+
+function changeWeek(dir){
+  weekIdx=Math.max(0,Math.min(weeks.length-1,weekIdx+dir));
+  render();
+}
+
+function renderCalendar(months,highlights){
+  var html='<div class="cal-grid'+(months.length>1?' cols2':'')+'">';
+  months.forEach(function(mo){
+    var year=mo.year,month=mo.month;
+    var dim=new Date(year,month+1,0).getDate();
+    var fd=new Date(year,month,1).getDay();
+    var adj=fd===0?6:fd-1;
+    html+='<div><div class="cal-month-title">'+MONTHS_FULL[month]+' '+year+'</div><div class="cal-days">';
+    ["Пн","Вт","Ср","Чт","Пт","Сб","Вс"].forEach(function(h){html+='<div class="hdr">'+h+'</div>'});
+    for(var i=0;i<adj;i++) html+='<div></div>';
+    for(var d=1;d<=dim;d++){
+      var dt=noon(new Date(year,month,d));
+      var wk=isWknd(dt); var hol=isHoliday(dt);
+      var bg='transparent',color=wk?'#ccc':'#1A1028',fw=400;
+      var border='none';
+      // Праздники — красный фон, белый текст
+      if(hol&&!wk){bg='#E74C3C';color='#fff';fw=600}
+      // Праздники в выходные — красная рамка
+      if(hol&&wk){bg='#fde8e5';color='#c0392b';fw=600;border='1.5px solid #E74C3C'}
+      // Подсветки событий (поверх праздников)
+      var hasEvent=false;
+      highlights.forEach(function(h){
+        if(h.range&&h.start&&h.end&&between(dt,h.start,h.end)&&!hasEvent){bg=h.rbg||'#ede4f7';color=h.rc||'#6B2FA0';border='none'}
+        if(h.date&&sameDay(dt,h.date)){bg=h.bg;color=h.c||'#fff';fw=700;hasEvent=true;border='none'}
+      });
+      html+='<div class="day" style="background:'+bg+';color:'+color+';font-weight:'+fw+';border:'+border+'">'+d+'</div>';
+    }
+    html+='</div></div>';
+  });
+  html+='</div>';
+  html+='<div class="cal-legend">';
+  [{bg:'#ede4f7',l:'Продажи'},{bg:COLORS.blue,l:'Отчёт'},{bg:COLORS.accent,l:'Вывод'},{bg:COLORS.green,l:'Деньги'},{bg:'#E74C3C',l:'Праздник 🇷🇺'}].forEach(function(x){
+    html+='<div class="item"><div class="dot" style="background:'+x.bg+'"></div>'+x.l+'</div>';
+  });
+  html+='</div>';
+  return html;
+}
+
+function render(){
+  var wk=weeks[weekIdx];
+  var r=compute();
+
+  document.getElementById('weekDates').textContent=fmtShort(wk.start)+' — '+fmtShort(wk.end);
+  var metaHtml=wk.start.getFullYear()+'';
+  if(r.isFrozen) metaHtml+=' <span class="frozen">· ⚠ переходный период!</span>';
+  else if(r.isNew) metaHtml+=' <span class="new-rules">· новые правила</span>';
+  else metaHtml+=' <span class="old-rules">· старые правила</span>';
+  document.getElementById('weekMeta').innerHTML=metaHtml;
+
+  document.getElementById('prevBtn').disabled=weekIdx===0;
+  document.getElementById('nextBtn').disabled=weekIdx===weeks.length-1;
+  initTypes();
+
+  // Flow explanation under type buttons
+  var a='<span class="flow-arrow">→</span>';
+  var explainHtml='<div class="type-flow">';
+  if(withdrawType==='free'){
+    explainHtml+='<div class="flow-title">Как работает бесплатный вывод:</div>';
+    explainHtml+='<div class="flow-line">';
+    explainHtml+='<span class="flow-step">📦 Продажи</span>'+a;
+    explainHtml+='<span class="flow-step">📋 Отчёт</span>'+a;
+    explainHtml+='<span class="flow-step orange">⏳ 3 нед. ожидание</span>'+a;
+    explainHtml+='<span class="flow-step hl">👆 Вывести (только Пн)</span>'+a;
+    explainHtml+='<span class="flow-step">⏳ 5 банк. дней</span>'+a;
+    explainHtml+='<span class="flow-step green">✓ Деньги</span>';
+    explainHtml+='</div></div>';
+  } else if(withdrawType==='daily'){
+    explainHtml+='<div class="flow-title">Как работает вывод в любой день:</div>';
+    explainHtml+='<div class="flow-line">';
+    explainHtml+='<span class="flow-step">📦 Продажи</span>'+a;
+    explainHtml+='<span class="flow-step">📋 Отчёт</span>'+a;
+    explainHtml+='<span class="flow-step orange">⏳ 3 нед. ожидание</span>'+a;
+    explainHtml+='<span class="flow-step hl">👆 Вывести (сразу)</span>'+a;
+    explainHtml+='<span class="flow-step">⏳ 5 банк. дней</span>'+a;
+    explainHtml+='<span class="flow-step green">✓ Деньги</span>';
+    explainHtml+='</div></div>';
+  } else {
+    explainHtml+='<div class="flow-title">Как работает «Вывести сейчас»:</div>';
+    explainHtml+='<div class="flow-line">';
+    explainHtml+='<span class="flow-step">📦 Продажи</span>'+a;
+    explainHtml+='<span class="flow-step">💰 Баланс (обновляется ежедневно)</span>'+a;
+    explainHtml+='<span class="flow-step hl">👆 Вывести сейчас</span>'+a;
+    explainHtml+='<span class="flow-step green">✓ Деньги в тот же день</span>';
+    explainHtml+='</div></div>';
+  }
+  document.getElementById('typeExplain').innerHTML=explainHtml;
+
+  // Commission calculator (optional field)
+  var commEl=document.getElementById('commCalc');
+  if(withdrawType==='instant'){
+    commEl.style.display='block';
+    var prevVal=commEl.querySelector('input')?commEl.querySelector('input').value:'';
+    commEl.innerHTML='<div class="comm-box">'+
+      '<div class="comm-title">💸 Рассчитать комиссию «Вывести сейчас» (необязательно)</div>'+
+      '<div class="comm-input-row">'+
+        '<input type="text" id="instantSum" inputmode="numeric" placeholder="Сумма вывода" value="'+prevVal+'">'+
+        '<span class="comm-suffix">₽</span>'+
+      '</div>'+
+      '<div class="comm-result" id="instantResult"></div>'+
+    '</div>';
+    document.getElementById('instantSum').addEventListener('input',calcInstant);
+    if(prevVal) calcInstant();
+  } else if(withdrawType==='daily'){
+    commEl.style.display='block';
+    var prevVal2=commEl.querySelector('input')?commEl.querySelector('input').value:'';
+    commEl.innerHTML='<div class="comm-box">'+
+      '<div class="comm-title">💸 Рассчитать стоимость опции «Любой день» (необязательно)</div>'+
+      '<div class="comm-input-row">'+
+        '<input type="text" id="dailyTurnover" inputmode="numeric" placeholder="Оборот продаж в месяц" value="'+prevVal2+'">'+
+        '<span class="comm-suffix">₽/мес</span>'+
+      '</div>'+
+      '<div class="comm-result" id="dailyResult"></div>'+
+    '</div>';
+    document.getElementById('dailyTurnover').addEventListener('input',calcDaily);
+    if(prevVal2) calcDaily();
+  } else {
+    commEl.style.display='none';
+    commEl.innerHTML='';
+  }
+
+  function fmtR(n){return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,' ')}
+
+  function calcInstant(){
+    var raw=document.getElementById('instantSum').value.replace(/[^\d]/g,'');
+    var sum=parseInt(raw)||0;
+    var res=document.getElementById('instantResult');
+    if(!sum){res.innerHTML='';return}
+    var comm=Math.round(sum*0.043);
+    var net=sum-comm;
+    res.innerHTML=
+      '<div class="comm-card"><div class="cc-num">'+fmtR(comm)+' ₽</div><div class="cc-label">Комиссия 4,3%</div></div>'+
+      '<div class="comm-card"><div class="cc-num green">'+fmtR(net)+' ₽</div><div class="cc-label">Получите на счёт</div></div>';
+  }
+
+  function calcDaily(){
+    var raw=document.getElementById('dailyTurnover').value.replace(/[^\d]/g,'');
+    var turnover=parseInt(raw)||0;
+    var res=document.getElementById('dailyResult');
+    if(!turnover){res.innerHTML='';return}
+    var commPercent=Math.round(turnover*0.025);
+    var actual=Math.max(commPercent,5000);
+    var perYear=actual*12;
+    res.innerHTML=
+      '<div class="comm-card"><div class="cc-num">'+fmtR(commPercent)+' ₽</div><div class="cc-label">2,5% от оборота</div></div>'+
+      '<div class="comm-card"><div class="cc-num'+(actual>commPercent?' orange':'')+'">'+fmtR(actual)+' ₽/мес</div><div class="cc-label">'+(actual>commPercent?'Мин. платёж':'Итого в мес.')+'</div></div>'+
+      '<div class="comm-card"><div class="cc-num orange">'+fmtR(perYear)+' ₽</div><div class="cc-label">За год</div></div>';
+  }
+
+  var steps=[];
+
+  // Шаг 1 — всегда одинаковый
+  steps.push({icon:'📦',color:COLORS.purple,title:'Период продаж',
+   date:fmtDate(r.weekStart)+' – '+fmtDate(r.weekEnd),extra:'Пн – Вс'});
+
+  if(withdrawType==='instant'){
+    // «Вывести сейчас» — короткий путь, без ожидания отчёта
+    steps.push({icon:'💰',color:COLORS.orange,title:'Баланс обновляется ежедневно',
+     date:'Сумма продаж отражается на балансе',extra:'обновление каждые 4 часа',
+     badge:'Не нужно ждать отчёт и 3 недели',badgeColor:COLORS.green});
+
+    if(r.isFrozen){
+      steps.push({icon:'🚫',color:COLORS.red,title:'Переходный период — выплат нет',
+       date:'31.03.2026 – 19.04.2026',extra:'',
+       badge:'Вывод станет доступен после 19 апреля',badgeColor:COLORS.red});
+    }
+
+    steps.push({icon:'👆',color:COLORS.accent,title:'Нажимаем «Вывести сейчас»',
+     date:fmtDate(r.withdrawDate),extra:WD[r.withdrawDate.getDay()],
+     badge:'Комиссия 4,3% · Деньги в тот же день (до 13:00)',badgeColor:COLORS.accent});
+
+    steps.push({icon:'✓',color:COLORS.green,title:'Деньги на счёте',
+     date:sameDay(r.minPayout,r.maxPayout)?fmtDate(r.minPayout):fmtDate(r.minPayout)+' – '+fmtDate(r.maxPayout),
+     extra:'моментально или следующий рабочий день',
+     last:true});
+
+  } else {
+    // «Бесплатный» и «Любой день» — стандартный путь через отчёт
+    steps.push({icon:'📋',color:COLORS.blue,title:'Еженедельный отчёт',
+     date:fmtDate(r.reportDate),extra:WD[r.reportDate.getDay()]});
+
+    if(r.isFrozen){
+      steps.push({icon:'🚫',color:COLORS.red,title:'Переходный период — выплат нет',
+       date:'31.03.2026 – 19.04.2026',extra:'',
+       badge:'Кнопка «Вывести» появится после 19 апреля',badgeColor:COLORS.red});
+    }
+
+    var withdrawBadge='';
+    if(withdrawType==='free'){
+      withdrawBadge=r.isNew&&!r.isFrozen?'⚠️ Через 3 нед. после отчёта · Бесплатно, по понедельникам':
+                    !r.isNew?'Через 1 нед. после отчёта · Бесплатно, по понедельникам':
+                    'Бесплатно, по понедельникам';
+    } else {
+      withdrawBadge=r.isNew&&!r.isFrozen?'⚠️ Через 3 нед. после отчёта · В любой день (+2,5%)':
+                    !r.isNew?'Через 1 нед. после отчёта · В любой день (+2,5%)':
+                    'В любой день (+2,5%)';
+    }
+
+    steps.push({icon:'👆',color:COLORS.accent,title:'Нажимаем «Вывести»',
+     date:fmtDate(r.withdrawDate),extra:WD[r.withdrawDate.getDay()],
+     badge:withdrawBadge,
+     badgeColor:withdrawType==='free'?COLORS.green:COLORS.orange});
+
+    steps.push({icon:'✓',color:COLORS.green,title:'Деньги на счёте',
+     date:sameDay(r.minPayout,r.maxPayout)?fmtDate(r.minPayout):fmtDate(r.minPayout)+' – '+fmtDate(r.maxPayout),
+     extra:'5 банк. дней (день нажатия не считается) + праздники РФ',
+     last:true});
+  }
+
+  var html='';
+
+  // Hero
+  var range=r.totalDays===r.maxTotalDays?r.totalDays:r.totalDays+'–'+r.maxTotalDays;
+  var heroClass=r.isFrozen?' hero-frozen':'';
+  html+='<div class="hero'+heroClass+'">';
+  html+='<div class="hero-label">от конца недели продаж до денег на счёте</div>';
+  html+='<div class="hero-num">'+range+'<span>дн.</span></div>';
+  html+='<div class="hero-dates">Деньги на счёте: <strong>'+fmtDate(r.minPayout)+'</strong>';
+  if(!sameDay(r.minPayout,r.maxPayout)) html+=' — <strong>'+fmtDate(r.maxPayout)+'</strong>';
+  html+='</div>';
+  if(r.isFrozen) html+='<div style="margin-top:8px;font-size:11px;color:var(--wb-red)">⚠ Включает переходный период без выплат</div>';
+  html+='</div>';
+
+  // Timeline
+  html+='<div style="margin-bottom:24px"><div class="tl-label">Хронология выплаты</div>';
+  steps.forEach(function(s){
+    var last=s.last?'last':'';
+    html+='<div class="tl-step '+last+'">';
+    if(!s.last) html+='<div class="tl-line"></div>';
+    html+='<div class="tl-dot" style="background:'+s.color+';box-shadow:0 0 0 3px '+s.color+'33">'+s.icon+'</div>';
+    html+='<div class="tl-content"><div class="tl-title">'+s.title+'</div>';
+    html+='<div class="tl-date">'+s.date;
+    if(s.extra) html+=' <span class="extra">· '+s.extra+'</span>';
+    html+='</div>';
+    if(s.badge){
+      var bc=s.badgeColor||COLORS.orange;
+      html+='<div class="tl-badge" style="color:'+bc+';background:'+bc+'15;border:1px solid '+bc+'25">'+s.badge+'</div>';
+    }
+    html+='</div></div>';
+  });
+  html+='</div>';
+
+  // Calendar
+  var highlights=[
+    {range:true,start:r.weekStart,end:r.weekEnd,rbg:'#ede4f7',rc:'#6B2FA0'},
+    {date:r.reportDate,bg:COLORS.blue,c:'#fff'},
+    {date:r.withdrawDate,bg:COLORS.accent,c:'#fff'},
+    {date:r.minPayout,bg:COLORS.green,c:'#fff'},
+  ];
+  if(!sameDay(r.minPayout,r.maxPayout)) highlights.push({date:r.maxPayout,bg:COLORS.darkgreen,c:'#fff'});
+
+  var calMonths=[];
+  var cur=new Date(r.weekStart.getFullYear(),r.weekStart.getMonth(),1);
+  var end=r.maxPayout;
+  while(cur<=end||calMonths.length<1){
+    calMonths.push({year:cur.getFullYear(),month:cur.getMonth()});
+    cur.setMonth(cur.getMonth()+1);
+    if(calMonths.length>4) break;
+  }
+  var last=calMonths[calMonths.length-1];
+  if(last.year!==end.getFullYear()||last.month!==end.getMonth())
+    calMonths.push({year:end.getFullYear(),month:end.getMonth()});
+
+  html+='<div class="cal-wrap">'+renderCalendar(calMonths,highlights)+'</div>';
+
+  // Note
+  html+='<div class="note"><strong>💡 Как считаем:</strong><br>';
+  if(r.isFrozen){
+    html+='<span class="hl-red">С 31 марта по 19 апреля 2026 — переходный период, выплат нет.</span> ';
+  }
+  if(withdrawType==='instant'){
+    html+='<strong>«Вывести сейчас»</strong> — досрочный вывод с текущего баланса. Не нужно ждать отчёт и 3 недели. Баланс обновляется ежедневно. Деньги приходят в тот же день (если запрос до 13:00) или на следующий рабочий день. <span class="hl-orange">Комиссия — 4,3%</span> от суммы. Нельзя подключить одновременно с опцией «Любой день». Нужна проверка на стабильность бизнеса.';
+  } else if(withdrawType==='daily'){
+    html+='<strong>«Запрос вывода в любой день»</strong> — опция в Конструкторе тарифов. <span class="hl-orange">+2,5% к комиссии</span> (мин. 5 000 ₽ / 30 дней). Сумма к выводу формируется по тем же правилам что и бесплатный, но нажать «Вывести» можно в любой день, а не только в понедельник. ';
+    if(r.isNew) html+='После отчёта — <span class="hl-orange">3 недели</span> до доступности суммы. ';
+    html+='После нажатия — 5 банковских дней <strong>(без учёта выходных и праздников РФ)</strong>.';
+  } else {
+    html+='<strong>Бесплатный вывод</strong> — сумма к выводу обновляется по понедельникам до 12:00. Нажать «Вывести» можно только в понедельник. ';
+    if(r.isNew) html+='После отчёта — <span class="hl-orange">3 недели</span> до доступности суммы. ';
+    else html+='После отчёта — 1 неделя до доступности суммы. ';
+    html+='День нажатия «Вывести» не считается. WB переводит в течение 5 банковских дней <strong>(без учёта выходных и праздников РФ)</strong>. Банк может задержать ещё до 2 дней.';
+  }
+  html+='</div>';
+
+  document.getElementById('resultArea').innerHTML=html;
+}
+
+render();
+</script>
+</body>
+</html>

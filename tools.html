@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Полезные инструменты для селлеров — WB-OZON Delivery</title>
+<meta name="description" content="Бесплатные инструменты для продавцов на маркетплейсах: калькулятор выплат Wildberries, генератор этикеток со штрихкодами.">
+<style>
+  :root{--bg:#060810;--card:rgba(14,18,32,0.85);--border:rgba(100,130,255,0.12);--text:#E8ECFF;--muted:rgba(200,220,255,0.45);--orange:#FF8C35;--accent:rgba(100,130,255,0.85)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text)}
+  .top-bar{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(6,8,16,0.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+  .top-bar a{color:var(--accent);text-decoration:none;font-size:13px;display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border:1px solid var(--border);border-radius:4px;transition:all .2s}
+  .top-bar a:hover{background:rgba(100,130,255,0.15);color:#fff;border-color:rgba(100,130,255,0.4)}
+  .top-bar .brand{font-weight:700;font-size:15px;color:var(--text);border:none;padding:0}
+  .top-bar .brand:hover{background:none;color:var(--orange)}
+  .container{max-width:800px;margin:0 auto;padding:100px 20px 60px}
+  .hdr{text-align:center;margin-bottom:48px}
+  .hdr h1{font-size:36px;font-weight:800;line-height:1.15;margin-bottom:12px}
+  .hdr h1 span{color:var(--orange)}
+  .hdr p{font-size:16px;color:var(--muted);max-width:500px;margin:0 auto}
+  .grid{display:grid;gap:20px}
+  .tool-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;text-decoration:none;color:var(--text);transition:all .3s;display:flex;gap:20px;align-items:flex-start}
+  .tool-card:hover{border-color:var(--orange);transform:translateY(-2px);box-shadow:0 8px 32px rgba(255,140,53,0.08)}
+  .tool-icon{font-size:40px;flex-shrink:0;width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:rgba(255,140,53,0.08);border-radius:14px}
+  .tool-info h2{font-size:20px;font-weight:700;margin-bottom:6px}
+  .tool-info p{font-size:14px;color:var(--muted);line-height:1.6}
+  .tool-tag{display:inline-block;margin-top:10px;font-size:11px;text-transform:uppercase;letter-spacing:1px;padding:4px 10px;border-radius:4px;background:rgba(255,140,53,0.1);color:var(--orange);font-weight:600}
+  .footer{text-align:center;padding:40px 20px;font-size:12px;color:var(--muted);border-top:1px solid var(--border);margin-top:60px}
+  .footer a{color:var(--accent);text-decoration:none}
+  .btn-primary{background:linear-gradient(135deg,#0F2680 0%,#1A3FB5 45%,#6B2FBF 100%);color:#fff;border:none;padding:12px 28px;font-size:14px;font-weight:500;letter-spacing:0.04em;border-radius:4px;cursor:pointer;text-decoration:none;transition:opacity .2s,transform .15s;position:relative;overflow:hidden;display:inline-flex;align-items:center}
+  .btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FF6B00,#FF8C35);opacity:0;transition:opacity .3s}
+  .btn-primary:hover::before{opacity:1}
+  .btn-primary span{position:relative;z-index:1}
+  .btn-primary:hover{transform:translateY(-2px)}
+  @media(max-width:600px){.tool-card{flex-direction:column;align-items:center;text-align:center}.hdr h1{font-size:28px}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="index.html" class="brand">← На главную</a>
+  <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
+</div>
+
+<div class="container">
+  <div class="hdr">
+    <h1>🛠 <span>Полезное</span> для селлеров</h1>
+    <p>Бесплатные инструменты от WB-OZON Delivery. Без регистрации, без лимитов.</p>
+  </div>
+
+  <div class="grid">
+
+    <a href="wb-payout-calculator.html" class="tool-card">
+      <div class="tool-icon">💰</div>
+      <div class="tool-info">
+        <h2>Калькулятор выплат Wildberries</h2>
+        <p>Когда придут деньги за продажи? Выберите неделю — покажем дату выплаты с учётом праздников РФ, переходного периода и типа вывода.</p>
+        <span class="tool-tag">Новые правила 2026</span>
+      </div>
+    </a>
+
+    <a href="label-generator.html" class="tool-card">
+      <div class="tool-icon">🏷️</div>
+      <div class="tool-info">
+        <h2>Генератор этикеток ШК</h2>
+        <p>Создавайте этикетки со штрихкодами для WB, Ozon, Яндекс Маркет. EAN-13, Code-128. Печать на термопринтер или лист А4.</p>
+        <span class="tool-tag">Бесплатно</span>
+      </div>
+    </a>
+
+  </div>
+
+  <div style="margin-top:48px;text-align:center;padding:36px 24px;background:rgba(14,18,32,0.85);border:1px solid var(--border);border-radius:16px">
+    <div style="font-size:28px;margin-bottom:12px">💡</div>
+    <div style="font-size:18px;font-weight:700;margin-bottom:8px">Не нашли нужный инструмент?</div>
+    <p style="font-size:14px;color:var(--muted);max-width:400px;margin:0 auto 20px;line-height:1.6">Напишите нам — наш IT-отдел разработает его бесплатно для всех селлеров</p>
+    <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Предложить идею →</span></a>
+  </div>
+
+</div>
+
+<div class="footer">
+  <b>WB·OZON Delivery</b> — доставка на маркетплейсы в Екатеринбурге<br>
+  <a href="tel:+79326166161">+7 932 616-61-61</a> · <a href="https://t.me/WB_OZON_Delivery66" target="_blank">Telegram</a> · <a href="index.html">Главная</a>
+</div>
+
+</body>
+</html>

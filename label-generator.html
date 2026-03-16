@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Генератор этикеток для маркетплейсов — бесплатно</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f0f14;--card:#1a1a24;--card2:#22222f;--border:#2a2a3a;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00b894;--red:#e17055;--text:#e8e8f0;--text2:#8888a0;--text3:#555568}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;background:var(--bg);font-family:'Nunito',sans-serif;color:var(--text);padding:24px 16px}
+  .container{max-width:720px;margin:0 auto}
+  .hdr{text-align:center;margin-bottom:28px}
+  .hdr .tag{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+  .hdr h1{font-size:32px;font-weight:900;line-height:1.15;margin-bottom:6px;background:linear-gradient(135deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hdr p{font-size:14px;color:var(--text2)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:16px}
+  .card-section{padding:20px 24px}
+  .card-section+.card-section{border-top:1px solid var(--border)}
+  .card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);font-weight:700;margin-bottom:14px}
+  .form-row{display:flex;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .form-group{display:flex;flex-direction:column;gap:4px;flex:1;min-width:120px}
+  .form-group label{font-size:11px;color:var(--text2);font-weight:600}
+  .form-group input,.form-group select{padding:10px 12px;font-size:14px;font-family:inherit;background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--text);outline:none}
+  .form-group input:focus,.form-group select:focus{border-color:var(--accent)}
+  .form-group input::placeholder{color:var(--text3)}
+  .form-group select{cursor:pointer}
+  .form-group select option{background:var(--card2);color:var(--text)}
+  .checks{display:flex;gap:16px;flex-wrap:wrap;margin-top:4px}
+  .check-item{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:13px;color:var(--text2)}
+  .check-item input[type=checkbox]{width:16px;height:16px;accent-color:var(--accent);cursor:pointer}
+  .products-wrap{overflow-x:auto;margin-top:8px}
+  .products-table{width:100%;border-collapse:collapse;font-size:13px}
+  .products-table th{text-align:left;padding:8px;font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--text3);font-weight:700;border-bottom:1px solid var(--border);white-space:nowrap}
+  .products-table td{padding:6px 4px;vertical-align:middle}
+  .products-table td input{width:100%;padding:8px;font-size:13px;font-family:inherit;background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);outline:none}
+  .products-table td input:focus{border-color:var(--accent)}
+  .products-table td input.qty{width:60px;text-align:center}
+  .del-btn{width:28px;height:28px;border-radius:6px;border:none;background:rgba(225,112,85,0.15);color:var(--red);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center}
+  .del-btn:hover{background:rgba(225,112,85,0.3)}
+  .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+  .btn{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+  .btn-ghost{background:var(--card2);border:1px solid var(--border);color:var(--text2)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--text)}
+  .btn-primary{background:var(--accent);color:#fff;font-size:15px;padding:14px 28px;border-radius:12px;width:100%;justify-content:center;box-shadow:0 4px 20px rgba(108,92,231,0.3)}
+  .btn-primary:hover{background:#7c6ef0}
+  .btn-primary:active{transform:scale(0.98)}
+  .preview-area{background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:20px;margin-top:14px;min-height:120px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+  .preview-label{background:#fff;color:#000;border-radius:4px;padding:10px;display:inline-flex;flex-direction:column;align-items:center;font-family:Arial,sans-serif;font-size:10px;line-height:1.4;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+  .preview-label canvas{display:block}
+  .preview-label .pl-name{font-weight:700;font-size:9px;text-align:center;margin-top:4px;max-width:200px;word-wrap:break-word}
+  .preview-label .pl-meta{font-size:8px;color:#333;text-align:center;margin-top:2px}
+  .preview-label .pl-seller{font-weight:700;font-size:8px;text-align:center;margin-top:2px;color:#555}
+  .preview-label .pl-icons{display:flex;gap:6px;margin-top:3px;justify-content:center}
+  .preview-label .pl-icons span{font-size:7px;border:1px solid #999;border-radius:2px;padding:1px 3px;font-weight:700}
+  .preview-placeholder{color:var(--text3);font-size:13px}
+  .status{text-align:center;padding:12px;font-size:13px;border-radius:10px;margin-top:10px;display:none}
+  .status.ok{display:block;background:rgba(0,184,148,0.1);color:var(--green);border:1px solid rgba(0,184,148,0.2)}
+  .status.err{display:block;background:rgba(225,112,85,0.1);color:var(--red);border:1px solid rgba(225,112,85,0.2)}
+  .tip{margin-top:12px;padding:10px 14px;background:rgba(108,92,231,0.08);border:1px solid rgba(108,92,231,0.15);border-radius:10px;font-size:11px;color:var(--accent2);line-height:1.5}
+  .footer{text-align:center;margin-top:24px;font-size:10px;color:var(--text3)}
+  @media(max-width:500px){.form-row{flex-direction:column}.form-group{min-width:100%}}
+</style>
+</head>
+<body>
+<div class="container">
+  <a href="tools.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:13px;padding:6px 0 12px;transition:color .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">← Полезное</a>
+  <div class="hdr">
+    <div class="tag">🏷️ Бесплатный генератор этикеток</div>
+    <h1>Этикетки для маркетплейсов</h1>
+    <p>Wildberries, Ozon, Яндекс Маркет — без регистрации и лимитов</p>
+  </div>
+
+  <div class="card"><div class="card-section">
+    <div class="card-title">Настройки этикетки</div>
+    <div class="form-row">
+      <div class="form-group"><label>Размер этикетки</label>
+        <select id="labelSize">
+          <option value="58x40">58 × 40 мм</option>
+          <option value="58x30">58 × 30 мм</option>
+          <option value="58x60">58 × 60 мм</option>
+          <option value="43x25">43 × 25 мм</option>
+          <option value="40x30">40 × 30 мм</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Формат штрихкода</label>
+        <select id="barcodeFormat">
+          <option value="EAN13">EAN-13</option>
+          <option value="CODE128">Code-128</option>
+        </select>
+      </div>
+      <div class="form-group"><label>Печать на</label>
+        <select id="printTarget">
+          <option value="a4">Лист А4</option>
+          <option value="thermo">Термопринтер</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Наименование продавца</label>
+        <input type="text" id="sellerName" placeholder="ИП Иванов И.И.">
+      </div>
+    </div>
+    <div class="checks">
+      <label class="check-item"><input type="checkbox" id="showEAC"> Знак EAC</label>
+      <label class="check-item"><input type="checkbox" id="showRST"> Знак РСТ</label>
+    </div>
+  </div></div>
+
+  <div class="card"><div class="card-section">
+    <div class="card-title">Товары</div>
+    <div class="products-wrap">
+      <table class="products-table">
+        <thead><tr><th>Штрихкод</th><th>Артикул</th><th>Название</th><th>Цвет</th><th>Размер</th><th>Кол-во</th><th></th></tr></thead>
+        <tbody id="productsBody"></tbody>
+      </table>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" onclick="addRow()">+ Добавить</button>
+      <button class="btn btn-ghost" onclick="dupRow()">⧉ Копировать</button>
+      <button class="btn btn-ghost" onclick="clearAll()">✕ Очистить</button>
+    </div>
+  </div></div>
+
+  <div class="card"><div class="card-section">
+    <div class="card-title">Предпросмотр</div>
+    <div class="preview-area" id="previewArea">
+      <div class="preview-placeholder">Введите штрихкод — этикетка появится здесь</div>
+    </div>
+  </div></div>
+
+  <div class="card"><div class="card-section">
+    <button class="btn btn-primary" onclick="printLabels()">🖨️ Печать / Сохранить PDF</button>
+    <div class="tip">
+      💡 <b>Для термопринтера (Xprinter):</b><br>
+      1. В диалоге печати выберите Xprinter<br>
+      2. Поля → <b>«Нет»</b><br>
+      3. Если размер неправильный: Панель управления → Устройства и принтеры → ПКМ на Xprinter → Настройка печати → Размер бумаги → <b>58×40 мм</b><br><br>
+      💡 <b>Для А4:</b> поля → «Минимальные» или «Нет»
+    </div>
+    <div class="status" id="status"></div>
+  </div></div>
+
+  <div class="footer">Бесплатно · Без регистрации · Без лимитов · Данные не покидают ваш браузер</div>
+</div>
+
+<script>
+var barcodeReady=false;
+function loadJS(urls,cb){
+  var i=0;
+  function next(){
+    if(i>=urls.length){cb(false);return}
+    var s=document.createElement('script');s.src=urls[i++];
+    s.onload=function(){typeof JsBarcode==='function'?cb(true):next()};
+    s.onerror=next;document.head.appendChild(s);
+  }
+  next();
+}
+loadJS([
+  'https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js',
+  'https://unpkg.com/jsbarcode@3.11.6/dist/JsBarcode.all.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.6/JsBarcode.all.min.js'
+],function(ok){barcodeReady=ok;addRow()});
+
+function addRow(d){
+  d=d||{};var tb=document.getElementById('productsBody');var tr=document.createElement('tr');
+  tr.innerHTML='<td><input type="text" class="f-barcode" placeholder="2000000000000" value="'+(d.barcode||'')+'"></td>'
+    +'<td><input type="text" class="f-article" placeholder="ART-001" value="'+(d.article||'')+'"></td>'
+    +'<td><input type="text" class="f-name" placeholder="Футболка" value="'+(d.name||'')+'"></td>'
+    +'<td><input type="text" class="f-color" placeholder="Чёрный" value="'+(d.color||'')+'"></td>'
+    +'<td><input type="text" class="f-size" placeholder="M" value="'+(d.size||'')+'"></td>'
+    +'<td><input type="number" class="f-qty qty" min="1" max="500" value="'+(d.qty||1)+'"></td>'
+    +'<td><button class="del-btn" onclick="this.closest(\'tr\').remove();updatePreview()">×</button></td>';
+  tb.appendChild(tr);
+  tr.querySelectorAll('input').forEach(function(inp){inp.addEventListener('input',updatePreview)});
+  updatePreview();
+}
+function dupRow(){
+  var rows=document.querySelectorAll('#productsBody tr');
+  if(!rows.length){addRow();return}
+  var l=rows[rows.length-1];
+  addRow({barcode:l.querySelector('.f-barcode').value,article:l.querySelector('.f-article').value,
+    name:l.querySelector('.f-name').value,color:l.querySelector('.f-color').value,
+    size:l.querySelector('.f-size').value,qty:l.querySelector('.f-qty').value});
+}
+function clearAll(){document.getElementById('productsBody').innerHTML='';addRow()}
+
+function getProducts(){
+  var p=[];
+  document.querySelectorAll('#productsBody tr').forEach(function(tr){
+    var bc=tr.querySelector('.f-barcode').value.trim();
+    if(!bc)return;
+    var q=parseInt(tr.querySelector('.f-qty').value)||1;
+    p.push({barcode:bc,article:tr.querySelector('.f-article').value.trim(),
+      name:tr.querySelector('.f-name').value.trim(),color:tr.querySelector('.f-color').value.trim(),
+      size:tr.querySelector('.f-size').value.trim(),qty:Math.min(Math.max(q,1),500)});
+  });
+  return p;
+}
+
+function makeBarcode(bc,fmt,w,h){
+  if(!barcodeReady)return null;
+  var c=document.createElement('canvas');
+  try{JsBarcode(c,bc,{format:fmt,width:w||2,height:h||50,displayValue:true,fontSize:14,margin:2,font:'Arial'});return c}
+  catch(e){try{JsBarcode(c,bc,{format:'CODE128',width:w||2,height:h||50,displayValue:true,fontSize:14,margin:2,font:'Arial'});return c}catch(e2){return null}}
+}
+
+function updatePreview(){
+  var area=document.getElementById('previewArea');
+  var prods=getProducts();
+  var seller=document.getElementById('sellerName').value.trim();
+  var fmt=document.getElementById('barcodeFormat').value;
+  var eac=document.getElementById('showEAC').checked;
+  var rst=document.getElementById('showRST').checked;
+  if(!prods.length){area.innerHTML='<div class="preview-placeholder">Введите штрихкод — этикетка появится здесь</div>';return}
+  var p=prods[0];
+  var bc=makeBarcode(p.barcode,fmt,1.8,45);
+  var h='<div class="preview-label">';
+  if(bc)h+='<img src="'+bc.toDataURL()+'" style="max-width:200px;height:auto">';
+  else h+='<div style="color:red;font-size:10px;padding:8px">⚠ Проверьте штрихкод</div>';
+  if(p.name)h+='<div class="pl-name">'+p.name+'</div>';
+  var m=[];if(p.article)m.push('Арт.: '+p.article);if(p.color)m.push(p.color);if(p.size)m.push('р. '+p.size);
+  if(m.length)h+='<div class="pl-meta">'+m.join(' · ')+'</div>';
+  if(seller)h+='<div class="pl-seller">'+seller+'</div>';
+  if(eac||rst){h+='<div class="pl-icons">';if(eac)h+='<span>EAC</span>';if(rst)h+='<span>РСТ</span>';h+='</div>'}
+  h+='</div>';
+  var total=prods.reduce(function(s,x){return s+x.qty},0);
+  h+='<div style="font-size:11px;color:var(--text3);margin-top:4px">Всего: '+total+' шт.</div>';
+  area.innerHTML=h;
+}
+
+['labelSize','barcodeFormat','printTarget','sellerName','showEAC','showRST'].forEach(function(id){
+  document.getElementById(id).addEventListener('change',updatePreview);
+  document.getElementById(id).addEventListener('input',updatePreview);
+});
+
+function printLabels(){
+  var st=document.getElementById('status');
+  var prods=getProducts();
+  if(!prods.length){st.className='status err';st.textContent='Добавьте хотя бы один товар';return}
+
+  var seller=document.getElementById('sellerName').value.trim();
+  var fmt=document.getElementById('barcodeFormat').value;
+  var sz=document.getElementById('labelSize').value.split('x').map(Number);
+  var lw=sz[0],lh=sz[1];
+  var target=document.getElementById('printTarget').value;
+  var eac=document.getElementById('showEAC').checked;
+  var rst=document.getElementById('showRST').checked;
+
+  var all=[];
+  prods.forEach(function(p){for(var i=0;i<p.qty;i++)all.push(p)});
+
+  // Font sizes based on label height
+  var fsName=lh>=50?'9pt':lh>=35?'8pt':'7pt';
+  var fsMeta=lh>=50?'7.5pt':lh>=35?'7pt':'6pt';
+  var fsSeller=lh>=50?'7pt':lh>=35?'6.5pt':'6pt';
+  var bcH=lh>=50?'45%':lh>=35?'42%':'38%';
+
+  function labelHTML(p){
+    var bc=makeBarcode(p.barcode,fmt,2,60);
+    var h='<div class="lbl">';
+    if(bc) h+='<img class="lbl-bc" src="'+bc.toDataURL()+'">';
+    else h+='<div style="color:red;font-size:7pt;padding:2mm">ШК: '+p.barcode+'</div>';
+    if(p.name) h+='<div class="lbl-name">'+p.name+'</div>';
+    var m=[];
+    if(p.article)m.push('Арт.: '+p.article);
+    if(p.color)m.push(p.color);
+    if(p.size)m.push('р. '+p.size);
+    if(m.length) h+='<div class="lbl-meta">'+m.join(' / ')+'</div>';
+    if(seller) h+='<div class="lbl-seller">'+seller+'</div>';
+    if(eac||rst){
+      h+='<div class="lbl-icons">';
+      if(eac)h+='<span>EAC</span>';
+      if(rst)h+='<span>РСТ</span>';
+      h+='</div>';
+    }
+    h+='</div>';
+    return h;
+  }
+
+  var labelsHTML=all.map(labelHTML).join('');
+
+  var css='';
+  if(target==='a4'){
+    // A4: grid of labels, calculate how many fit
+    var pagePadMM=5;
+    var gapMM=1;
+    var usableW=210-pagePadMM*2;
+    var usableH=297-pagePadMM*2;
+    var cols=Math.floor((usableW+gapMM)/(lw+gapMM));
+    var rows=Math.floor((usableH+gapMM)/(lh+gapMM));
+    // Center the grid
+    var gridW=cols*lw+(cols-1)*gapMM;
+    var gridH=rows*lh+(rows-1)*gapMM;
+    var offX=(210-gridW)/2;
+    var offY=(297-gridH)/2;
+
+    css=`
+@page{size:210mm 297mm;margin:0}
+html,body{margin:0;padding:0;width:210mm}
+body{font-family:Arial,Helvetica,sans-serif;padding:${offY}mm ${offX}mm}
+.wrap{display:grid;grid-template-columns:repeat(${cols},${lw}mm);grid-auto-rows:${lh}mm;gap:${gapMM}mm}
+.lbl{width:${lw}mm;height:${lh}mm;border:0.2mm solid #ccc;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1mm;overflow:hidden;box-sizing:border-box}
+.lbl-bc{max-width:92%;height:${bcH};object-fit:contain}
+.lbl-name{font-size:${fsName};font-weight:700;text-align:center;margin-top:0.5mm;max-width:95%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3}
+.lbl-meta{font-size:${fsMeta};color:#333;text-align:center;margin-top:0.3mm;line-height:1.2}
+.lbl-seller{font-size:${fsSeller};font-weight:700;color:#555;text-align:center;margin-top:0.3mm;max-width:95%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.lbl-icons{display:flex;gap:1.5mm;margin-top:0.3mm}
+.lbl-icons span{font-size:5pt;border:0.3mm solid #999;border-radius:0.5mm;padding:0.2mm 0.8mm;font-weight:700}`;
+  } else {
+    // Thermo: one label per page, page size = label size
+    css=`
+@page{size:${lw}mm ${lh}mm;margin:0!important;padding:0!important}
+*{margin:0;padding:0;box-sizing:border-box}
+html{width:${lw}mm;height:${lh}mm;margin:0;padding:0}
+body{width:${lw}mm;height:${lh}mm;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif;overflow:hidden}
+.wrap{width:${lw}mm;margin:0;padding:0}
+.lbl{width:${lw}mm;height:${lh}mm;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5mm;overflow:hidden;box-sizing:border-box;page-break-after:always;page-break-inside:avoid}
+.lbl:last-child{page-break-after:auto}
+.lbl-bc{max-width:90%;height:auto;max-height:${Math.floor(lh*0.48)}mm;object-fit:contain}
+.lbl-name{font-size:${fsName};font-weight:700;text-align:center;margin-top:0.8mm;max-width:95%;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;line-height:1.3}
+.lbl-meta{font-size:${fsMeta};color:#333;text-align:center;margin-top:0.5mm;line-height:1.2}
+.lbl-seller{font-size:${fsSeller};font-weight:700;color:#555;text-align:center;margin-top:0.5mm;max-width:95%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.lbl-icons{display:flex;gap:1.5mm;margin-top:0.5mm}
+.lbl-icons span{font-size:5pt;border:0.3mm solid #999;border-radius:0.5mm;padding:0.2mm 0.8mm;font-weight:700}`;
+  }
+
+  var html='<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Этикетки '+lw+'x'+lh+'</title><style>'+css+'</style></head><body><div class="wrap">'+labelsHTML+'</div><script>window.onload=function(){setTimeout(function(){window.print()},400)}<\/script></body></html>';
+
+  var win=window.open('','_blank','width=900,height=700');
+  if(!win){st.className='status err';st.textContent='⚠️ Разрешите всплывающие окна (pop-ups)';return}
+  win.document.write(html);
+  win.document.close();
+
+  st.className='status ok';
+  st.textContent='✓ '+all.length+' шт. → выберите принтер или «Сохранить как PDF»';
+}
+</script>
+</body>
+</html>
