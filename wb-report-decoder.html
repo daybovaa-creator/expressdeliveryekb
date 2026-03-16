@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Расшифровка отчёта Wildberries — простым языком | WB-OZON Delivery</title>
+<meta name="description" content="Загрузите еженедельный отчёт Wildberries — покажем простым языком куда ушли деньги: комиссия, логистика, хранение, штрафы, удержания. Бесплатно.">
+<meta name="keywords" content="расшифровка отчёта wildberries, отчёт wb что значит, еженедельный отчёт вб, куда ушли деньги wildberries, комиссия вб расшифровка">
+<link rel="canonical" href="https://expressdeliveryekb.ru/wb-report-decoder.html">
+<meta property="og:title" content="Расшифровка отчёта Wildberries — простым языком">
+<meta property="og:description" content="Загрузите отчёт WB — покажем куда ушли деньги. Бесплатно, данные не покидают браузер.">
+<meta property="og:url" content="https://expressdeliveryekb.ru/wb-report-decoder.html">
+<meta property="og:type" content="website">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+<style>
+:root{--bg:#0f0f14;--card:#1a1a24;--card2:#22222f;--border:#2a2a3a;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00d4a1;--red:#ff6b6b;--orange:#ffa940;--blue:#4da6ff;--pink:#fd79a8;--text:#f0f0f8;--text2:#a0a0b8;--text3:#707088}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);padding:20px 16px}
+.container{max-width:680px;margin:0 auto}
+.hdr{text-align:center;margin-bottom:24px}
+.hdr .tag{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+.hdr h1{font-size:26px;font-weight:900;line-height:1.2;margin-bottom:6px;background:linear-gradient(135deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr p{font-size:13px;color:var(--text2)}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px}
+.card-section{padding:18px 20px}
+.card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);font-weight:700;margin-bottom:14px}
+
+/* Upload */
+.upload-zone{border:2px dashed var(--border);border-radius:14px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(108,92,231,.04)}
+.upload-zone .uz-icon{font-size:40px;margin-bottom:10px}
+.upload-zone .uz-text{font-size:14px;color:var(--text2)}
+.upload-zone .uz-hint{font-size:11px;color:var(--text3);margin-top:6px}
+.upload-zone input{display:none}
+.upload-zone .uz-status{font-size:12px;font-weight:700;margin-top:8px;min-height:18px}
+.uz-status.ok{color:var(--green)}
+.uz-status.err{color:var(--red)}
+.calc-btn{padding:10px 20px;border:none;border-radius:8px;background:var(--accent);color:#fff;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+.calc-btn:hover{opacity:.85}
+
+/* Privacy */
+.privacy{text-align:center;font-size:11px;color:var(--text3);margin-bottom:20px;padding:8px 14px;background:rgba(0,184,148,.04);border:1px solid rgba(0,184,148,.1);border-radius:8px}
+
+/* Loading */
+.loading{text-align:center;padding:40px;display:none}
+.loading .spinner{width:36px;height:36px;border:3px solid var(--border);border-top:3px solid var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Results */
+#results{display:none}
+
+/* Hero numbers */
+.hero-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.hero-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center}
+.hero-card.big{grid-column:1/-1;border-color:var(--green);background:rgba(0,184,148,.04)}
+.hero-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);font-weight:700;margin-bottom:6px}
+.hero-val{font-size:28px;font-weight:900;font-family:'Courier New',monospace}
+.hero-val.green{color:var(--green)}
+.hero-val.red{color:var(--red)}
+.hero-val.orange{color:var(--orange)}
+.hero-val.blue{color:var(--blue)}
+.hero-val.accent{color:var(--accent)}
+.hero-val.pink{color:var(--pink)}
+
+/* Chart */
+.chart-wrap{position:relative;margin:20px auto;width:200px;height:200px}
+.chart-wrap canvas{width:200px!important;height:200px!important}
+.chart-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.chart-center .cc-val{font-size:18px;font-weight:900;color:var(--text)}
+.chart-center .cc-label{font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:1px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+
+/* Breakdown */
+.breakdown{display:flex;flex-direction:column;gap:6px}
+.br-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--card2);border-radius:10px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s}
+.br-row:hover{border-color:var(--accent)}
+.br-icon{font-size:20px;flex-shrink:0}
+.br-info{flex:1;min-width:0}
+.br-name{font-size:13px;font-weight:700}
+.br-desc{font-size:11px;color:var(--text3);margin-top:2px;display:none}
+.br-row.open .br-desc{display:block}
+.br-val{font-size:15px;font-weight:800;font-family:'Courier New',monospace;flex-shrink:0}
+.br-val.neg{color:var(--red)}
+.br-val.pos{color:var(--green)}
+.br-pct{font-size:10px;color:var(--text3);margin-top:2px;text-align:right}
+.br-bar{height:3px;background:var(--border);border-radius:2px;margin-top:4px;overflow:hidden}
+.br-bar-fill{height:100%;border-radius:2px}
+
+/* Glossary */
+.glossary{display:flex;flex-direction:column;gap:4px;margin-top:10px}
+.gl-row{padding:8px 12px;background:var(--card2);border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s}
+.gl-row:hover{border-color:var(--accent)}
+.gl-term{font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
+.gl-arrow{font-size:10px;color:var(--text3);transition:transform .2s}
+.gl-row.open .gl-arrow{transform:rotate(180deg)}
+.gl-explain{font-size:11px;color:var(--text2);line-height:1.6;margin-top:6px;display:none}
+.gl-row.open .gl-explain{display:block}
+
+.footer{text-align:center;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.8}
+.footer a{color:var(--accent);text-decoration:none}
+.btn-primary{display:inline-flex;align-items:center;background:linear-gradient(135deg,#0F2680 0%,#1A3FB5 45%,#6B2FBF 100%);color:#fff;border:none;padding:12px 24px;font-size:13px;font-weight:500;letter-spacing:.04em;border-radius:4px;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s;margin-top:12px}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FF6B00,#FF8C35);opacity:0;transition:opacity .3s}
+.btn-primary:hover::before{opacity:1}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary span{position:relative;z-index:1}
+.reset-btn{display:inline-block;margin-top:12px;padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--card2);color:var(--text2);font-size:12px;cursor:pointer;transition:all .2s}
+.reset-btn:hover{border-color:var(--red);color:var(--red)}
+@media(max-width:500px){.hero-row{grid-template-columns:1fr}.hero-val{font-size:22px}.hdr h1{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="container">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<a href="tools.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:13px;transition:color .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">← Полезное</a>
+<a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary" style="padding:8px 16px;font-size:12px;margin:0"><span>Написать в Telegram →</span></a>
+</div>
+
+<div class="hdr">
+  <div class="tag">📊 Расшифровка отчёта WB</div>
+  <h1>Отчёт Wildberries простым языком</h1>
+  <p>Загрузите еженедельный отчёт — покажем куда ушли деньги</p>
+</div>
+
+<div class="privacy">🔒 Ваши данные не покидают браузер. Мы ничего не сохраняем и не отправляем на сервер.</div>
+
+<div id="uploadArea">
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div class="upload-zone" id="dropZone1" onclick="document.getElementById('fileInput1').click()">
+      <div class="uz-icon">📂</div>
+      <div class="uz-text">Основной отчёт</div>
+      <div class="uz-hint">.zip или .xlsx — еженедельный отчёт реализации</div>
+      <div class="uz-status" id="status1"></div>
+      <input type="file" id="fileInput1" accept=".zip,.xlsx,.xls" onchange="handleFileSlot(1,this.files[0])">
+    </div>
+    <div class="upload-zone" id="dropZone2" onclick="document.getElementById('fileInput2').click()">
+      <div class="uz-icon">📂</div>
+      <div class="uz-text">Отчёт по выкупам <span style="font-size:11px;color:var(--text3)">(необязательно)</span></div>
+      <div class="uz-hint">.zip или .xlsx — если есть отдельный отчёт по выкупам</div>
+      <div class="uz-status" id="status2"></div>
+      <input type="file" id="fileInput2" accept=".zip,.xlsx,.xls" onchange="handleFileSlot(2,this.files[0])">
+    </div>
+    <button class="calc-btn" id="analyzeBtn" onclick="analyzeAll()" style="display:none;width:100%;padding:14px;font-size:15px;border-radius:12px;margin-top:4px">📊 Расшифровать отчёт</button>
+  </div>
+</div>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <div style="color:var(--text2);font-size:13px">Разбираем отчёт...</div>
+</div>
+
+<div id="results">
+  <div id="heroSection"></div>
+  
+  <div class="card">
+    <div class="card-section">
+      <div class="card-title">Куда ушли деньги</div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center">
+        <div class="chart-wrap"><canvas id="pieChart" width="200" height="200"></canvas><div class="chart-center"><div class="cc-val" id="chartCenter"></div><div class="cc-label">от выручки</div></div></div>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-section">
+      <div class="card-title">Детальная разбивка</div>
+      <div class="breakdown" id="breakdown"></div>
+    </div>
+  </div>
+
+  <div class="card" id="profitCard" style="display:none">
+    <div class="card-section">
+      <div class="card-title">💵 Чистая прибыль</div>
+      
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px">Налоговый режим</label>
+        <select id="taxMode" onchange="calcProfit()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:14px;width:100%;outline:none;cursor:pointer">
+          <option value="usn6">ИП УСН 6% (доходы)</option>
+          <option value="usn15">ИП УСН 15% (доходы − расходы)</option>
+          <option value="npd">Самозанятый НПД 6%</option>
+          <option value="patent">Патент (введите сумму вручную)</option>
+        </select>
+      </div>
+      
+      <div style="margin-bottom:14px">
+        <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px">НДС</label>
+        <select id="ndsMode" onchange="calcProfit()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:14px;width:100%;outline:none;cursor:pointer">
+          <option value="none">Без НДС</option>
+          <option value="nds5">НДС 5% (оборот 60–250 млн)</option>
+          <option value="nds7">НДС 7% (оборот 20–60 млн)</option>
+          <option value="nds20">НДС 20%</option>
+        </select>
+      </div>
+      
+      <div id="patentRow" style="display:none;margin-bottom:14px">
+        <label style="font-size:12px;color:var(--text2);font-weight:600;display:block;margin-bottom:6px">Сумма патента за этот период, ₽</label>
+        <input type="number" id="patentSum" placeholder="0" oninput="calcProfit()" onclick="event.stopPropagation()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;color:var(--text);font-family:inherit;font-size:14px;width:100%;outline:none">
+      </div>
+
+      <div style="font-size:12px;color:var(--text3);margin-bottom:10px">Дополнительные расходы (необязательно):</div>
+      
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+        <div>
+          <label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Себестоимость товаров</label>
+          <input type="number" id="expCost" placeholder="0" oninput="calcProfit()" onclick="event.stopPropagation()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;width:100%;outline:none">
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Реклама (внешняя)</label>
+          <input type="number" id="expAds" placeholder="0" oninput="calcProfit()" onclick="event.stopPropagation()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;width:100%;outline:none">
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Упаковка / маркировка</label>
+          <input type="number" id="expPack" placeholder="0" oninput="calcProfit()" onclick="event.stopPropagation()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;width:100%;outline:none">
+        </div>
+        <div>
+          <label style="font-size:11px;color:var(--text3);display:block;margin-bottom:4px">Прочие расходы</label>
+          <input type="number" id="expOther" placeholder="0" oninput="calcProfit()" onclick="event.stopPropagation()" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:8px 10px;color:var(--text);font-family:inherit;font-size:13px;width:100%;outline:none">
+        </div>
+      </div>
+      
+      <div id="profitResult"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-section">
+      <div class="card-title">📖 Справочник терминов из отчёта</div>
+      <div class="glossary" id="glossary"></div>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="reset-btn" onclick="resetAll()">↻ Загрузить другой отчёт</button>
+  </div>
+</div>
+
+<div class="footer">
+  Нужна помощь с логистикой на WB?<br>
+  <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary" style="padding:8px 16px;font-size:12px"><span>Написать в Telegram →</span></a><br><br>
+  <b>WB·OZON Delivery</b> — доставка на маркетплейсы в Екатеринбурге<br>
+  <a href="index.html">Главная</a> · <a href="tools.html">Полезное</a>
+</div>
+</div>
+
+<script>
+// Glossary of WB report columns
+var GLOSSARY = [
+  {term:'Цена розничная', explain:'Цена товара, которую установил продавец. Без учёта скидок WB и СПП.'},
+  {term:'Согласованный продуктовый дисконт', explain:'Скидка продавца, которую он установил сам в ЛК. Уменьшает розничную цену.'},
+  {term:'СПП (Скидка постоянного покупателя)', explain:'Скидка, которую WB даёт покупателю ЗА СВОЙ СЧЁТ. Не уменьшает ваш доход — WB компенсирует эту скидку из своей комиссии.'},
+  {term:'кВВ (Коэффициент Вознаграждения)', explain:'Процент комиссии WB за продажу. Зависит от категории товара, акций, рейтинга. Чем ниже — тем больше вы получите.'},
+  {term:'Вознаграждение Вайлдберриз (ВВ)', explain:'Сколько WB забирает себе с продажи. Это их комиссия в рублях = Цена × кВВ.'},
+  {term:'К перечислению Продавцу', explain:'Сколько вы получите на руки за продажу этого товара. Цена минус комиссия WB минус эквайринг.'},
+  {term:'Услуги по доставке товара покупателю', explain:'Стоимость логистики — доставка товара от склада WB до ПВЗ покупателя. Зависит от объёма товара и склада.'},
+  {term:'Эквайринг / Комиссия за платежи', explain:'Комиссия банка за приём оплаты от покупателя картой. Обычно ~1.5% от цены. Оплачивает продавец.'},
+  {term:'Хранение', explain:'Плата за хранение товара на складе WB. Зависит от объёма и длительности. Первые 60 дней — бесплатно.'},
+  {term:'Удержания', explain:'Всё что WB удержал: штрафы, компенсации покупателям, корректировки. Самая «болезненная» строка — проверяйте детализацию.'},
+  {term:'Возмещение издержек по перевозке', explain:'Компенсация расходов WB на транспортировку товара между складами. Возникает при нелокальных заказах.'},
+  {term:'Возмещение за выдачу и возврат на ПВЗ', explain:'Оплата работы ПВЗ по выдаче вашего товара покупателю и приёмке возвратов.'},
+  {term:'Операции на приемке', explain:'Доп. расходы при приёмке поставки: пересчёт, перемаркировка и т.д.'},
+  {term:'Обоснование для оплаты', explain:'Тип операции в строке отчёта: «Продажа», «Логистика», «Хранение», «Удержание» и т.д.'},
+  {term:'Тип документа', explain:'«Продажа» — товар продан, «Возврат» — покупатель вернул товар.'},
+  {term:'Стикер МП', explain:'Уникальный стикер (наклейка) для FBS-заказа. Присваивается при создании сборочного задания.'},
+  {term:'Srid', explain:'Уникальный идентификатор продажи/возврата в системе WB.'},
+  {term:'Фиксированный коэффициент склада', explain:'Зафиксированный на момент поставки коэффициент склада. Действует 60-90 дней, потом становится динамическим.'},
+  {term:'Скидка по программе софинансирования', explain:'Скидка, которую WB софинансирует вместе с продавцом. Обычно в рамках акций.'},
+  {term:'Компенсация скидки по программе лояльности', explain:'WB возвращает продавцу часть скидки, предоставленной по программе лояльности (баллы, WB-кошелёк).'},
+  {term:'кС (Коэффициент продаж со склада)', explain:'Доп. комиссия для FBS. 0% при отгрузке в срок, +0.1% за каждый час опоздания после 24ч.'}
+];
+
+// Column indices (0-based) for key financials
+var COL = {
+  reason: 10,    // Обоснование для оплаты
+  docType: 9,    // Тип документа
+  qty: 13,       // Кол-во
+  retailPrice: 14, // Цена розничная
+  discountedPrice: 19, // Цена с учётом скидки
+  kvv: 23,       // Размер кВВ
+  rewardSales: 26, // Вознаграждение с продаж
+  pvzFee: 27,    // Возмещение за выдачу ПВЗ
+  acquiring: 28, // Эквайринг
+  rewardWB: 31,  // Вознаграждение ВВ
+  toSeller: 33,  // К перечислению продавцу
+  deliveryQty: 34, // Количество доставок
+  returnQty: 35,   // Количество возврата
+  delivery: 36,  // Услуги по доставке
+  fines: 40,     // Общая сумма штрафов
+  storage: 59,   // Хранение
+  deductions: 60, // Удержания
+  acceptance: 61, // Операции на приемке
+  transportFee: 57, // Возмещение издержек перевозке
+};
+
+var parsedData = null;
+var fileSlots = {1:null, 2:null};
+var parsedSlots = {1:null, 2:null};
+
+// Drag & drop for both zones
+[1,2].forEach(function(n){
+  var dz=document.getElementById('dropZone'+n);
+  dz.addEventListener('dragover',function(e){e.preventDefault();dz.classList.add('drag')});
+  dz.addEventListener('dragleave',function(){dz.classList.remove('drag')});
+  dz.addEventListener('drop',function(e){e.preventDefault();dz.classList.remove('drag');if(e.dataTransfer.files.length)handleFileSlot(n,e.dataTransfer.files[0])});
+});
+
+function handleFileSlot(slot, file){
+  if(!file) return;
+  var statusEl=document.getElementById('status'+slot);
+  statusEl.className='uz-status';
+  statusEl.textContent='Читаем...';
+  fileSlots[slot]=file;
+  
+  var ext=file.name.split('.').pop().toLowerCase();
+  if(ext==='zip'){
+    JSZip.loadAsync(file).then(function(zip){
+      var xlsxFile=null;
+      zip.forEach(function(path,entry){if(path.endsWith('.xlsx')||path.endsWith('.xls'))xlsxFile=entry});
+      if(!xlsxFile){statusEl.className='uz-status err';statusEl.textContent='❌ В ZIP нет .xlsx';return}
+      xlsxFile.async('arraybuffer').then(function(data){parseSlot(slot,data)});
+    }).catch(function(){statusEl.className='uz-status err';statusEl.textContent='❌ Не удалось открыть ZIP'});
+  } else {
+    var reader=new FileReader();
+    reader.onload=function(e){parseSlot(slot,e.target.result)};
+    reader.readAsArrayBuffer(file);
+  }
+}
+
+function parseSlot(slot, data){
+  var statusEl=document.getElementById('status'+slot);
+  try{
+    var wb=XLSX.read(data,{type:'array'});
+    var ws=wb.Sheets[wb.SheetNames[0]];
+    var json=XLSX.utils.sheet_to_json(ws,{header:1,defval:0});
+    if(json.length<2){statusEl.className='uz-status err';statusEl.textContent='❌ Отчёт пустой';return}
+    parsedSlots[slot]=json;
+    var rows=json.length-1;
+    statusEl.className='uz-status ok';
+    statusEl.textContent='✅ Загружен ('+rows+' строк)';
+    document.getElementById('analyzeBtn').style.display='block';
+  }catch(e){
+    statusEl.className='uz-status err';
+    statusEl.textContent='❌ Ошибка: '+e.message;
+  }
+}
+
+function analyzeAll(){
+  if(!parsedSlots[1] && !parsedSlots[2]){alert('Загрузите хотя бы один отчёт');return}
+  document.getElementById('uploadArea').style.display='none';
+  document.getElementById('loading').style.display='block';
+  
+  // Merge rows from both reports (same structure)
+  var allRows = null;
+  if(parsedSlots[1] && parsedSlots[2]){
+    // Both loaded — merge (skip header of second)
+    allRows = parsedSlots[1].slice();
+    for(var i=1;i<parsedSlots[2].length;i++) allRows.push(parsedSlots[2][i]);
+  } else {
+    allRows = parsedSlots[1] || parsedSlots[2];
+  }
+  
+  setTimeout(function(){processReport(allRows)},100);
+}
+
+function sumCol(rows, colIdx){
+  var s=0;
+  for(var i=1;i<rows.length;i++){
+    var v=parseFloat(rows[i][colIdx]);
+    if(!isNaN(v)) s+=v;
+  }
+  return s;
+}
+
+function countByReason(rows, reason){
+  var count=0;
+  for(var i=1;i<rows.length;i++){
+    if(rows[i][COL.reason]===reason) count++;
+  }
+  return count;
+}
+
+function processReport(rows){
+  var totalRows=rows.length-1;
+  
+  // ===== CORRECT WB FORMULA =====
+  // Col 14 (Цена розничная) — only from "Продажа" rows = total retail
+  // Col 33 (К перечислению) — only from "Продажа" rows = retail MINUS commission & acquiring
+  // Col 31 (Вознагр ВВ) — from ALL rows (can be negative for compensations)
+  // Col 28 (Эквайринг) — from "Продажа" rows
+  // Col 36 (Логистика) — from "Логистика" rows, SUBTRACTED from col33
+  // Col 59 (Хранение) — from "Хранение" rows, SUBTRACTED
+  // Col 60 (Удержания) — from "Удержание" rows, SUBTRACTED
+  // Col 57 (Перевозка) — from "Возмещение издержек" rows, SUBTRACTED
+  // Col 27 (ПВЗ) — from ALL rows, SUBTRACTED
+  // Col 40 (Штрафы) — from ALL rows, SUBTRACTED
+  // Col 41 (Корректировка ВВ) — from ALL rows, SUBTRACTED
+  // Col 61 (Приемка) — from ALL rows, SUBTRACTED
+  //
+  // ИТОГО НА РУКИ = col33 - col36 - col59 - col60 - col57 - col27 - col40 - col41 - col61
+  
+  var retailTotal=0, realRevenue=0, toSellerForGoods=0, acquiring=0;
+  var delivery=0, storage=0, deductions=0, transportFee=0, pvzFee=0, fines=0, corrections=0, acceptance=0;
+  var rewardWB=0, ndsWB=0;
+  var salesCount=0, returnCount=0;
+  
+  for(var i=1;i<rows.length;i++){
+    var r=rows[i];
+    var reason=r[10]||'';
+    var v=function(idx){var x=parseFloat(r[idx]);return isNaN(x)?0:x};
+    
+    // Retail price and to-seller only from sales rows
+    // Col 14 = Цена розничная (до СПП) — для справки
+    // Col 15 = ВБ реализовал (Пр) — реальная выручка (после СПП)
+    // Col 33 = К перечислению = col15 - col31 - col32 - col28 - col27
+    
+    retailTotal+=v(14);   // розничная (для справки)
+    realRevenue+=v(15);   // реальная выручка (после СПП)
+    toSellerForGoods+=v(33);
+    acquiring+=v(28);
+    rewardWB+=v(31);
+    ndsWB+=v(32);
+    
+    delivery+=v(36);
+    storage+=v(59);
+    deductions+=v(60);
+    transportFee+=v(57);
+    pvzFee+=v(27);
+    fines+=v(40);
+    corrections+=v(41);
+    acceptance+=v(61);
+    
+    if(reason==='Продажа') salesCount++;
+  }
+  
+  // VERIFIED FORMULA (matched bank payments to the kopek):
+  // Итого к оплате = col33 - col36 - col59 - col60 - col40
+  // col57 (перевозка), col27 (ПВЗ), col41 (корр ВВ), col61 (приёмка) — уже учтены внутри col33
+  var totalServiceCharges = delivery + storage + deductions + fines;
+  
+  // Final amount = what seller gets on bank account
+  var finalPayout = toSellerForGoods - totalServiceCharges;
+  
+  // For informational display (these are already included in col33, not subtracted additionally)
+  var infoCharges = {transportFee: transportFee, pvzFee: pvzFee, corrections: corrections, acceptance: acceptance};
+  
+  // Real revenue = col15 (after WB's own discount СПП)
+  // Commission+acq = col31(ВВ без НДС) + col32(НДС) + col28(Эквайринг) — from all rows
+  var sppDiscount = retailTotal - realRevenue;
+  var commissionTotal = Math.abs(rewardWB) + Math.abs(ndsWB) + Math.abs(acquiring);
+  var effComm = realRevenue>0 ? (commissionTotal/realRevenue*100) : 0;
+  
+  // Breakdown of deductions by subtype (col 42)
+  var deductionTypes={};
+  for(var i=1;i<rows.length;i++){
+    var dedVal=parseFloat(rows[i][60]);
+    if(!isNaN(dedVal) && dedVal!==0){
+      var kind=rows[i][42]||'Прочее';
+      var shortKind=kind;
+      if(kind.indexOf('кредит')!==-1||kind.indexOf('заёмщик')!==-1){
+        if(kind.indexOf('процент')!==-1) shortKind='Кредит WB (проценты)';
+        else if(kind.indexOf('основн')!==-1) shortKind='Кредит WB (основной долг)';
+        else shortKind='Кредит WB';
+      } else if(kind.indexOf('Продвижение')!==-1||kind.indexOf('реклам')!==-1) shortKind='Реклама (ВБ.Продвижение)';
+      else if(kind.indexOf('штраф')!==-1||kind.indexOf('Штраф')!==-1) shortKind='Штрафы';
+      else if(kind.indexOf('компенсац')!==-1) shortKind='Компенсации покупателям';
+      if(!deductionTypes[shortKind]) deductionTypes[shortKind]=0;
+      deductionTypes[shortKind]+=Math.abs(dedVal);
+    }
+  }
+  
+  // Breakdown of logistics by subtype (col 42)
+  var logisticsTypes={};
+  for(var i=1;i<rows.length;i++){
+    var delVal=parseFloat(rows[i][36]);
+    if(!isNaN(delVal) && delVal!==0){
+      var kind=rows[i][42]||'Прочее';
+      if(!logisticsTypes[kind]) logisticsTypes[kind]=0;
+      logisticsTypes[kind]+=Math.abs(delVal);
+    }
+  }
+  
+  parsedData={
+    retailTotal: retailTotal,
+    realRevenue: realRevenue,
+    sppDiscount: sppDiscount,
+    toSellerForGoods: toSellerForGoods,
+    commissionTotal: commissionTotal,
+    rewardWB: Math.abs(rewardWB),
+    ndsWB: Math.abs(ndsWB),
+    acquiring: Math.abs(acquiring),
+    delivery: Math.abs(delivery),
+    storage: Math.abs(storage),
+    deductions: Math.abs(deductions),
+    transportFee: Math.abs(transportFee),
+    pvzFee: Math.abs(pvzFee),
+    fines: Math.abs(fines),
+    corrections: Math.abs(corrections),
+    acceptance: Math.abs(acceptance),
+    totalServiceCharges: totalServiceCharges,
+    finalPayout: finalPayout,
+    effComm: effComm,
+    totalRows: totalRows,
+    salesCount: salesCount,
+    deductionTypes: deductionTypes,
+    logisticsTypes: logisticsTypes
+  };
+  
+  renderResults();
+}
+
+function fmt(n){return n.toLocaleString('ru-RU',{minimumFractionDigits:2,maximumFractionDigits:2})}
+
+function buildSubBreakdown(types, title){
+  var keys=Object.keys(types);
+  if(!keys.length) return 'Нет данных';
+  keys.sort(function(a,b){return types[b]-types[a]});
+  var html=title+'<br>';
+  keys.forEach(function(k){
+    html+='<span style="display:inline-block;width:8px;height:8px;background:var(--accent);border-radius:2px;margin-right:4px"></span>';
+    html+='<b>'+k+'</b>: '+fmt(types[k])+'₽<br>';
+  });
+  return html;
+}
+
+function renderResults(){
+  var d=parsedData;
+  document.getElementById('loading').style.display='none';
+  document.getElementById('results').style.display='block';
+  
+  // Hero cards
+  var loadedInfo=[];
+  if(parsedSlots[1]) loadedInfo.push('Основной ('+( parsedSlots[1].length-1)+' строк)');
+  if(parsedSlots[2]) loadedInfo.push('По выкупам ('+(parsedSlots[2].length-1)+' строк)');
+  
+  var heroHtml='<div style="text-align:center;font-size:11px;color:var(--text3);margin-bottom:10px">📎 Загружено: '+loadedInfo.join(' + ')+'</div>';
+  heroHtml+='<div class="hero-row">';
+  heroHtml+='<div class="hero-card big"><div class="hero-label">Итого к оплате (на счёт)</div><div class="hero-val green">'+fmt(d.finalPayout)+' ₽</div></div>';
+  heroHtml+='<div class="hero-card"><div class="hero-label">Покупатели заплатили</div><div class="hero-val accent">'+fmt(d.realRevenue)+' ₽</div></div>';
+  heroHtml+='<div class="hero-card"><div class="hero-label">К перечислению за товар</div><div class="hero-val blue">'+fmt(d.toSellerForGoods)+' ₽</div></div>';
+  heroHtml+='<div class="hero-card"><div class="hero-label">Логистика</div><div class="hero-val orange">−'+fmt(d.delivery)+' ₽</div></div>';
+  heroHtml+='<div class="hero-card"><div class="hero-label">Удержания</div><div class="hero-val red">−'+fmt(d.deductions)+' ₽</div></div>';
+  heroHtml+='<div class="hero-card"><div class="hero-label">Строк в отчёте</div><div class="hero-val" style="color:var(--text)">'+d.totalRows+'</div></div>';
+  heroHtml+='</div>';
+  
+  // Verification line — exact formula verified against bank statements
+  heroHtml+='<div style="text-align:center;font-size:11px;color:var(--text3);margin:8px 0 16px;padding:10px;background:var(--card);border:1px solid var(--border);border-radius:8px;line-height:1.8">';
+  heroHtml+='<b>Формула (сверена с банком):</b><br>';
+  heroHtml+=fmt(d.toSellerForGoods)+' (за товар)';
+  if(d.delivery>0) heroHtml+=' − '+fmt(d.delivery)+' (логистика)';
+  if(d.storage>0) heroHtml+=' − '+fmt(d.storage)+' (хранение)';
+  if(d.deductions>0) heroHtml+=' − '+fmt(d.deductions)+' (удержания)';
+  if(d.fines>0) heroHtml+=' − '+fmt(d.fines)+' (штрафы)';
+  heroHtml+=' = <b style="color:var(--green)">'+fmt(d.finalPayout)+' ₽</b>';
+  heroHtml+='</div>';
+  
+  document.getElementById('heroSection').innerHTML=heroHtml;
+  
+  // Pie chart — from real revenue, where does money go
+  var commInRevenue = d.realRevenue - d.toSellerForGoods; // commission+acq+pvz already in col33
+  var slices=[
+    {label:'Комиссия+экв+ПВЗ',val:Math.max(0,commInRevenue),color:'#6c5ce7'},
+    {label:'Логистика',val:d.delivery,color:'#0984e3'},
+    {label:'Хранение',val:d.storage,color:'#f39c12'},
+    {label:'Удержания',val:d.deductions,color:'#e74c3c'},
+    {label:'Штрафы',val:d.fines,color:'#d63031'},
+    {label:'Вам на счёт',val:Math.max(0,d.finalPayout),color:'#00b894'}
+  ].filter(function(s){return s.val>0});
+  
+  drawPie(slices);
+  
+  // Legend
+  var legHtml='';
+  slices.forEach(function(s){
+    legHtml+='<div class="legend-item"><div class="legend-dot" style="background:'+s.color+'"></div>'+s.label+': '+fmt(s.val)+'₽</div>';
+  });
+  document.getElementById('legend').innerHTML=legHtml;
+  
+  // Center text — percentage of retail that seller actually gets
+  var sellerPct=d.realRevenue>0?(d.finalPayout/d.realRevenue*100):0;
+  document.getElementById('chartCenter').textContent=Math.max(0,sellerPct).toFixed(0)+'%';
+  document.querySelector('.cc-label').textContent='вам от выручки';
+  
+  // Breakdown — full detail, grouped by where they are deducted
+  var commInRevenue = d.realRevenue - d.toSellerForGoods;
+  var totalAllExpenses = Math.abs(commInRevenue) + d.totalServiceCharges;
+  
+  function renderRow(item){
+    var pct=d.realRevenue>0?(Math.abs(item.val)/d.realRevenue*100):0;
+    var barW=totalAllExpenses>0?(Math.abs(item.val)/totalAllExpenses*100):0;
+    var h='<div class="br-row" onclick="this.classList.toggle(\'open\')">';
+    h+='<div class="br-icon">'+item.icon+'</div>';
+    h+='<div class="br-info"><div class="br-name">'+item.name+'</div><div class="br-desc">'+item.desc+'</div>';
+    h+='<div class="br-bar"><div class="br-bar-fill" style="width:'+barW+'%;background:'+item.color+'"></div></div></div>';
+    h+='<div><div class="br-val neg">'+fmt(item.val)+' ₽</div><div class="br-pct">'+pct.toFixed(1)+'%</div></div>';
+    h+='</div>';
+    return h;
+  }
+  
+  // Group 1: Already deducted from revenue (inside col33)
+  var commItems=[
+    {icon:'💰',name:'Комиссия WB (ВВ без НДС)',val:-d.rewardWB,desc:'Вознаграждение Wildberries за продажу товара. Процент зависит от категории (кВВ), акций и рейтинга.',color:'#6c5ce7'},
+    {icon:'📑',name:'НДС с комиссии WB',val:-d.ndsWB,desc:'НДС 20% с суммы вознаграждения Wildberries.',color:'#8b5cf6'},
+    {icon:'💳',name:'Эквайринг',val:-d.acquiring,desc:'Комиссия банка за приём оплаты от покупателя картой. Обычно ~1.5–2.5% от цены.',color:'#00cec9'},
+    {icon:'🏪',name:'Возмещение за работу ПВЗ',val:-d.pvzFee,desc:'Оплата работы пункта выдачи по выдаче и возврату товара.',color:'#74b9ff'},
+    {icon:'🚛',name:'Возмещение за перевозку',val:-d.transportFee,desc:'Компенсация расходов WB на перемещение товара между складами (нелокальные заказы).',color:'#fd79a8'},
+    {icon:'📋',name:'Операции на приёмке',val:-d.acceptance,desc:'Доп. расходы при приёмке поставки на склад WB.',color:'#a29bfe'},
+  ].filter(function(it){return it.val!==0});
+  
+  // Group 2: Subtracted from col33 (affects bank payout)
+  var svcItems=[
+    {icon:'🚚',name:'Логистика (доставка покупателю)',val:-d.delivery,desc:buildSubBreakdown(d.logisticsTypes,'Виды логистики:'),color:'#0984e3'},
+    {icon:'📦',name:'Хранение на складе WB',val:-d.storage,desc:'Плата за хранение товара. Первые 60 дней — бесплатно, затем тариф по объёму × дни.',color:'#f39c12'},
+    {icon:'⚠️',name:'Удержания',val:-d.deductions,desc:buildSubBreakdown(d.deductionTypes,'За что удержали:'),color:'#e74c3c'},
+    {icon:'🚫',name:'Штрафы',val:-d.fines,desc:'Штрафы из перечня WB: за габариты, упаковку, опоздания и т.д.',color:'#d63031'},
+  ].filter(function(it){return it.val!==0});
+  
+  var brHtml='<div style="font-size:11px;color:var(--text3);margin-bottom:6px">Уже вычтено из выручки (в «К перечислению за товар»):</div>';
+  commItems.forEach(function(it){brHtml+=renderRow(it)});
+  
+  // Subtotal for group 1
+  var commSum=commItems.reduce(function(s,it){return s+Math.abs(it.val)},0);
+  brHtml+='<div style="display:flex;justify-content:space-between;padding:6px 14px;font-size:12px;color:var(--text3);border-top:1px dashed var(--border);margin-top:4px"><span>Итого вычтено из выручки</span><span style="font-family:Courier New;font-weight:700">−'+fmt(commSum)+' ₽</span></div>';
+  
+  brHtml+='<div style="font-size:11px;color:var(--text3);margin:14px 0 6px">Вычитается дополнительно (влияет на выплату):</div>';
+  svcItems.forEach(function(it){brHtml+=renderRow(it)});
+  
+  // Subtotal for group 2
+  brHtml+='<div style="display:flex;justify-content:space-between;padding:6px 14px;font-size:12px;color:var(--text3);border-top:1px dashed var(--border);margin-top:4px"><span>Итого доп. вычеты</span><span style="font-family:Courier New;font-weight:700">−'+fmt(d.totalServiceCharges)+' ₽</span></div>';
+  
+  document.getElementById('breakdown').innerHTML=brHtml;
+  
+  // Glossary
+  var glHtml='';
+  GLOSSARY.forEach(function(g){
+    glHtml+='<div class="gl-row" onclick="this.classList.toggle(\'open\')"><div class="gl-term">'+g.term+'<span class="gl-arrow">▼</span></div><div class="gl-explain">'+g.explain+'</div></div>';
+  });
+  document.getElementById('glossary').innerHTML=glHtml;
+  
+  // Show profit card and calculate
+  document.getElementById('profitCard').style.display='block';
+  calcProfit();
+}
+
+function calcProfit(){
+  if(!parsedData) return;
+  var d=parsedData;
+  var mode=document.getElementById('taxMode').value;
+  var ndsMode=document.getElementById('ndsMode').value;
+  
+  // Show/hide patent input
+  document.getElementById('patentRow').style.display=(mode==='patent')?'block':'none';
+  
+  // Tax base = col15 (ВБ реализовал товар) — per WB documentation
+  var taxBase=d.realRevenue;
+  
+  // Additional expenses
+  var expCost=parseFloat(document.getElementById('expCost').value)||0;
+  var expAds=parseFloat(document.getElementById('expAds').value)||0;
+  var expPack=parseFloat(document.getElementById('expPack').value)||0;
+  var expOther=parseFloat(document.getElementById('expOther').value)||0;
+  var totalExp=expCost+expAds+expPack+expOther;
+  
+  // WB expenses (from report)
+  var wbExpenses=d.realRevenue-d.finalPayout;
+  
+  // 1. Income tax calculation
+  var incomeTax=0;
+  var incomeTaxDesc='';
+  
+  if(mode==='usn6'){
+    incomeTax=taxBase*0.06;
+    incomeTaxDesc='УСН 6% от '+fmt(taxBase)+' ₽';
+  } else if(mode==='usn15'){
+    var deductible=wbExpenses+totalExp;
+    var base15=Math.max(0, taxBase-deductible);
+    incomeTax=Math.max(base15*0.15, taxBase*0.01);
+    var isMin=base15*0.15<taxBase*0.01;
+    incomeTaxDesc='УСН 15% от ('+fmt(taxBase)+' − '+fmt(deductible)+') = '+fmt(base15)+' ₽';
+    if(isMin) incomeTaxDesc+=' → мин. 1% = '+fmt(taxBase*0.01)+' ₽';
+  } else if(mode==='npd'){
+    incomeTax=taxBase*0.06;
+    incomeTaxDesc='НПД 6% от '+fmt(taxBase)+' ₽';
+  } else if(mode==='patent'){
+    incomeTax=parseFloat(document.getElementById('patentSum').value)||0;
+    incomeTaxDesc='Патент: '+fmt(incomeTax)+' ₽';
+  }
+  
+  // 2. NDS calculation
+  var ndsAmount=0;
+  var ndsDesc='';
+  
+  if(ndsMode==='nds5'){
+    ndsAmount=taxBase*0.05;
+    ndsDesc='НДС 5% от '+fmt(taxBase)+' ₽ (оборот 60–250 млн)';
+  } else if(ndsMode==='nds7'){
+    ndsAmount=taxBase*0.07;
+    ndsDesc='НДС 7% от '+fmt(taxBase)+' ₽ (оборот 20–60 млн)';
+  } else if(ndsMode==='nds20'){
+    ndsAmount=taxBase*0.20;
+    ndsDesc='НДС 20% от '+fmt(taxBase)+' ₽';
+  }
+  
+  var totalTax=incomeTax+ndsAmount;
+  var netProfit=d.finalPayout-totalTax-totalExp;
+  var marginPct=d.realRevenue>0?(netProfit/d.realRevenue*100):0;
+  
+  // Render result
+  var h='<div style="border-top:1px solid var(--border);padding-top:14px">';
+  
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="color:var(--text2)">Выплата WB (на счёт)</span><span style="font-family:Courier New;font-weight:700;color:var(--green)">'+fmt(d.finalPayout)+' ₽</span></div>';
+  
+  // Income tax
+  h+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="color:var(--text2)">Налог ('+mode.toUpperCase()+')</span><span style="font-family:Courier New;font-weight:700;color:var(--orange)">−'+fmt(incomeTax)+' ₽</span></div>';
+  h+='<div style="font-size:10px;color:var(--text3);padding:0 0 4px">'+incomeTaxDesc+'</div>';
+  
+  // NDS
+  if(ndsAmount>0){
+    h+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="color:var(--text2)">НДС</span><span style="font-family:Courier New;font-weight:700;color:var(--orange)">−'+fmt(ndsAmount)+' ₽</span></div>';
+    h+='<div style="font-size:10px;color:var(--text3);padding:0 0 4px">'+ndsDesc+'</div>';
+  }
+  
+  if(totalExp>0){
+    h+='<div style="display:flex;justify-content:space-between;padding:6px 0;font-size:13px"><span style="color:var(--text2)">Доп. расходы</span><span style="font-family:Courier New;font-weight:700;color:var(--red)">−'+fmt(totalExp)+' ₽</span></div>';
+    var expDetails=[];
+    if(expCost>0) expDetails.push('Себестоимость: '+fmt(expCost));
+    if(expAds>0) expDetails.push('Реклама: '+fmt(expAds));
+    if(expPack>0) expDetails.push('Упаковка: '+fmt(expPack));
+    if(expOther>0) expDetails.push('Прочее: '+fmt(expOther));
+    h+='<div style="font-size:10px;color:var(--text3);padding:0 0 4px">'+expDetails.join(' · ')+'</div>';
+  }
+  
+  var profitColor=netProfit>=0?'var(--green)':'var(--red)';
+  h+='<div style="display:flex;justify-content:space-between;padding:12px 0 4px;font-size:15px;font-weight:900;border-top:2px solid var(--border)">';
+  h+='<span>Чистая прибыль</span>';
+  h+='<span style="font-family:Courier New;color:'+profitColor+'">'+fmt(netProfit)+' ₽</span></div>';
+  h+='<div style="font-size:11px;color:var(--text3);text-align:right">Маржа: '+marginPct.toFixed(1)+'% от выручки</div>';
+  
+  h+='</div>';
+  document.getElementById('profitResult').innerHTML=h;
+}
+
+function drawPie(slices){
+  var canvas=document.getElementById('pieChart');
+  var ctx=canvas.getContext('2d');
+  var cx=100,cy=100,r=90,ir=55;
+  var total=0;
+  slices.forEach(function(s){total+=s.val});
+  
+  ctx.clearRect(0,0,200,200);
+  var angle=-Math.PI/2;
+  slices.forEach(function(s){
+    var sliceAngle=(s.val/total)*2*Math.PI;
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,angle,angle+sliceAngle);
+    ctx.arc(cx,cy,ir,angle+sliceAngle,angle,true);
+    ctx.closePath();
+    ctx.fillStyle=s.color;
+    ctx.fill();
+    angle+=sliceAngle;
+  });
+  
+  // Inner circle (donut hole)
+  ctx.beginPath();
+  ctx.arc(cx,cy,ir-1,0,2*Math.PI);
+  ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--card').trim();
+  ctx.fill();
+}
+
+function resetAll(){
+  document.getElementById('uploadArea').style.display='block';
+  document.getElementById('loading').style.display='none';
+  document.getElementById('results').style.display='none';
+  document.getElementById('fileInput1').value='';
+  document.getElementById('fileInput2').value='';
+  document.getElementById('status1').className='uz-status';
+  document.getElementById('status1').textContent='';
+  document.getElementById('status2').className='uz-status';
+  document.getElementById('status2').textContent='';
+  document.getElementById('analyzeBtn').style.display='none';
+  parsedData=null;
+  parsedSlots={1:null,2:null};
+  fileSlots={1:null,2:null};
+}
+</script>
+</body>
+</html>
