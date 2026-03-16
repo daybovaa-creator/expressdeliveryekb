@@ -186,20 +186,55 @@ loadLib([
   'https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js'
 ],function(){
-  var scanner=new Html5QrcodeScanner("scanner-container",{
-    fps:15,
-    qrbox:function(vw,vh){var s=Math.min(vw,vh);return{width:Math.floor(s*0.8),height:Math.floor(s*0.5)}},
-    rememberLastUsedCamera:true,
-    supportedScanTypes:[Html5QrcodeScanType.SCAN_TYPE_CAMERA,Html5QrcodeScanType.SCAN_TYPE_FILE],
-    formatsToSupport:[
-      Html5QrcodeSupportedFormats.EAN_13,Html5QrcodeSupportedFormats.EAN_8,
-      Html5QrcodeSupportedFormats.CODE_128,Html5QrcodeSupportedFormats.CODE_39,
-      Html5QrcodeSupportedFormats.UPC_A,Html5QrcodeSupportedFormats.UPC_E,
-      Html5QrcodeSupportedFormats.ITF,Html5QrcodeSupportedFormats.CODABAR,
-      Html5QrcodeSupportedFormats.QR_CODE,Html5QrcodeSupportedFormats.DATA_MATRIX
-    ]
+  var html5Qrcode=new Html5Qrcode("scanner-container");
+  var scanConfig={fps:15,qrbox:function(vw,vh){var s=Math.min(vw,vh);return{width:Math.floor(s*0.8),height:Math.floor(s*0.5)}}};
+
+  function startWithCamera(cameraId){
+    html5Qrcode.start(cameraId,scanConfig,onScanSuccess).catch(function(){
+      showFallback();
+    });
+  }
+
+  function showFallback(){
+    document.getElementById('scanner-container').innerHTML=
+      '<div style="padding:24px;text-align:center;color:var(--text2)">'+
+      '<div style="font-size:36px;margin-bottom:12px">📷</div>'+
+      '<div style="margin-bottom:12px">Камера недоступна</div>'+
+      '<label style="display:inline-flex;align-items:center;gap:8px;padding:12px 24px;background:var(--accent);color:#fff;border-radius:10px;cursor:pointer;font-weight:700;font-size:14px">'+
+      '📁 Загрузить фото'+
+      '<input type="file" accept="image/*" style="display:none" onchange="scanFile(this.files[0])">'+
+      '</label></div>';
+  }
+
+  // Get all cameras, find back one, auto-start
+  Html5Qrcode.getCameras().then(function(cameras){
+    if(!cameras||!cameras.length){showFallback();return}
+    // Find back camera by label
+    var backCam=null;
+    for(var i=0;i<cameras.length;i++){
+      var lb=cameras[i].label.toLowerCase();
+      if(lb.indexOf('back')!==-1||lb.indexOf('rear')!==-1||lb.indexOf('environment')!==-1||lb.indexOf('задн')!==-1||lb.indexOf('тыл')!==-1){
+        backCam=cameras[i];break;
+      }
+    }
+    // If not found by label, take the first one (camera 0 is usually back on most phones)
+    if(!backCam) backCam=cameras[0];
+    startWithCamera(backCam.id);
+  }).catch(function(){
+    // getCameras failed, try facingMode as fallback
+    html5Qrcode.start({facingMode:"environment"},scanConfig,onScanSuccess).catch(function(){
+      showFallback();
+    });
   });
-  scanner.render(onScanSuccess);
+
+  window.scanFile=function(file){
+    if(!file) return;
+    html5Qrcode.scanFile(file,true).then(function(decodedText){
+      onScanSuccess(decodedText,{result:{format:{formatName:''}}});
+    }).catch(function(){
+      alert('Штрихкод не найден на фото. Попробуйте другое фото.');
+    });
+  };
 });
 </script>
 </body>
