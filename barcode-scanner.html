@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Сканер штрихкодов — бесплатно | WB-OZON Delivery</title>
+<style>
+  :root{--bg:#0f0f14;--card:#1a1a24;--card2:#22222f;--border:#2a2a3a;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00b894;--red:#e17055;--text:#e8e8f0;--text2:#8888a0;--text3:#555568}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);padding:24px 16px}
+  .container{max-width:520px;margin:0 auto}
+  .hdr{text-align:center;margin-bottom:24px}
+  .hdr .tag{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+  .hdr h1{font-size:30px;font-weight:900;line-height:1.15;margin-bottom:6px;background:linear-gradient(135deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+  .hdr p{font-size:14px;color:var(--text2)}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:16px}
+  .card-section{padding:20px 24px}
+  .card-section+.card-section{border-top:1px solid var(--border)}
+  .card-title{font-size:10px;text-transform:uppercase;letter-spacing:2px;color:var(--text3);font-weight:700;margin-bottom:14px}
+  #scanner-container{width:100%;border-radius:14px;overflow:hidden;background:#000;position:relative;min-height:200px}
+  #scanner-container video{border-radius:14px}
+  #scanner-container img[alt="Info icon"]{display:none!important}
+  #scanner-container select{background:var(--card2)!important;color:var(--text)!important;border:1px solid var(--border)!important;border-radius:8px!important;padding:8px!important;font-family:inherit!important;margin:4px 0!important}
+  #scanner-container button{background:var(--accent)!important;color:#fff!important;border:none!important;border-radius:10px!important;padding:10px 20px!important;font-family:inherit!important;font-weight:700!important;cursor:pointer!important;margin:4px!important}
+  #scanner-container button:hover{opacity:0.9!important}
+  #scanner-container a{color:var(--accent)!important}
+  #scanner-container span{color:var(--text2)!important}
+  .last-result{margin-top:16px;padding:16px;border-radius:14px;text-align:center;display:none;animation:fadeIn .3s ease}
+  .last-result.ok{display:block;background:rgba(108,92,231,0.08);border:1px solid rgba(108,92,231,0.2)}
+  .last-result .lr-code{font-size:28px;font-weight:900;color:var(--accent);font-family:'Courier New',monospace;word-break:break-all;margin:8px 0}
+  .last-result .lr-format{font-size:12px;color:var(--text2);background:var(--card2);display:inline-block;padding:3px 10px;border-radius:6px;margin-bottom:4px}
+  .last-result .lr-time{font-size:11px;color:var(--text3)}
+  .last-result .lr-check{font-size:40px;margin-bottom:4px}
+  .copy-btn{margin-top:10px;padding:8px 20px;border-radius:8px;border:1px solid var(--border);background:var(--card2);color:var(--text);font-family:inherit;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s}
+  .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .history-list{list-style:none;display:flex;flex-direction:column;gap:8px}
+  .history-item{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--card2);border-radius:10px;border:1px solid var(--border);transition:border-color .2s}
+  .history-item:hover{border-color:var(--accent)}
+  .history-item .hi-num{font-size:11px;color:var(--text3);font-weight:700;width:20px;text-align:center;flex-shrink:0}
+  .history-item .hi-code{font-family:'Courier New',monospace;font-size:14px;font-weight:700;color:var(--text);flex:1;word-break:break-all}
+  .history-item .hi-fmt{font-size:10px;color:var(--text3);background:var(--bg);padding:2px 6px;border-radius:4px;flex-shrink:0}
+  .history-item .hi-time{font-size:10px;color:var(--text3);flex-shrink:0}
+  .empty-history{text-align:center;color:var(--text3);font-size:13px;padding:20px 0}
+  .clear-btn{margin-top:12px;padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--card2);color:var(--text2);font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;width:100%;transition:all .2s}
+  .clear-btn:hover{border-color:var(--red);color:var(--red)}
+  .footer{text-align:center;margin-top:24px;font-size:10px;color:var(--text3)}
+  .tip{margin-top:12px;padding:10px 14px;background:rgba(108,92,231,0.08);border:1px solid rgba(108,92,231,0.15);border-radius:10px;font-size:11px;color:var(--accent2);line-height:1.5}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="tools.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:13px;padding:6px 0 12px;transition:color .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">← Полезное</a>
+
+  <div class="hdr">
+    <div class="tag">📷 Сканер штрихкодов</div>
+    <h1>Сканер ШК</h1>
+    <p>Наведите камеру на штрихкод или загрузите фото</p>
+  </div>
+
+  <div class="card">
+    <div class="card-section">
+      <div class="card-title">Камера</div>
+      <div id="scanner-container"></div>
+    </div>
+  </div>
+
+  <div class="last-result" id="lastResult">
+    <div class="lr-check">✅</div>
+    <div class="lr-format" id="lrFormat"></div>
+    <div class="lr-code" id="lrCode"></div>
+    <div class="lr-time" id="lrTime"></div>
+    <button class="copy-btn" onclick="copyLast()">📋 Копировать</button>
+  </div>
+
+  <div class="card">
+    <div class="card-section">
+      <div class="card-title">История сканирований</div>
+      <ul class="history-list" id="historyList">
+        <li class="empty-history">Пока ничего не отсканировано</li>
+      </ul>
+      <button class="clear-btn" id="clearBtn" onclick="clearHistory()" style="display:none">✕ Очистить историю</button>
+    </div>
+  </div>
+
+  <div class="footer">Бесплатно · Без регистрации · Данные не покидают ваш браузер</div>
+</div>
+
+<script>
+function loadLib(urls,cb){
+  var i=0;
+  function next(){
+    if(i>=urls.length){console.error('Failed to load lib');return}
+    var s=document.createElement('script');s.src=urls[i];
+    s.onload=cb;s.onerror=function(){i++;next()};
+    document.head.appendChild(s);
+  }
+  next();
+}
+
+var scanHistory=[];
+var lastScanned='';
+
+var audioCtx=null;
+function beep(){
+  try{
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    var osc=audioCtx.createOscillator();
+    var gain=audioCtx.createGain();
+    osc.connect(gain);gain.connect(audioCtx.destination);
+    osc.frequency.value=1200;osc.type='sine';gain.gain.value=0.15;
+    osc.start();osc.stop(audioCtx.currentTime+0.12);
+  }catch(e){}
+}
+
+function formatName(fmt){
+  var map={'QR_CODE':'QR Code','EAN_13':'EAN-13','EAN_8':'EAN-8','CODE_128':'Code-128','CODE_39':'Code-39','UPC_A':'UPC-A','UPC_E':'UPC-E','ITF':'ITF','CODABAR':'Codabar','DATA_MATRIX':'Data Matrix','PDF_417':'PDF-417'};
+  return map[fmt]||fmt||'Штрихкод';
+}
+
+function timeNow(){
+  var d=new Date();
+  return d.getHours().toString().padStart(2,'0')+':'+d.getMinutes().toString().padStart(2,'0')+':'+d.getSeconds().toString().padStart(2,'0');
+}
+
+function onScanSuccess(decodedText,decodedResult){
+  if(decodedText===lastScanned) return;
+  lastScanned=decodedText;
+  setTimeout(function(){lastScanned=''},2000);
+  beep();
+  var fmt='';
+  try{fmt=decodedResult.result.format.formatName}catch(e){}
+  var entry={code:decodedText,format:fmt,time:timeNow()};
+  scanHistory.unshift(entry);
+  var lr=document.getElementById('lastResult');
+  lr.className='last-result ok';
+  document.getElementById('lrCode').textContent=decodedText;
+  document.getElementById('lrFormat').textContent=formatName(fmt);
+  document.getElementById('lrTime').textContent=entry.time;
+  lr.style.animation='none';lr.offsetHeight;lr.style.animation='fadeIn 0.3s ease';
+  updateHistory();
+}
+
+function copyLast(){
+  var code=document.getElementById('lrCode').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(code).then(function(){
+      var btn=document.querySelector('.copy-btn');
+      btn.textContent='✓ Скопировано!';
+      setTimeout(function(){btn.textContent='📋 Копировать'},1500);
+    });
+  }else{
+    var ta=document.createElement('textarea');ta.value=code;
+    document.body.appendChild(ta);ta.select();document.execCommand('copy');
+    document.body.removeChild(ta);
+    var btn=document.querySelector('.copy-btn');
+    btn.textContent='✓ Скопировано!';
+    setTimeout(function(){btn.textContent='📋 Копировать'},1500);
+  }
+}
+
+function updateHistory(){
+  var list=document.getElementById('historyList');
+  var clearBtn=document.getElementById('clearBtn');
+  if(!scanHistory.length){
+    list.innerHTML='<li class="empty-history">Пока ничего не отсканировано</li>';
+    clearBtn.style.display='none';return;
+  }
+  clearBtn.style.display='block';
+  var html='';
+  scanHistory.forEach(function(e,i){
+    html+='<li class="history-item"><span class="hi-num">'+(i+1)+'</span><span class="hi-code">'+e.code+'</span><span class="hi-fmt">'+formatName(e.format)+'</span><span class="hi-time">'+e.time+'</span></li>';
+  });
+  list.innerHTML=html;
+}
+
+function clearHistory(){
+  scanHistory=[];
+  document.getElementById('lastResult').className='last-result';
+  updateHistory();
+}
+
+loadLib([
+  'https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js',
+  'https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js'
+],function(){
+  var scanner=new Html5QrcodeScanner("scanner-container",{
+    fps:15,
+    qrbox:function(vw,vh){var s=Math.min(vw,vh);return{width:Math.floor(s*0.8),height:Math.floor(s*0.5)}},
+    rememberLastUsedCamera:true,
+    supportedScanTypes:[Html5QrcodeScanType.SCAN_TYPE_CAMERA,Html5QrcodeScanType.SCAN_TYPE_FILE],
+    formatsToSupport:[
+      Html5QrcodeSupportedFormats.EAN_13,Html5QrcodeSupportedFormats.EAN_8,
+      Html5QrcodeSupportedFormats.CODE_128,Html5QrcodeSupportedFormats.CODE_39,
+      Html5QrcodeSupportedFormats.UPC_A,Html5QrcodeSupportedFormats.UPC_E,
+      Html5QrcodeSupportedFormats.ITF,Html5QrcodeSupportedFormats.CODABAR,
+      Html5QrcodeSupportedFormats.QR_CODE,Html5QrcodeSupportedFormats.DATA_MATRIX
+    ]
+  });
+  scanner.render(onScanSuccess);
+});
+</script>
+</body>
+</html>
