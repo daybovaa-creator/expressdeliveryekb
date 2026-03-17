@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Склады WB и Ozon в Екатеринбурге — схемы проезда, пропуска, группы | WB-OZON Delivery</title>
+<meta name="description" content="Все склады Wildberries и Ozon в Екатеринбурге: адреса, схемы проезда, ссылки на группы пропусков, подробные инструкции для водителей. Актуально 2026.">
+<meta name="keywords" content="склад wildberries екатеринбург, склад ozon екатеринбург, пропуск wb екатеринбург, схема проезда wildberries, СЦ чкаловский, черняховского wb, ozon апельсин">
+<link rel="canonical" href="https://expressdeliveryekb.ru/warehouses.html">
+<meta property="og:title" content="Склады WB и Ozon в Екатеринбурге — схемы проезда и пропуска">
+<meta property="og:description" content="Адреса, схемы проезда, группы пропусков на все склады маркетплейсов в Екатеринбурге.">
+<meta property="og:url" content="https://expressdeliveryekb.ru/warehouses.html">
+<meta property="og:type" content="website">
+<style>
+:root{--bg:#0f0f14;--card:#1a1a24;--card2:#22222f;--border:#2a2a3a;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00d4a1;--red:#ff6b6b;--orange:#ffa940;--blue:#4da6ff;--wb:#CB11AB;--ozon:#005bff;--text:#f0f0f8;--text2:#a0a0b8;--text3:#707088}
+*{margin:0;padding:0;box-sizing:border-box}
+body{min-height:100vh;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:var(--text);padding:20px 16px}
+.container{max-width:680px;margin:0 auto}
+.hdr{text-align:center;margin-bottom:28px}
+.hdr .tag{display:inline-block;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:5px 14px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text2);margin-bottom:12px}
+.hdr h1{font-size:26px;font-weight:900;line-height:1.2;margin-bottom:6px;background:linear-gradient(135deg,#fff 20%,var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hdr p{font-size:13px;color:var(--text2)}
+
+/* Warehouse card */
+.wh-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:16px;transition:border-color .2s}
+.wh-card:hover{border-color:var(--accent)}
+.wh-header{display:flex;align-items:center;gap:12px;padding:16px 18px;cursor:pointer}
+.wh-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;font-weight:900;color:#fff}
+.wh-logo.wb{background:var(--wb)}
+.wh-logo.ozon{background:var(--ozon)}
+.wh-info{flex:1;min-width:0}
+.wh-name{font-size:15px;font-weight:800;margin-bottom:2px}
+.wh-addr{font-size:12px;color:var(--text2)}
+.wh-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.wh-badge{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:700}
+.wh-badge.fbs{background:rgba(0,212,161,.1);color:var(--green);border:1px solid rgba(0,212,161,.2)}
+.wh-badge.sgt{background:rgba(255,169,64,.1);color:var(--orange);border:1px solid rgba(255,169,64,.2)}
+.wh-badge.mgt{background:rgba(77,166,255,.1);color:var(--blue);border:1px solid rgba(77,166,255,.2)}
+.wh-arrow{color:var(--text3);font-size:12px;transition:transform .2s;flex-shrink:0}
+.wh-card.open .wh-arrow{transform:rotate(180deg)}
+
+.wh-body{display:none;padding:0 18px 18px;border-top:1px solid var(--border)}
+.wh-card.open .wh-body{display:block}
+
+.wh-section{margin-top:14px}
+.wh-section-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--text3);font-weight:700;margin-bottom:8px}
+.wh-text{font-size:13px;color:var(--text2);line-height:1.7}
+.wh-text b{color:var(--text)}
+
+.wh-link{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:700;transition:all .2s;margin-top:6px;margin-right:6px}
+.wh-link.tg{background:rgba(0,136,204,.1);color:#0088cc;border:1px solid rgba(0,136,204,.2)}
+.wh-link.tg:hover{background:rgba(0,136,204,.2)}
+.wh-link.max{background:rgba(108,92,231,.1);color:var(--accent2);border:1px solid rgba(108,92,231,.2)}
+.wh-link.max:hover{background:rgba(108,92,231,.2)}
+.wh-link.nav{background:rgba(255,169,64,.1);color:var(--orange);border:1px solid rgba(255,169,64,.2)}
+.wh-link.nav:hover{background:rgba(255,169,64,.2)}
+.nav-links{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+
+.wh-map{margin-top:10px;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.wh-map img{width:100%;display:block;cursor:pointer}
+.wh-map-hint{font-size:10px;color:var(--text3);text-align:center;padding:4px;background:var(--card2)}
+
+/* Tip box */
+.tip-box{background:rgba(0,212,161,.04);border:1px solid rgba(0,212,161,.15);border-radius:12px;padding:14px 16px;margin-top:8px}
+.tip-box .tip-title{font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.tip-box .tip-text{font-size:12px;color:var(--text2);line-height:1.6}
+
+.btn-primary{display:inline-flex;align-items:center;background:linear-gradient(135deg,#0F2680 0%,#1A3FB5 45%,#6B2FBF 100%);color:#fff !important;border:none;padding:12px 24px;font-size:13px;font-weight:500;letter-spacing:.04em;border-radius:4px;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s;margin-top:12px}
+.btn-primary::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#FF6B00,#FF8C35);opacity:0;transition:opacity .3s}
+.btn-primary:hover::before{opacity:1}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-primary span{position:relative;z-index:1}
+
+.footer{text-align:center;margin-top:32px;padding-top:20px;border-top:1px solid var(--border);font-size:11px;color:var(--text3);line-height:1.8}
+.footer a{color:var(--accent);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+.upd{text-align:center;font-size:11px;color:var(--text3);margin-bottom:20px}
+.upd b{color:var(--green)}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+<a href="tools.html" style="display:inline-flex;align-items:center;gap:6px;color:var(--text3);text-decoration:none;font-size:13px;transition:color .2s" onmouseover="this.style.color='var(--text)'" onmouseout="this.style.color='var(--text3)'">← Полезное</a>
+<a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary" style="padding:8px 16px;font-size:12px;margin:0"><span>Написать в Telegram →</span></a>
+</div>
+
+<div class="hdr">
+  <div class="tag">🏭 Склады маркетплейсов</div>
+  <h1>Склады WB и Ozon<br>в Екатеринбурге</h1>
+  <p>Адреса, схемы проезда, группы пропусков, инструкции для водителей</p>
+</div>
+
+<div class="upd">Актуально на <b>17 марта 2026</b></div>
+
+<!-- СКЛАД 1: WB Чкаловский СГТ -->
+<div class="wh-card" onclick="this.classList.toggle('open')">
+  <div class="wh-header">
+    <div class="wh-logo wb">WB</div>
+    <div class="wh-info">
+      <div class="wh-name">СЦ Чкаловский</div>
+      <div class="wh-addr">5-й Южный проезд ЕКАД, 237</div>
+      <div class="wh-badges">
+        <span class="wh-badge sgt">СГТ</span>
+      </div>
+    </div>
+    <div class="wh-arrow">▼</div>
+  </div>
+  <div class="wh-body" onclick="event.stopPropagation()">
+    
+    <div class="wh-section">
+      <div class="wh-section-title">Приёмка</div>
+      <div class="wh-text">Приёмка <b>СТРОГО СГТ товаров</b> (сверхгабаритные). Разгрузка на <b>5-6 воротах</b>.</div>
+    </div>
+
+    <div class="wh-section">
+      <div class="wh-section-title">🪪 Пропуск</div>
+      <div class="wh-text">Написать в Telegram-группу <b>номер машины</b> и <b>ФИО водителя</b>.</div>
+      <a href="https://t.me/+TjOKKrkvudg1NTUy" target="_blank" class="wh-link tg">💬 Группа пропусков (Telegram)</a>
+    </div>
+
+    <div class="wh-section">
+      <div class="wh-section-title">🚗 Как проехать</div>
+      <div class="wh-text">Заехать на базу можно <b>с ЕКАД</b> либо <b>со стороны станции Сысерть</b>.</div>
+      <div class="nav-links">
+        <a href="https://yandex.ru/navi/?whatshere[point]=60.608298,56.677997&whatshere[zoom]=17&lang=ru" target="_blank" class="wh-link nav">📍 Яндекс Навигатор</a>
+      </div>
+      <div class="wh-map">
+        <img src="map-wb-chkalovsky-sgt.png" alt="Схема проезда WB Чкаловский СГТ" onclick="window.open(this.src,'_blank')">
+        <div class="wh-map-hint">Нажмите для увеличения</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 Совет от WB-OZON Delivery</div>
+      <div class="tip-text">Мы возим СГТ на Чкаловский ежедневно. Знаем все ворота и расписание. Не хотите разбираться сами — доверьте доставку нам.</div>
+    </div>
+  </div>
+</div>
+
+<!-- СКЛАД 2: WB Черняховского МГТ FBS -->
+<div class="wh-card" onclick="this.classList.toggle('open')">
+  <div class="wh-header">
+    <div class="wh-logo wb">WB</div>
+    <div class="wh-info">
+      <div class="wh-name">СЦ Черняховского</div>
+      <div class="wh-addr">ул. Черняховского, 86/16 (Терминал Чкаловский)</div>
+      <div class="wh-badges">
+        <span class="wh-badge mgt">МГТ</span>
+        <span class="wh-badge fbs">FBS</span>
+      </div>
+    </div>
+    <div class="wh-arrow">▼</div>
+  </div>
+  <div class="wh-body" onclick="event.stopPropagation()">
+    
+    <div class="wh-section">
+      <div class="wh-section-title">Приёмка</div>
+      <div class="wh-text">Приёмка <b>МГТ товаров по FBS</b> системе.<br>⛔ <b>FBO поставки не принимаются!</b></div>
+    </div>
+
+    <div class="wh-section">
+      <div class="wh-section-title">🚗 Как проехать</div>
+      <div class="wh-text">
+        <b>Со стороны ЕКАД:</b><br>
+        Двигаемся до терминала Деловые Линии.<br>
+        • <b>Большегрузы:</b> проехать мимо офиса ДЛ вдоль здания до 12-13 ворот.<br>
+        • <b>Мелкотоннажный транспорт:</b> перед офисом ДЛ повернуть направо в зону приёмки и выдачи товара ДЛ (32 ворота), двигаться вдоль здания. После ДЛ слева <b>62-е ворота</b>, вывеска — квадратная фиолетовая <b>«ПРИЁМКА МАРКЕТПЛЕЙС RWB»</b>, низкий пандус.<br><br>
+        <b>Со стороны Альпинистов:</b><br>
+        Проехать до магазина DNS и повернуть направо, после здания налево — приедете к 62-м воротам.<br><br>
+        ⚠️ Для большегрузного транспорта рекомендуется объехать терминал Чкаловский и проехать со стороны ЕКАД.
+      </div>
+      <div class="nav-links">
+        <a href="https://yandex.ru/navi/?whatshere[point]=60.749056,56.758466&whatshere[zoom]=17&lang=ru" target="_blank" class="wh-link nav">📍 Грузовые (12-13 ворота)</a>
+        <a href="https://yandex.ru/navi/?whatshere[point]=60.750820,56.759399&whatshere[zoom]=17&lang=ru" target="_blank" class="wh-link nav">📍 Мелкотоннажные (62 ворота)</a>
+      </div>
+      <div class="wh-map">
+        <img src="map-wb-chernyahovskogo-fbs.png" alt="Схема проезда WB Черняховского FBS" onclick="window.open(this.src,'_blank')">
+        <div class="wh-map-hint">Нажмите для увеличения</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 Совет от WB-OZON Delivery</div>
+      <div class="tip-text">Сдаём FBS-заказы на Черняховского каждый день. Забираем у вас → сдаём. Всё в тот же день.</div>
+    </div>
+  </div>
+</div>
+
+<!-- СКЛАД 3: OZON FBS Апельсин -->
+<div class="wh-card" onclick="this.classList.toggle('open')">
+  <div class="wh-header">
+    <div class="wh-logo ozon">OZ</div>
+    <div class="wh-info">
+      <div class="wh-name">OZON FBS «Апельсин»</div>
+      <div class="wh-addr">ул. Черняховского, 104</div>
+      <div class="wh-badges">
+        <span class="wh-badge fbs">FBS</span>
+      </div>
+    </div>
+    <div class="wh-arrow">▼</div>
+  </div>
+  <div class="wh-body" onclick="event.stopPropagation()">
+    
+    <div class="wh-section">
+      <div class="wh-section-title">Приёмка</div>
+      <div class="wh-text">Приёмка <b>FBS</b> заказов.</div>
+    </div>
+
+    <div class="wh-section">
+      <div class="wh-section-title">🪪 Пропуск</div>
+      <div class="wh-text">
+        За <b>5-30 минут</b> до прибытия заказать пропуск в группе мессенджера МАКС.<br>
+        Написать <b>номер машины</b>, <b>ФИО</b>. Если вы селлер — подписать «селлер», если водитель — «водитель».<br>
+        Ожидать когда сотрудник оформит пропуск.<br>
+        ⚠️ <b>Номер машины обязан быть чистым!</b> (камера считывания на КПП)
+      </div>
+      <a href="https://max.ru/join/puW0S70uxi2oULjniOhrdmd-1G1AKqLwhm_CCv2h56s" target="_blank" class="wh-link max">💬 Группа пропусков (МАКС)</a>
+    </div>
+
+    <div class="wh-section">
+      <div class="wh-section-title">🚗 Как проехать</div>
+      <div class="wh-text">
+        Заехать можно <b>со стороны ЕКАД</b> либо <b>со стороны мкр. Химмаш</b>.<br><br>
+        Подъехать к КПП в зону считывания номера камерой, дождаться открытия шлагбаума. Заехать на территорию и <b>сразу повернуть направо</b>, двигаться до конца здания и повернуть налево. Двигаемся до конца здания, последние 3 ворота — под грузовые авто. После ворот повернуть направо — сразу начинается <b>низкий пандус</b> для мелкотоннажного транспорта.
+      </div>
+      <div class="nav-links">
+        <a href="https://yandex.ru/navi/?whatshere[point]=60.753386,56.749516&whatshere[zoom]=17&lang=ru" target="_blank" class="wh-link nav">📍 Яндекс Навигатор</a>
+      </div>
+      <div class="wh-map">
+        <img src="map-ozon-apelsin-fbs.png" alt="Схема проезда OZON Апельсин FBS" onclick="window.open(this.src,'_blank')">
+        <div class="wh-map-hint">Нажмите для увеличения</div>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <div class="tip-title">💡 Совет от WB-OZON Delivery</div>
+      <div class="tip-text">Возим на Ozon Апельсин ежедневно. Пропуска оформляем сами. Вам не нужно ждать в чате — просто отдайте товар нам.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Калькулятор самовоза -->
+<div style="text-align:center;padding:24px 20px;background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:8px;margin-bottom:16px">
+  <div style="font-size:28px;margin-bottom:10px">🧮</div>
+  <div style="font-size:17px;font-weight:800;margin-bottom:6px">Думаете возить сами?</div>
+  <p style="font-size:13px;color:var(--text2);max-width:400px;margin:0 auto 14px;line-height:1.6">Посчитайте во сколько обойдётся самовоз — бензин, время, амортизация. И сравните с нашими тарифами.</p>
+  <a href="calculator.html" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:8px;background:rgba(255,169,64,.1);color:var(--orange);border:1px solid rgba(255,169,64,.2);text-decoration:none;font-size:14px;font-weight:700;transition:all .2s" onmouseover="this.style.background='rgba(255,169,64,.2)'" onmouseout="this.style.background='rgba(255,169,64,.1)'">🧮 Калькулятор самовоза</a>
+</div>
+
+<!-- CTA -->
+<div style="text-align:center;padding:28px 20px;background:var(--card);border:1px solid var(--border);border-radius:16px;margin-top:8px">
+  <div style="font-size:28px;margin-bottom:10px">🚚</div>
+  <div style="font-size:17px;font-weight:800;margin-bottom:6px">Не хотите возить сами?</div>
+  <p style="font-size:13px;color:var(--text2);max-width:400px;margin:0 auto 14px;line-height:1.6">Мы забираем товар у вас, маркируем, оформляем пропуска и сдаём на все склады в Екатеринбурге. Каждый день.</p>
+  <a href="https://t.me/WB_OZON_Delivery66" target="_blank" class="btn-primary"><span>Написать в Telegram →</span></a>
+</div>
+
+<div class="footer">
+  <b>WB·OZON Delivery</b> — доставка на маркетплейсы в Екатеринбурге<br>
+  <a href="index.html">Главная</a> · <a href="tools.html">Полезное</a><br>
+  Информация может устареть. Если нашли ошибку — <a href="https://t.me/WB_OZON_Delivery66">напишите нам</a>.
+</div>
+
+</div>
+</body>
+</html>
